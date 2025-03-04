@@ -1,4 +1,4 @@
-export const wahlbezirkeQuellen = {
+export const wahlkreiseQuellen = {
 	"1": "https://www.wahlen-sh.de/btw25/ergebnisse_wahlkreis_1.html", // Flensburg - Schleswig
 	"2": "https://www.wahlen-sh.de/btw25/ergebnisse_wahlkreis_2.html", // Nordfriesland – Dithmarschen Nord
 	"3": "https://www.wahlen-sh.de/btw25/ergebnisse_wahlkreis_3.html", // Steinburg – Dithmarschen Süd
@@ -300,7 +300,7 @@ export const wahlbezirkeQuellen = {
 	"299": "https://wahlergebnis.saarland.de/BTW/ergebnisse_wahlkreis_299.html", // Homburg
 };
 
-export const wahlbezirkeNamen = {
+export const wahlkreiseNamen = {
 	"1": "Flensburg - Schleswig",
 	"2": "Nordfriesland – Dithmarschen Nord",
 	"3": "Steinburg – Dithmarschen Süd",

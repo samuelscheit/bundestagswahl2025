@@ -1,5 +1,5 @@
 import { download } from "./scrape";
-import { wahlbezirkeQuellen } from "./wahlbezirke";
+import { wahlkreiseQuellen } from "./wahlbezirke";
 import fs from "fs";
 
 let votegroupTest = [
@@ -16,7 +16,7 @@ let votemanagerTest: number[] = [
 	294, 295,
 ];
 
-// let test = Object.keys(wahlbezirkeQuellen);
+// let test = Object.keys(wahlkreiseQuellen);
 let test: number[] = [113];
 // let test: number[] = votegroupTest;
 
@@ -24,11 +24,11 @@ const finalResult = require("./data/out.json");
 
 for (const i of test) {
 	try {
-		const id = i.toString() as keyof typeof wahlbezirkeQuellen;
-		console.log("Downloading", id, wahlbezirkeQuellen[id]);
+		const id = i.toString() as keyof typeof wahlkreiseQuellen;
+		console.log("Downloading", id, wahlkreiseQuellen[id]);
 		const result = await download({
 			id: id,
-			url: wahlbezirkeQuellen[id],
+			url: wahlkreiseQuellen[id],
 		});
 		if (!result) continue;
 

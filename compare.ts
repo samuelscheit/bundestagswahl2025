@@ -1,18 +1,18 @@
 import { Bundeswahlleiter } from "./bundeswahlleiter/read";
-import _Wahlbezirke from "./wahlbezirke/data/out.json";
+import _Wahlkreise from "./wahlbezirke/data/out.json";
 import type { defaultResult } from "./wahlbezirke/scrape";
-import { wahlbezirkeNamen } from "./wahlbezirke/wahlbezirke";
+import { wahlkreiseNamen } from "./wahlbezirke/wahlbezirke";
 import fs from "fs";
 
-const Wahlbezirke = _Wahlbezirke as any as Record<string, ReturnType<typeof defaultResult>>;
+const Wahlkreise = _Wahlkreise as any as Record<string, ReturnType<typeof defaultResult>>;
 
 Bundeswahlleiter;
-Wahlbezirke;
+Wahlkreise;
 
 let result = [] as {
-	wahlbezirk: string;
+	wahlkreis: string;
 	partei: string;
-	wahlbezirkStimmen: number;
+	wahlkreisStimmen: number;
 	bundesStimmen: number;
 	diff: number;
 }[];
@@ -21,26 +21,26 @@ const totalBezirk = {} as Record<string, number>;
 
 const totalPartei = {} as Record<string, number>;
 
-Object.keys(Wahlbezirke).forEach((id) => {
-	const wahlbezirkName = wahlbezirkeNamen[id];
-	const wahlbezirk = Wahlbezirke[id];
+Object.keys(Wahlkreise).forEach((id) => {
+	const wahlkreisName = wahlkreiseNamen[id];
+	const wahlkreis = Wahlkreise[id];
 	const bundesergebnis = Bundeswahlleiter[id];
 
-	Object.keys(wahlbezirk.zweitstimmen.parteien).forEach((partei) => {
-		const bezirksPartei = wahlbezirk.zweitstimmen.parteien[partei] || 0;
-		const bundesPartei = bundesergebnis.zweitstimmen.parteien[partei] || 0;
+	Object.keys(wahlkreis.zweitstimmen.parteien).forEach((partei) => {
+		const kreisPartei = wahlkreis.zweitstimmen.parteien[partei] || 0;
+		const bundPartei = bundesergebnis.zweitstimmen.parteien[partei] || 0;
 
-		if (bezirksPartei !== bundesPartei) {
-			const diff = Math.abs(bezirksPartei - bundesPartei);
+		if (kreisPartei !== bundPartei) {
+			const diff = Math.abs(kreisPartei - bundPartei);
 			totalPartei[partei] = (totalPartei[partei] || 0) + diff;
 
-			totalBezirk[wahlbezirkName] = (totalBezirk[wahlbezirkName] || 0) + diff;
+			totalBezirk[wahlkreisName] = (totalBezirk[wahlkreisName] || 0) + diff;
 
 			result.push({
-				wahlbezirk: wahlbezirkName,
+				wahlkreis: wahlkreisName,
 				partei,
-				wahlbezirkStimmen: bezirksPartei,
-				bundesStimmen: bundesPartei,
+				wahlkreisStimmen: kreisPartei,
+				bundesStimmen: bundPartei,
 				diff,
 			});
 		}
@@ -48,7 +48,7 @@ Object.keys(Wahlbezirke).forEach((id) => {
 });
 
 result = result.sort((a, b) => {
-	return totalBezirk[b.wahlbezirk] - totalBezirk[a.wahlbezirk];
+	return totalBezirk[b.wahlkreis] - totalBezirk[a.wahlkreis];
 });
 
 console.table(result);
