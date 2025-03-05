@@ -158,7 +158,7 @@ export async function getWahlbezirkVotemanager(opts: Context) {
 	const termineUrl = base + "/api/termine.json";
 
 	const { data } = await axiosWithRedirect(termineUrl);
-	const { termine, title } = data;
+	const { termine } = data;
 
 	if (!termine) throw new Error("INVALID RESPONSE: " + termineUrl + " " + opts.url);
 
@@ -241,7 +241,10 @@ export async function getWahlbezirkVotemanager(opts: Context) {
 						})
 				);
 
-				result[wahleintrag.gebiet_link.title] = wahlbezirke_result;
+				let title = wahleintrag.gebiet_link.title;
+				if (title === "Gesamtergebnis") title = data.title;
+
+				result[title] = wahlbezirke_result;
 			} catch (error) {
 				console.error("Error", name, (error as Error).message);
 			}

@@ -18,12 +18,12 @@ process.on("uncaughtException", (error) => {
 // const result = await getUntergebieteVoteElect(
 // 	"https://www.wahlen-muenchen.de/ergebnisse/20250223bundestagswahl/ergebnisse_wahlkreis_219.html"
 // );
-// const result = await getWahlbezirk({ name: "", url: "https://wahlen.kdvz.nrw/production/05962004/", bundesland: "" });
+const result = await getWahlbezirk({ name: "", url: "https://votemanager.kdo.de/15084315/index.html", bundesland: "" });
 
 // console.log(result);
 
 const wahlbezirke = require("./data/wahlbezirke.json");
-// Object.assign(wahlbezirke, result);
+Object.assign(wahlbezirke, result);
 
 // function reduce(x: ResultType): any {
 // 	const results = {} as Record<string, any>;
