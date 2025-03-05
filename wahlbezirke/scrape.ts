@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 import * as cheerio from "cheerio";
 import iconv from "iconv-lite";
 import csv from "csv-parser";
+import { axiosWithRedirect } from "./wahlbezirke";
 
 // @ts-ignore
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -13,31 +14,10 @@ export interface Options {
 	errors?: number;
 }
 
-const request = axios.create({
-	responseType: "text",
-	headers: {
-		accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-		"accept-language": "en-US,en;q=0.9,de-DE;q=0.8,de;q=0.7",
-		"cache-control": "no-cache",
-		pragma: "no-cache",
-		"sec-ch-ua": '"Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"',
-		"sec-ch-ua-mobile": "?0",
-		"sec-ch-ua-platform": '"macOS"',
-		"sec-fetch-dest": "document",
-		"sec-fetch-mode": "navigate",
-		"sec-fetch-site": "none",
-		"sec-fetch-user": "?1",
-		"upgrade-insecure-requests": "1",
-	},
-	transformRequest() {
-		console.log(this.url);
-	},
-});
-
 export async function download(options: Options) {
 	if (!options.errors) options.errors = 0;
 
-	var { data } = await request.get(options.url, {
+	var { data } = await axiosWithRedirect(options.url, {
 		responseType: "arraybuffer",
 	});
 
@@ -83,7 +63,7 @@ export function defaultResult() {
 	};
 }
 
-type ResultType = ReturnType<typeof defaultResult>;
+export type ResultType = ReturnType<typeof defaultResult>;
 
 async function votegroup(options: Options & { text: string }) {
 	const root = parse(options.text);
@@ -145,24 +125,28 @@ async function votegroup(options: Options & { text: string }) {
 	return result;
 }
 
-async function votemanager(options: Options & { text: string }) {
+export async function votemanager(options: Options & { text: string }) {
 	const { searchParams, origin, pathname } = new URL(options.url);
-	const wahl_id = searchParams.get("wahl_id");
-	const id = searchParams.get("id");
+	const wahl_id = searchParams.get("wahl_id")!;
+	const id = searchParams.get("id")!;
 
 	const baseUrl = origin + pathname.replace("/praesentation/ergebnis.html", "");
+	const apiUrl = baseUrl + options.text.includes("../api") ? "/api/praesentation" : "/daten/api";
 
-	const requestWahl = (url: string) => {
-		if (options.text.includes("../api")) return request.get(`${baseUrl}/api/praesentation/${url}`, { responseType: "json" });
-		return request.get(`${baseUrl}/daten/api/${url}`, { responseType: "json" });
-	};
+	return votemanagerWithOptions({ url: apiUrl, wahl_id, ebene_id: id });
+}
 
+export async function votemanagerWithOptions({ ebene_id, url, wahl_id }: { url: string; wahl_id: string; ebene_id: string }) {
 	const results = await Promise.all([
-		requestWahl(`wahl_${wahl_id}/ergebnis_${id}_0.json`),
-		requestWahl(`wahl_${wahl_id}/ergebnis_${id}_1.json`),
+		axiosWithRedirect(`${url}/wahl_${wahl_id}/ergebnis_${ebene_id}_0.json`, { responseType: "json" }),
+		axiosWithRedirect(`${url}/wahl_${wahl_id}/ergebnis_${ebene_id}_1.json`, { responseType: "json" }),
 	]);
 
 	const result = defaultResult();
+
+	const hasError = results.find((x) => !x.data.Komponente?.tabelle);
+	if (hasError)
+		throw new Error(`${url} ${wahl_id} ${ebene_id} Keine Daten ${hasError.data.Komponente?.hinweis_auszaehlung || "Keine Ergebnisse"}`);
 
 	const [stimme1, stimme2] = results.map((x) => {
 		const parteien = {} as Record<string, number>;
@@ -170,11 +154,11 @@ async function votemanager(options: Options & { text: string }) {
 		let ungültig = 0;
 
 		x.data.Komponente.tabelle.zeilen.forEach((row: any) => {
-			parteien[row.label.labelKurz] = Number(row.zahl.replace(/\./g, ""));
+			parteien[row.label.labelKurz] = Number(row.zahl.replace(/\./g, "")) || 0;
 		});
 
 		x.data.Komponente.info.tabelle.zeilen.forEach((row: any) => {
-			const zahl = Number(row.zahl.replace(/\./g, ""));
+			const zahl = Number(row.zahl.replace(/\./g, "")) || 0;
 			if (row.label.labelKurz === "Wahlberechtigte") {
 				result.anzahl_berechtigte = zahl;
 			} else if (row.label.labelKurz === "Wähler") {
@@ -202,7 +186,7 @@ async function degreesEU(options: Options & { text: string }) {
 	const id = options.url.split("/").at(-2);
 	const base = new URL(options.url).origin;
 
-	const { data } = await request.get(`${base}/assets/json/${id}.json`, { responseType: "json" });
+	const { data } = await axiosWithRedirect(`${base}/assets/json/${id}.json`, { responseType: "json" });
 
 	const result = defaultResult();
 
@@ -287,7 +271,7 @@ async function krzn(options: Options & { text: string }) {
 	const baseUrl = options.url.slice(0, options.url.lastIndexOf("/"));
 	const downloadUrl = baseUrl + "/" + download.getAttribute("href");
 
-	const { data } = await request.get(downloadUrl, { responseType: "text" });
+	const { data } = await axiosWithRedirect(downloadUrl, { responseType: "text" });
 
 	const file = csv({
 		skipLines: 1,

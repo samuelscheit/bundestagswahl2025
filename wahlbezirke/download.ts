@@ -1,5 +1,5 @@
 import { download } from "./scrape";
-import { wahlkreiseQuellen } from "./wahlbezirke";
+import { wahlkreiseQuellen } from "./wahlkreise";
 import fs from "fs";
 
 let votegroupTest = [

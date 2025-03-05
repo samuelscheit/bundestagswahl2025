@@ -1,7 +1,7 @@
 import { Bundeswahlleiter } from "./bundeswahlleiter/read";
 import _Wahlkreise from "./wahlbezirke/data/out.json";
 import type { defaultResult } from "./wahlbezirke/scrape";
-import { wahlkreiseNamen } from "./wahlbezirke/wahlbezirke";
+import { wahlkreiseNamen } from "./wahlbezirke/wahlkreise";
 import fs from "fs";
 
 const Wahlkreise = _Wahlkreise as any as Record<string, ReturnType<typeof defaultResult>>;
