@@ -2,13 +2,18 @@
 import extractUrls from "extract-urls";
 import PQueue from "p-queue";
 import { parse } from "node-html-parser";
-import { axios } from "./axios";
+import { axios, cycleFetch } from "./axios";
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
-import { votemanagerWithOptions, type ResultType } from "./scrape";
+import { votegroup, votemanagerWithOptions, type ResultType } from "./scrape";
+import { wahlkreiseQuellen } from "./wahlkreise";
+import fs from "fs";
 
-const concurrency = 20;
+const concurrency = 10;
 
+const bundesland_queue = new PQueue({ concurrency });
 const behoerden_queue = new PQueue({ concurrency });
+const gemeinde_queue = new PQueue({ concurrency });
+const verbund_queue = new PQueue({ concurrency });
 const wahleintrage_queue = new PQueue({ concurrency });
 const wahlbezirke_queue = new PQueue({ concurrency });
 
@@ -109,6 +114,8 @@ export async function axiosWithRedirect<T = any, D = any>(
 	opts.tries = (opts.tries || 0) + 1;
 
 	try {
+		if (url.includes("wahlen-muenchen.de")) return await cycleFetch(url, opts);
+
 		var response = await axios(url, opts);
 	} catch (error) {
 		console.error("Request failed, retrying ...", url, (error as Error).message);
@@ -120,12 +127,15 @@ export async function axiosWithRedirect<T = any, D = any>(
 		const meta = root.querySelector("meta[http-equiv='refresh']");
 		const content = meta?.getAttribute("content");
 		const [_, newUrl] = content?.split("=") || [];
+		if (newUrl) {
+			console.log("Refresh", newUrl);
+			return axiosWithRedirect(newUrl, opts);
+		}
+	} else if (response.headers["location"]) {
+		const newUrl = response.headers["location"];
+		console.log("Redirect", url, newUrl);
 
 		return axiosWithRedirect(newUrl, opts);
-	} else if (response.headers["location"]) {
-		const url = response.headers["location"];
-
-		return axiosWithRedirect(url, opts);
 	}
 
 	return { ...response, url };
@@ -300,4 +310,87 @@ export async function getWahlbezirkeVotemanager() {
 
 	await behoerden_queue.onIdle();
 	return result;
+}
+
+const queues = [behoerden_queue, bundesland_queue, wahleintrage_queue, gemeinde_queue, verbund_queue, wahlbezirke_queue];
+
+export async function getUntergebieteVoteElect(url: string, depth = 0) {
+	var { data: html, status, url } = await axiosWithRedirect(url, { responseType: "text" });
+
+	if (status >= 400) throw new Error(`Request failed with status code ${status}`);
+
+	const isVoteElectIT = html.includes("jigsaw");
+	if (!isVoteElectIT) throw new Error("Not a VoteElect IT page");
+
+	const root = parse(html);
+	const gebiete = root.querySelectorAll(".gebietwaehler .dropdown__content .linklist:not(.header-gebiet__obergebiete) a");
+	let base = !url.endsWith("/") ? url.split("/").slice(0, -1).join("/") : url;
+	base += "/";
+
+	const gebietName = root.querySelector(".header-gebiet__name")!.structuredText;
+
+	console.log(gebietName, url);
+
+	if (gebiete.length !== 0) {
+		const results = {} as Record<string, ResultType>;
+
+		const queue = queues[depth];
+		if (!queue) throw new Error("Queue not found: " + depth + " " + url);
+
+		await queue.addAll(
+			gebiete.map((x) => async () => {
+				var unterurl = url;
+				try {
+					unterurl = base + x.getAttribute("href");
+
+					const result = await getUntergebieteVoteElect(unterurl, depth + 1);
+
+					Object.assign(results, result);
+				} catch (error) {
+					console.error("Error", unterurl, (error as Error).message);
+				}
+			})
+		);
+
+		return {
+			[gebietName]: results,
+		};
+	}
+	// unterste ebene => Wahlbezirke
+
+	return {
+		[gebietName]: votegroup({
+			id: "",
+			text: "",
+			root,
+			url,
+		}),
+	};
+}
+
+export async function getWahlbezirkeVoteElect() {
+	const results = {} as Record<string, Record<string, ResultType>>;
+
+	await behoerden_queue.addAll(
+		Object.values(wahlkreiseQuellen).map((x) => async () => {
+			try {
+				const result = await getUntergebieteVoteElect(x, 1);
+
+				Object.assign(results, result);
+			} catch (error) {
+				const msg = (error as Error).message || "";
+				if (msg.includes("Not a VoteElect IT page") || msg.includes("Request failed") || msg.includes("Unable to connect")) {
+					return;
+				}
+				console.error("Error", x, msg);
+			}
+		})
+	);
+
+	await behoerden_queue.onIdle();
+	await gemeinde_queue.onIdle();
+	await wahleintrage_queue.onIdle();
+	await wahlbezirke_queue.onIdle();
+
+	return results;
 }

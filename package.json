@@ -5,6 +5,7 @@
   "devDependencies": {
     "@types/bun": "latest",
     "cheerio": "^1.0.0",
+    "cycletls": "^1.0.27",
     "domutils": "^3.2.2",
     "extract-urls": "^1.4.1",
     "htmlparser2": "^10.0.0",

@@ -65,8 +65,8 @@ export function defaultResult() {
 
 export type ResultType = ReturnType<typeof defaultResult>;
 
-async function votegroup(options: Options & { text: string }) {
-	const root = parse(options.text);
+export function votegroup(options: Options & { text: string; root?: HTMLElement }) {
+	const root = options.root || parse(options.text);
 
 	const table = root.querySelector(`.tablesaw.table-stimmen[data-tablejigsaw], .tablesaw.table-stimmen[data-tablejigsaw-downloadable]`);
 	if (!table) throw new Error("Table not found:" + options.url);
