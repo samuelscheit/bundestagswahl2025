@@ -1,5 +1,4 @@
 import { HTMLElement, parse } from "node-html-parser";
-import axios, { AxiosError } from "axios";
 import * as cheerio from "cheerio";
 import iconv from "iconv-lite";
 import csv from "csv-parser";

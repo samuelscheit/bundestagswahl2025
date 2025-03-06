@@ -6,7 +6,6 @@ import { axios, cycleFetch } from "./axios";
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
 import { votegroup, votemanagerWithOptions, type ResultType } from "./scrape";
 import { wahlkreiseQuellen } from "./wahlkreise";
-import fs from "fs";
 
 const concurrency = 10;
 

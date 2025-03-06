@@ -80,7 +80,8 @@ export const axios = setupCache(
 );
 
 import initCycleTLS from "cycletls";
-export const cycleTLSPromise = initCycleTLS();
+
+let cycleTLSPromise = undefined as Promise<any> | undefined;
 
 export async function cycleFetch(url: string, opts: AxiosRequestConfig) {
 	var cacheFile = __dirname + "/cache/" + generateKey({ url });
@@ -97,6 +98,8 @@ export async function cycleFetch(url: string, opts: AxiosRequestConfig) {
 			cached: true,
 		};
 	}
+
+	if (!cycleTLSPromise) cycleTLSPromise = initCycleTLS();
 
 	const cycleTLS = await cycleTLSPromise;
 
