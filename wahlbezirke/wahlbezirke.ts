@@ -4,7 +4,7 @@ import PQueue from "p-queue";
 import { parse } from "node-html-parser";
 import { axios, cycleFetch } from "./axios";
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
-import { votegroup, votemanagerWithOptions, type ResultType } from "./scrape";
+import { WAS, votemanagerWithOptions, type ResultType } from "./scrape";
 import { wahlkreiseQuellen } from "./wahlkreise";
 
 const concurrency = 10;
@@ -361,7 +361,7 @@ export async function getUntergebieteVoteElect(url: string, depth = 0) {
 	// unterste ebene => Wahlbezirke
 
 	return {
-		[gebietName]: votegroup({
+		[gebietName]: WAS({
 			id: "",
 			text: "",
 			root,

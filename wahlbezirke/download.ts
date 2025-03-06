@@ -2,7 +2,7 @@ import { download } from "./scrape";
 import { wahlkreiseQuellen } from "./wahlkreise";
 import fs from "fs";
 
-let votegroupTest = [
+let WASTest = [
 	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 36, 44, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 69, 71, 74, 75, 76, 77, 78, 79, 80, 81, 82,
 	84, 85, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235,
 	236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 296, 297, 298, 299,
@@ -16,9 +16,9 @@ let votemanagerTest: number[] = [
 	294, 295,
 ];
 
-// let test = Object.keys(wahlkreiseQuellen);
-let test: number[] = [113];
-// let test: number[] = votegroupTest;
+let test = Object.keys(wahlkreiseQuellen);
+// let test: number[] = [113];
+// let test: number[] = WASTest;
 
 const finalResult = require("./data/out.json");
 

@@ -32,7 +32,7 @@ export async function download(options: Options) {
 function handleData(options: Options & { text: string }) {
 	const { text, url } = options;
 
-	if (text.includes("data-tablejigsaw")) return votegroup(options);
+	if (text.includes("data-tablejigsaw")) return WAS(options);
 	if (text.includes("vue_ergebnis_container_web_init")) return votemanager(options);
 	if (url.includes("https://wahlen.thueringen.de")) return thueringen(options);
 	if (url.includes("wahlen.sachsen.de")) return sachsen(options);
@@ -64,7 +64,7 @@ export function defaultResult() {
 
 export type ResultType = ReturnType<typeof defaultResult>;
 
-export function votegroup(options: Options & { text: string; root?: HTMLElement }) {
+export function WAS(options: Options & { text: string; root?: HTMLElement }) {
 	const root = options.root || parse(options.text);
 
 	const table = root.querySelector(`.tablesaw.table-stimmen[data-tablejigsaw], .tablesaw.table-stimmen[data-tablejigsaw-downloadable]`);
@@ -130,7 +130,9 @@ export async function votemanager(options: Options & { text: string }) {
 	const id = searchParams.get("id")!;
 
 	const baseUrl = origin + pathname.replace("/praesentation/ergebnis.html", "");
-	const apiUrl = baseUrl + options.text.includes("../api") ? "/api/praesentation" : "/daten/api";
+	const apiUrl = baseUrl + (options.text.includes("../api") ? "/api/praesentation" : "/daten/api");
+
+	console.log({ baseUrl, apiUrl, url: options.url });
 
 	return votemanagerWithOptions({ url: apiUrl, wahl_id, ebene_id: id });
 }
