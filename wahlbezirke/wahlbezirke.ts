@@ -113,7 +113,9 @@ export async function axiosWithRedirect<T = any, D = any>(
 	opts.tries = (opts.tries || 0) + 1;
 
 	try {
-		if (url.includes("wahlen-muenchen.de")) return await cycleFetch(url, opts);
+		if (url.includes("wahlen-muenchen.de")) {
+			return await cycleFetch(url, opts);
+		}
 
 		var response = await axios(url, opts);
 	} catch (error) {
@@ -316,13 +318,13 @@ export async function getWahlbezirkeVotemanager() {
 
 const queues = [behoerden_queue, bundesland_queue, wahleintrage_queue, gemeinde_queue, verbund_queue, wahlbezirke_queue];
 
-export async function getUntergebieteVoteElect(url: string, depth = 0) {
+export async function getUntergebieteWAS(url: string, depth = 0) {
 	var { data: html, status, url } = await axiosWithRedirect(url, { responseType: "text" });
 
 	if (status >= 400) throw new Error(`Request failed with status code ${status}`);
 
-	const isVoteElectIT = html.includes("jigsaw");
-	if (!isVoteElectIT) throw new Error("Not a VoteElect IT page");
+	const isWAS = html?.includes("jigsaw");
+	if (!isWAS) throw new Error("Not a WAS page");
 
 	const root = parse(html);
 	const gebiete = root.querySelectorAll(".gebietwaehler .dropdown__content .linklist:not(.header-gebiet__obergebiete) a");
@@ -345,7 +347,7 @@ export async function getUntergebieteVoteElect(url: string, depth = 0) {
 				try {
 					unterurl = base + x.getAttribute("href");
 
-					const result = await getUntergebieteVoteElect(unterurl, depth + 1);
+					const result = await getUntergebieteWAS(unterurl, depth + 1);
 
 					Object.assign(results, result);
 				} catch (error) {
@@ -370,13 +372,15 @@ export async function getUntergebieteVoteElect(url: string, depth = 0) {
 	};
 }
 
-export async function getWahlbezirkeVoteElect() {
+export async function getWahlbezirkeWAS(sources?: string[]) {
+	if (!sources) sources = Object.values(wahlkreiseQuellen);
+
 	const results = {} as Record<string, Record<string, ResultType>>;
 
 	await behoerden_queue.addAll(
-		Object.values(wahlkreiseQuellen).map((x) => async () => {
+		sources.map((x) => async () => {
 			try {
-				const result = await getUntergebieteVoteElect(x, 1);
+				const result = await getUntergebieteWAS(x, 1);
 
 				Object.assign(results, result);
 			} catch (error) {
