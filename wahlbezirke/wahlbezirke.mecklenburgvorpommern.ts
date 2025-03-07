@@ -77,6 +77,8 @@ parser.on("data", (data) => {
 	});
 });
 parser.on("end", () => {
+	console.dir(results, { depth: null });
+
 	const wahlbezirke = require("./data/wahlbezirke.json");
 
 	Object.assign(wahlbezirke, results);
