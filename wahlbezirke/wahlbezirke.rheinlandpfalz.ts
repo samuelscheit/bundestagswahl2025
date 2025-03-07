@@ -1,127 +1,151 @@
 import fs from "fs";
-import { join } from "path";
+import csv from "csv-parser";
 import { defaultResult, type ResultType } from "./scrape";
+import { axios } from "./axios";
 
-const ID_Regex = /^(?<wahlkreisID>\d{3})(?<kreisID>\d{3})(?<verbandsgemeindeID>\d{2})(?<gemeindeID>\d{3})(?<stadtteilID>\d{2})$/;
+const ID_Regex =
+	/^(?:(?<wahlkreisNr>\d{3}))?(?:(?<kreisNr>\d{3}))?(?:(?<verbandsgemeindeNr>\d{2}))?(?:(?<gemeindeNr>\d{3}))?(?:(?<stadtteilNr>\d{2}))?/;
 
-function processElectionData(data: string[]) {
-	const parties = {
-		1: "SPD",
-		2: "CDU",
-		3: "GRÜNE",
-		4: "FDP",
-		5: "AfD",
-		6: "FREIE WÄHLER",
-		7: "Die Linke",
-		8: "Tierschutzpartei",
-		9: "Die PARTEI",
-		10: "Volt",
-		11: "ÖDP",
-		12: "MLPD",
-		13: "BÜNDNIS DEUTSCHLAND",
-		14: "BSW",
-		15: "Ideenschmiede",
-		16: "SONSTIGE",
-	} as Record<string, string>;
+// 210 337 07 0000000000
 
-	const wahlkreise = {} as Record<string, string>;
-	const kreise = {} as Record<string, string>;
-	const verbandsgemeinden = {} as Record<string, string>;
-	const gemeinden = {} as Record<string, string>;
+const wahlkreise = {} as Record<string, string>;
+const kreise = {} as Record<string, string>;
+const kreiseToWahlkreise = {} as Record<string, string>;
+const verbandsgemeinden = {} as Record<string, string>;
+const verbandsgemeindenToKreise = {} as Record<string, string>;
+const gemeinden = {} as Record<string, string>;
+const gemeindenToVerbandsgemeinden = {} as Record<string, string>;
 
-	const partyList = Object.values(parties);
+type NameNode = {
+	bezeichnung: string;
+	name: string;
+	level: number;
+	children?: NameNode[];
+};
 
-	const results = {} as Record<string, Record<string, ResultType>>;
+const [wahlkreisNames, landkreisNames] = await Promise.all([
+	axios("https://rlp-btw25.wahlen.23degrees.eu/assets/wk-vec-tree.json"),
+	axios("https://rlp-btw25.wahlen.23degrees.eu/assets/lk-vec-tree.json"),
+]);
 
-	data.forEach((line) => {
-		line = line.trim();
-		if (!line) return;
+function handleNames(node: NameNode) {
+	const id = node.bezeichnung.match(ID_Regex);
+	const { wahlkreisNr, kreisNr, verbandsgemeindeNr, gemeindeNr, stadtteilNr } = id?.groups || ({} as Record<string, string>);
+	const name = node.name;
 
-		// Spalten durch Semikolon trennen
-		const fields = line.split(";");
+	if (wahlkreisNr !== "000" && kreisNr === "000" && verbandsgemeindeNr === "00" && gemeindeNr === "000" && stadtteilNr === "00") {
+		wahlkreise[wahlkreisNr] = name;
+	} else if (wahlkreisNr !== "000" && kreisNr !== "000" && verbandsgemeindeNr === "00" && gemeindeNr === "000" && stadtteilNr === "00") {
+		kreise[kreisNr] = name;
+		kreiseToWahlkreise[kreisNr] = wahlkreisNr;
+	} else if (wahlkreisNr !== "000" && kreisNr !== "000" && verbandsgemeindeNr !== "00" && gemeindeNr === "000" && stadtteilNr === "00") {
+		verbandsgemeinden[verbandsgemeindeNr] = name;
+		verbandsgemeindenToKreise[verbandsgemeindeNr] = kreisNr;
+	} else if (wahlkreisNr !== "000" && kreisNr !== "000" && verbandsgemeindeNr !== "00" && gemeindeNr !== "000" && stadtteilNr === "00") {
+		gemeinden[gemeindeNr] = name;
+		gemeindenToVerbandsgemeinden[gemeindeNr] = verbandsgemeindeNr;
+	}
 
-		// Kopfzeile oder unvollständige Zeilen überspringen
-		if (fields.length < 10) return;
-
-		const id = fields[0].match(ID_Regex);
-		const { wahlkreisID, kreisID, verbandsgemeindeID, gemeindeID, stadtteilID } = id?.groups || ({} as Record<string, string>);
-		const name = fields[fields.length - 1];
-
-		if (wahlkreisID !== "000" && kreisID === "000" && verbandsgemeindeID === "00" && gemeindeID === "000" && stadtteilID === "00") {
-			wahlkreise[wahlkreisID] = name;
-		} else if (
-			wahlkreisID !== "000" &&
-			kreisID !== "000" &&
-			verbandsgemeindeID === "00" &&
-			gemeindeID === "000" &&
-			stadtteilID === "00"
-		) {
-			kreise[kreisID] = name;
-		} else if (
-			wahlkreisID !== "000" &&
-			kreisID !== "000" &&
-			verbandsgemeindeID !== "00" &&
-			gemeindeID === "000" &&
-			stadtteilID === "00"
-		) {
-			verbandsgemeinden[verbandsgemeindeID] = name;
-		} else if (
-			wahlkreisID !== "000" &&
-			kreisID !== "000" &&
-			verbandsgemeindeID !== "00" &&
-			gemeindeID !== "000" &&
-			stadtteilID === "00"
-		) {
-			gemeinden[gemeindeID] = name;
-		}
-
-		const wahlkreisName = wahlkreise[wahlkreisID];
-		const kreisName = kreise[kreisID];
-		const verbandsgemeindeName = verbandsgemeinden[verbandsgemeindeID];
-		const gemeindeName = gemeinden[gemeindeID];
-		const stadtTeilName = name.split("/").slice(1).join("/");
-		const obergruppeName = wahlkreisID + " - " + (gemeindeName || verbandsgemeindeName || kreisName || wahlkreisName);
-
-		console.log("Wahlkreis:", wahlkreisName, wahlkreisID);
-		console.log("Kreis:", kreisName, kreisID);
-		console.log("Verbandsgemeinde:", verbandsgemeindeName, verbandsgemeindeID);
-		console.log("Gemeinde:", gemeindeName, gemeindeID);
-		console.log("Stadtteil:", stadtTeilName, stadtteilID, fields[0]);
-		if (stadtteilID === "00") return;
-
-		const result = defaultResult();
-
-		result.anzahl_berechtigte = parseInt(fields[1]) || 0;
-		result.anzahl_wähler = parseInt(fields[6]) || 0;
-		result.erststimmen.gültig = parseInt(fields[11]) || 0;
-		result.zweitstimmen.gültig = parseInt(fields[115]) || 0;
-
-		// Erststimmen verarbeiten (Felder 14-63)
-		Object.keys(parties).forEach((partyId, i) => {
-			const fieldIdx = 13 + i;
-			if (fields[fieldIdx] && /^\d+$/.test(fields[fieldIdx])) {
-				result.erststimmen.parteien[parties[partyId]] = parseInt(fields[fieldIdx]);
-			}
-		});
-
-		// Zweitstimmen verarbeiten (Felder 118-167)
-		Object.keys(parties).forEach((partyId, i) => {
-			const fieldIdx = 117 + i;
-			if (fields[fieldIdx] && /^\d+$/.test(fields[fieldIdx])) {
-				result.zweitstimmen.parteien[parties[partyId]] = parseInt(fields[fieldIdx]);
-			}
-		});
-
-		if (!results[obergruppeName]) results[obergruppeName] = {};
-
-		results[obergruppeName][stadtTeilName] = result;
-	});
-
-	return results;
+	if (node.children) node.children.forEach(handleNames);
 }
 
-const data = fs.readFileSync(join(__dirname + "/data/RheinlandPfalz.csv"), "utf-8").split("\n");
+wahlkreisNames.data.forEach(handleNames);
+landkreisNames.data.forEach(handleNames);
 
-const results = processElectionData(data);
+const data = fs.readFileSync(__dirname + "/data/RheinlandPfalz.csv");
 
-fs.writeFileSync(join(__dirname + "/data/RheinlandPfalz.json"), JSON.stringify(results, null, "\t"));
+const parteien = [
+	"SPD",
+	"CDU",
+	"GRÜNE",
+	"FDP",
+	"FDP",
+	"AfD",
+	"FREIE WÄHLER",
+	"die Linke",
+	"Tierschutzpartei",
+	"die PARTEI",
+	"Volt",
+	"ÖDP",
+	"MLPD",
+	"BÜNDNIS DEUTSCHLAND",
+	"BSW",
+	"Ideenschmiede",
+];
+
+let previousHeaders = [] as string[];
+
+const parser = csv({
+	separator: ";",
+	mapHeaders(args) {
+		if (previousHeaders.includes(args.header)) {
+			args.header = args.header + "_prozent";
+		}
+		previousHeaders.push(args.header);
+		return args.header;
+	},
+});
+
+const results = {} as Record<string, Record<string, ResultType>>;
+
+parser.on("data", (data) => {
+	const {
+		Identifikationsschlüssel: id,
+		"Bezeichnung Wahlbezirk": name,
+		"A (WB insgesamt)": wahlberechtigte,
+		"B Wähler insgesamt": wähler,
+		"Urne (U) Briefwahl (W)": art,
+		"ungültige Erst": erststimmen_ungültig,
+		"gültige Erst": erststimmen_gültig,
+		"ungültige Zweit": zweitstimmen_ungültig,
+		"gültige Zweit": zweitstimmen_gültig,
+	} = data;
+	// console.log(data);
+
+	var { wahlkreisNr, kreisNr, verbandsgemeindeNr, gemeindeNr, stadtteilNr } = (id.slice(0, 100).match(ID_Regex)?.groups || {}) as Record<
+		string,
+		string
+	>;
+	// console.log(wahlkreisNr, kreisNr, gemeindeNr, stadtteilNr);
+	// gemeindeNr = gemeindeNr.padStart(3, "0");
+
+	const wahlkreisName = wahlkreise[wahlkreisNr];
+	const gemeindeName = gemeinden[gemeindeNr];
+	const kreisName = kreise[kreisNr];
+	const verbandsgemeindeName = verbandsgemeinden[verbandsgemeindeNr];
+	const obergruppeName = gemeindeName || verbandsgemeindeName || kreisName || wahlkreisName;
+
+	if (!results[obergruppeName]) results[obergruppeName] = {};
+	if (!results[obergruppeName][name]) results[obergruppeName][name] = defaultResult();
+
+	const result = results[obergruppeName][name];
+
+	result.anzahl_berechtigte = Number(wahlberechtigte) || 0;
+	result.anzahl_wähler = Number(wähler) || 0;
+
+	parteien.forEach((partei) => {
+		const erststimmen = Number(data[`E_${partei}`]) || 0;
+		const zweitstimmen = Number(data[`Z_${partei}`]) || 0;
+
+		result.erststimmen.parteien[partei] = erststimmen;
+		result.zweitstimmen.parteien[partei] = zweitstimmen;
+	});
+
+	result.erststimmen.gültig = Number(erststimmen_gültig) || 0;
+	result.zweitstimmen.gültig = Number(zweitstimmen_gültig) || 0;
+	result.erststimmen.ungültig = Number(erststimmen_ungültig) || 0;
+	result.zweitstimmen.ungültig = Number(zweitstimmen_ungültig) || 0;
+});
+
+parser.on("end", () => {
+	console.dir(results, { depth: null });
+
+	const wahlbezirke = require("./data/wahlbezirke.json");
+
+	Object.assign(wahlbezirke, results);
+
+	fs.writeFileSync(__dirname + "/data/wahlbezirke.json", JSON.stringify(wahlbezirke, null, "\t"));
+});
+
+parser.write(data);
+parser.end();
