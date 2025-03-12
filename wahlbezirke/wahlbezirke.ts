@@ -139,10 +139,6 @@ export async function axiosWithRedirect<T = any, D = any>(
 		return axiosWithRedirect(newUrl, opts);
 	}
 
-	if (typeof response.data === "object" && response.data && response.data instanceof Buffer) {
-		response.data = response.data.toString("utf-8");
-	}
-
 	return { ...response, url };
 }
 
