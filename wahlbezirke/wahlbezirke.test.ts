@@ -1,9 +1,10 @@
-import type { ResultType } from "./scrape";
-import fs from "fs";
-import { landWahlkreise, wahlkreiseQuellen } from "./wahlkreise";
-import { getWahlbezirk, getWahlbezirkeVotemanager } from "./votemanager";
-import { getIdFromResult, saveResults } from "./wahlbezirke";
-import { getWahlbezirkeWAS } from "./WAS";
+import { getWahlbezirkVotemanager } from "./votemanager";
+
+await getWahlbezirkVotemanager({
+	bundesland: "",
+	name: "",
+	url: "https://wahlen.kdvz.nrw/production/05374044/",
+});
 
 // @ts-ignore
 

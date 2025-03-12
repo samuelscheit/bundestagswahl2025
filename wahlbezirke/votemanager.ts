@@ -1,9 +1,10 @@
 // @ts-ignore
 import extractUrls from "extract-urls";
-import { axiosWithRedirect } from "./axios";
+import { axiosWithRedirect, isFinalError } from "./axios";
 import { defaultResult, getIdFromName, type Options, type ResultType } from "./scrape";
-import { behoerden_queue, wahlbezirke_queue, wahleintrage_queue, type Context } from "./wahlbezirke";
-import { cleanGemeindeName, gemeinden } from "./gemeinden";
+import { behoerden_queue, concurrency, wahlbezirke_queue, wahleintrage_queue } from "./wahlbezirke";
+import { cleanGemeindeName, getGemeinde } from "./gemeinden";
+import PQueue from "p-queue";
 
 export async function votemanager(options: Options & { text: string }) {
 	const { searchParams, origin, pathname } = new URL(options.url);
@@ -24,12 +25,12 @@ export interface VotemanagerConfig {
 		text: string;
 		url: string;
 	}[];
-	behoerden_links: {
+	behoerden_links?: {
 		header: {
 			text: string;
 			url: string;
 		};
-		links: {
+		links?: {
 			text: string;
 			url: string;
 		}[];
@@ -105,23 +106,19 @@ export async function votemanagerWithOptions({ ebene_id, url, wahl_id }: { url: 
 	// https://wahlen.regioit.de/1/bt2025/05334002/daten/api/wahl_97/ergebnis_ebene_2_id_114_1.json
 }
 
-export async function getWahlbezirk(opts: Context) {
-	if (opts.tries && opts.tries > 5) throw new Error("Too many tries");
-	opts.tries = (opts.tries || 0) + 1;
+let results = [] as ResultType[];
+const scraped = new Set<string>();
 
-	var { data: html, status, cached, url } = await axiosWithRedirect(opts.url, { responseType: "text" });
+export async function getWahlbezirkVotemanager(opts: { url: string; name: string; html?: string; bundesland: string; tries?: number }) {
+	if (scraped.has(opts.url)) return;
+	scraped.add(opts.url);
 
+	var { data: html, status, url } = await axiosWithRedirect(opts.url, { responseType: "text" });
 	if (status >= 400) throw new Error(`Request failed with status code ${status}`);
 
 	const isVoteManager = html.includes("votemanager.de") || html.includes("termine.json") || html.includes("vue_index_container");
+	if (!isVoteManager) throw new Error("Not votemanager: " + opts.url);
 
-	if (!isVoteManager) return;
-
-	return getWahlbezirkVotemanager({ ...opts, url, html });
-}
-
-export async function getWahlbezirkVotemanager(opts: Context) {
-	var { url, name, html } = opts as Required<Context>;
 	// termine https://votemanager-da.ekom21cdn.de/06431001/index.html
 	// termin übersicht https://wahl.gelsenkirchen.de/votemanager/20250223/05513000/praesentation/index.html
 	// ergebnis https://votemanager-da.ekom21cdn.de/2025-02-23/06431001/praesentation/ergebnis.html?wahl_id=728&stimmentyp=0&id=ebene_-575_id_638
@@ -167,14 +164,65 @@ export async function getWahlbezirkVotemanager(opts: Context) {
 
 	const { data: config } = await axiosWithRedirect<VotemanagerConfig>(`${apiEndpoint}/config.json`, { responseType: "json" });
 
-	const gemeinde = gemeinden.get(cleanGemeindeName(config.behoerde));
-	if (!gemeinde) {
-		throw new Error("Keine BTW25 Ergebnisse (Keine Gemeinde)");
-	}
-	console.log(config.behoerde, gemeinde.gemeinde_name);
+	if (!opts.name) opts.name = config.behoerde;
 
-	await wahleintrage_queue.addAll(
-		wahleintraege.map((wahleintrag) => async () => {
+	const unterGemeinden = behoerden_queue.addAll(
+		(config.behoerden_links?.links || []).map((x) => async () => {
+			try {
+				if (!x.url) return;
+				if (!x.url.startsWith("../")) return;
+
+				const id = x.url.match(/\d+/g)?.[0];
+				if (!id) {
+					throw new Error("No id: " + x.url + " " + url);
+				}
+				const newUrl = new URL(url);
+				if (!newUrl.pathname.match(/\/\d+\//)) {
+					throw new Error("No id2: " + x.url + " " + url);
+				}
+
+				newUrl.pathname = newUrl.pathname.replace(/\/(\d+)(?!.*\/\d+)/, `/${id}`);
+
+				const result = await getWahlbezirkVotemanager({
+					url: newUrl.href,
+					name: x.text,
+					bundesland: opts.bundesland,
+				});
+				if (!result) return;
+
+				results = results.concat(result);
+			} catch (error) {
+				if ((error as Error).message.includes("Keine BTW25")) return;
+
+				var e = error;
+				e;
+
+				throw new Error("Error " + x.text + " " + x.url + " " + (error as Error).message);
+			}
+		}),
+		{
+			priority: 1,
+		}
+	);
+
+	let gemeinde = getGemeinde(opts.name, config.behoerden_links?.header.text);
+	if (!gemeinde) {
+		console.log(config.behoerde, "NOT FOUND", cleanGemeindeName);
+		await unterGemeinden;
+		return results;
+	}
+
+	if (!gemeinde.gemeinde_name && !opts.name.includes("Verbandsgemeinde")) {
+		console.log("NO GEMEINDE name", gemeinde, opts.name, config.behoerden_links?.header.text, url);
+		gemeinde = getGemeinde(opts.name, config.behoerden_links?.header.text);
+	}
+
+	// console.log(gemeinde.gemeinde_name, opts.name);
+
+	const queue = new PQueue({ concurrency });
+
+	await Promise.all(
+		wahleintraege.map(async (wahleintrag) => {
 			// https://wahlen.digistadtdo.de/wahlergebnisse/Bundestagswahl2025/05913000/daten/api/wahl_35/wahl.json?ts=1741130017532
 
 			const wahlUrl = `${apiEndpoint}/wahl_${wahleintrag.wahl.id}/wahl.json`;
@@ -194,7 +242,7 @@ export async function getWahlbezirkVotemanager(opts: Context) {
 
 			if (!wahlbezirke.tabelle) throw new Error("Keine BTW25 Ergebnisse (Keine Wahlbezirke)");
 
-			await wahlbezirke_queue.addAll(
+			await queue.addAll(
 				wahlbezirke.tabelle.zeilen
 					.filter((x) => !x.externeUrl && x.link?.id?.includes("ebene_6"))
 					.map((x) => async () => {
@@ -212,14 +260,14 @@ export async function getWahlbezirkVotemanager(opts: Context) {
 								url: apiEndpoint,
 							});
 
-							wahlbezirk_result.bundesland_name = gemeinde.bundesland_name;
-							wahlbezirk_result.bundesland_id = gemeinde.bundesland_id;
+							wahlbezirk_result.bundesland_name = gemeinde.bundesland_name!;
+							wahlbezirk_result.bundesland_id = gemeinde.bundesland_id!;
 
-							wahlbezirk_result.wahlkreis_id = gemeinde.wahlkreis_id;
-							wahlbezirk_result.wahlkreis_name = gemeinde.wahlkreis_name;
+							wahlbezirk_result.wahlkreis_id = gemeinde.wahlkreis_id!;
+							wahlbezirk_result.wahlkreis_name = gemeinde.wahlkreis_name!;
 
-							wahlbezirk_result.kreis_id = gemeinde.kreis_id;
-							wahlbezirk_result.kreis_name = gemeinde.kreis_name;
+							wahlbezirk_result.kreis_id = gemeinde.kreis_id!;
+							wahlbezirk_result.kreis_name = gemeinde.kreis_name!;
 
 							wahlbezirk_result.gemeinde_id = gemeinde.gemeinde_id;
 							wahlbezirk_result.gemeinde_name = gemeinde.gemeinde_name;
@@ -249,17 +297,17 @@ export async function getWahlbezirkeVotemanager() {
 		data: { data },
 	} = await axiosWithRedirect("https://wahlen.votemanager.de/behoerden.json", { responseType: "json" });
 
-	let results = [] as ResultType[];
-
 	await Promise.all(
 		data.map((x: string[]) => {
 			const [link, name, bundesland] = x;
 
 			let [url] = extractUrls(link) as string[];
 
+			url = url.replace("/index.html", "/");
+
 			return behoerden_queue.add(async () => {
 				try {
-					const bezirk_result = await getWahlbezirk({
+					const bezirk_result = await getWahlbezirkVotemanager({
 						url,
 						name,
 						bundesland,
@@ -269,24 +317,11 @@ export async function getWahlbezirkeVotemanager() {
 					results = results.concat(bezirk_result);
 				} catch (error) {
 					const msg = (error as Error).message || "";
-					if (
-						msg.includes("404") ||
-						msg.includes("Keine BTW25") ||
-						url.includes("wahlen.rhoen-grabfeld.de") ||
-						name === "Salzgitter" ||
-						name === "Verwaltungsgemeinschaft Kirchehrenbach" ||
-						name === "Veitshöchheim" ||
-						name === "Kirchehrenbach" ||
-						name === "Hebertshausen" ||
-						name === "Bogen" ||
-						name === "Höchberg" ||
-						name === "Schiffweiler" ||
-						name === "Veitshöchheim"
-					) {
-						return;
-					}
+					if (isFinalError(error as Error, url, name)) return;
 
-					throw new Error(url + " " + name + " " + msg);
+					var e = error;
+					e;
+					// throw new Error(url + " " + name + " " + msg);
 				}
 			});
 		})

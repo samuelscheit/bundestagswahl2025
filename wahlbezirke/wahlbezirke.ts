@@ -2,7 +2,7 @@ import fs from "fs";
 import PQueue from "p-queue";
 import type { ResultType } from "./scrape";
 
-const concurrency = 10;
+export const concurrency = 10;
 
 export const bundesland_queue = new PQueue({ concurrency });
 export const behoerden_queue = new PQueue({ concurrency });
@@ -10,14 +10,6 @@ export const gemeinde_queue = new PQueue({ concurrency });
 export const verbund_queue = new PQueue({ concurrency });
 export const wahleintrage_queue = new PQueue({ concurrency });
 export const wahlbezirke_queue = new PQueue({ concurrency });
-
-export type Context = {
-	url: string;
-	name: string;
-	html?: string;
-	bundesland: string;
-	tries?: number;
-};
 
 export const queues = [behoerden_queue, bundesland_queue, wahleintrage_queue, gemeinde_queue, verbund_queue, wahlbezirke_queue];
 

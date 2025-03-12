@@ -86,6 +86,31 @@ import { sleep } from "bun";
 
 let cycleTLSPromise = undefined as Promise<CycleTLSClient> | undefined;
 
+export function isFinalError(error: Error, url = "", name = "") {
+	const msg = error.message;
+
+	if (
+		msg.includes("404") ||
+		msg.includes("Keine BTW25") ||
+		msg.includes("Not votemanager") ||
+		url.includes("wahlen.rhoen-grabfeld.de") ||
+		name === "Salzgitter" ||
+		name === "Verwaltungsgemeinschaft Kirchehrenbach" ||
+		name === "Veitshöchheim" ||
+		name === "Kirchehrenbach" ||
+		name === "Hebertshausen" ||
+		name === "Ihrlerstein" ||
+		name === "Bogen" ||
+		name === "Höchberg" ||
+		name === "Schiffweiler" ||
+		name === "Veitshöchheim"
+	) {
+		return true;
+	}
+
+	return false;
+}
+
 export async function cycleFetch(url: string, opts: AxiosRequestConfig) {
 	var cacheFile = __dirname + "/cache/" + generateKey({ url });
 	if (fs.existsSync(cacheFile)) {
@@ -168,14 +193,18 @@ export async function axiosWithRedirect<T = any, D = any>(
 			var response = await axios(url, opts);
 		}
 	} catch (error) {
-		console.error("Request failed, retrying ...", url, (error as Error).message);
-		if ((error as Error).message.includes("JSON Parse error")) {
+		const msg = (error as Error).message;
+		console.error("Request failed, retrying ...", url, msg);
+
+		if (isFinalError(error as Error)) {
+			throw error;
+		} else if (msg.includes("JSON Parse error")) {
 			fs.unlinkSync(__dirname + "/cache/" + generateKey({ ...opts, url }));
 		} else {
 			await sleep(2000);
 		}
 
-		opts.error = (error as Error).message;
+		opts.error = msg;
 
 		return axiosWithRedirect(url, opts);
 	}
