@@ -20,6 +20,7 @@ let result = [] as {
 const totalBezirk = {} as Record<string, number>;
 
 const totalPartei = {} as Record<string, number>;
+const totalParteiAbs = {} as Record<string, number>;
 
 Object.keys(Wahlkreise).forEach((id) => {
 	const wahlkreisName = wahlkreiseNamen[id];
@@ -31,16 +32,19 @@ Object.keys(Wahlkreise).forEach((id) => {
 		const bundPartei = bundesergebnis.zweitstimmen.parteien[partei] || 0;
 
 		if (kreisPartei !== bundPartei) {
-			const diff = Math.abs(kreisPartei - bundPartei);
+			const diff = kreisPartei - bundPartei;
+			const absdiff = Math.abs(diff);
+			totalParteiAbs[partei] = (totalParteiAbs[partei] || 0) + absdiff;
 			totalPartei[partei] = (totalPartei[partei] || 0) + diff;
 
-			totalBezirk[wahlkreisName] = (totalBezirk[wahlkreisName] || 0) + diff;
+			totalBezirk[wahlkreisName] = (totalBezirk[wahlkreisName] || 0) + absdiff;
 
 			result.push({
 				wahlkreis: wahlkreisName,
 				partei,
 				wahlkreisStimmen: kreisPartei,
 				bundesStimmen: bundPartei,
+				absdiff,
 				diff,
 			});
 		}
