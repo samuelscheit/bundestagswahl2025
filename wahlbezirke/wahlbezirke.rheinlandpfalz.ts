@@ -2,9 +2,10 @@ import fs from "fs";
 import csv from "csv-parser";
 import { defaultResult, type ResultType } from "./scrape";
 import { axios } from "./axios";
+import { getIdFromResult, saveResults } from "./wahlbezirke";
 
 const ID_Regex =
-	/^(?:(?<wahlkreisNr>\d{3}))?(?:(?<kreisNr>\d{3}))?(?:(?<verbandsgemeindeNr>\d{2}))?(?:(?<gemeindeNr>\d{3}))?(?:(?<stadtteilNr>\d{2}))?/;
+	/^(?:(?<wahlkreisNr>\d{3}))?(?:(?<kreisNr>\d{3}))?(?:(?<verbandsgemeindeNr>\d{2}))?(?:(?<gemeindeNr>\d{3}))?(?:(?<wahlbezirkNr>\d{2}))?/;
 
 // 210 337 07 0000000000
 
@@ -30,18 +31,18 @@ const [wahlkreisNames, landkreisNames] = await Promise.all([
 
 function handleNames(node: NameNode) {
 	const id = node.bezeichnung.match(ID_Regex);
-	const { wahlkreisNr, kreisNr, verbandsgemeindeNr, gemeindeNr, stadtteilNr } = id?.groups || ({} as Record<string, string>);
+	const { wahlkreisNr, kreisNr, verbandsgemeindeNr, gemeindeNr, wahlbezirkNr } = id?.groups || ({} as Record<string, string>);
 	const name = node.name;
 
-	if (wahlkreisNr !== "000" && kreisNr === "000" && verbandsgemeindeNr === "00" && gemeindeNr === "000" && stadtteilNr === "00") {
+	if (wahlkreisNr !== "000" && kreisNr === "000" && verbandsgemeindeNr === "00" && gemeindeNr === "000" && wahlbezirkNr === "00") {
 		wahlkreise[wahlkreisNr] = name;
-	} else if (wahlkreisNr !== "000" && kreisNr !== "000" && verbandsgemeindeNr === "00" && gemeindeNr === "000" && stadtteilNr === "00") {
+	} else if (wahlkreisNr !== "000" && kreisNr !== "000" && verbandsgemeindeNr === "00" && gemeindeNr === "000" && wahlbezirkNr === "00") {
 		kreise[kreisNr] = name;
 		kreiseToWahlkreise[kreisNr] = wahlkreisNr;
-	} else if (wahlkreisNr !== "000" && kreisNr !== "000" && verbandsgemeindeNr !== "00" && gemeindeNr === "000" && stadtteilNr === "00") {
+	} else if (wahlkreisNr !== "000" && kreisNr !== "000" && verbandsgemeindeNr !== "00" && gemeindeNr === "000" && wahlbezirkNr === "00") {
 		verbandsgemeinden[verbandsgemeindeNr] = name;
 		verbandsgemeindenToKreise[verbandsgemeindeNr] = kreisNr;
-	} else if (wahlkreisNr !== "000" && kreisNr !== "000" && verbandsgemeindeNr !== "00" && gemeindeNr !== "000" && stadtteilNr === "00") {
+	} else if (wahlkreisNr !== "000" && kreisNr !== "000" && verbandsgemeindeNr !== "00" && gemeindeNr !== "000" && wahlbezirkNr === "00") {
 		gemeinden[gemeindeNr] = name;
 		gemeindenToVerbandsgemeinden[gemeindeNr] = verbandsgemeindeNr;
 	}
@@ -86,7 +87,7 @@ const parser = csv({
 	},
 });
 
-const results = {} as Record<string, Record<string, ResultType>>;
+const results = [] as ResultType[];
 
 parser.on("data", (data) => {
 	const {
@@ -102,11 +103,11 @@ parser.on("data", (data) => {
 	} = data;
 	// console.log(data);
 
-	var { wahlkreisNr, kreisNr, verbandsgemeindeNr, gemeindeNr, stadtteilNr } = (id.slice(0, 100).match(ID_Regex)?.groups || {}) as Record<
+	var { wahlkreisNr, kreisNr, verbandsgemeindeNr, gemeindeNr, wahlbezirkNr } = (id.slice(0, 100).match(ID_Regex)?.groups || {}) as Record<
 		string,
 		string
 	>;
-	// console.log(wahlkreisNr, kreisNr, gemeindeNr, stadtteilNr);
+	// console.log(wahlkreisNr, kreisNr, gemeindeNr, wahlbezirkNr);
 	// gemeindeNr = gemeindeNr.padStart(3, "0");
 
 	const wahlkreisName = wahlkreise[wahlkreisNr];
@@ -115,10 +116,28 @@ parser.on("data", (data) => {
 	const verbandsgemeindeName = verbandsgemeinden[verbandsgemeindeNr];
 	const obergruppeName = gemeindeName || verbandsgemeindeName || kreisName || wahlkreisName;
 
-	if (!results[obergruppeName]) results[obergruppeName] = {};
-	if (!results[obergruppeName][name]) results[obergruppeName][name] = defaultResult();
+	let result = results.find(
+		(x) => x.wahlbezirk_id === wahlbezirkNr && x.gemeinde_id === gemeindeNr && x.kreis_id === kreisNr && x.wahlkreis_id === wahlkreisNr
+	);
+	if (!result) {
+		result = defaultResult();
+		results.push(result);
+	}
 
-	const result = results[obergruppeName][name];
+	result.bundesland_id = "07";
+	result.bundesland_name = "Rheinland-Pfalz";
+
+	result.wahlbezirk_id = wahlbezirkNr;
+	result.wahlbezirk_name = name;
+
+	result.kreis_name ||= kreisName;
+	result.kreis_id = kreisNr;
+
+	result.gemeinde_name ||= gemeindeName;
+	result.gemeinde_id = gemeindeNr;
+
+	result.wahlkreis_name ||= wahlkreisName;
+	result.wahlkreis_id = wahlkreisNr;
 
 	result.anzahl_berechtigte = Number(wahlberechtigte) || 0;
 	result.anzahl_wähler = Number(wähler) || 0;
@@ -138,13 +157,7 @@ parser.on("data", (data) => {
 });
 
 parser.on("end", () => {
-	console.dir(results, { depth: null });
-
-	const wahlbezirke = require("./data/wahlbezirke.json");
-
-	Object.assign(wahlbezirke, results);
-
-	fs.writeFileSync(__dirname + "/data/wahlbezirke.json", JSON.stringify(wahlbezirke, null, "\t"));
+	saveResults(results);
 });
 
 parser.write(data);

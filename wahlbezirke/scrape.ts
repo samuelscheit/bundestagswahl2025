@@ -2,7 +2,9 @@ import { HTMLElement, parse } from "node-html-parser";
 import * as cheerio from "cheerio";
 import iconv from "iconv-lite";
 import csv from "csv-parser";
-import { axiosWithRedirect } from "./wahlbezirke";
+import { axiosWithRedirect } from "./axios";
+import { WAS } from "./WAS";
+import { votemanager } from "./votemanager";
 
 // @ts-ignore
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -34,7 +36,7 @@ function handleData(options: Options & { text: string }) {
 
 	if (text.includes("data-tablejigsaw")) return WAS(options);
 	if (text.includes("vue_ergebnis_container_web_init")) return votemanager(options);
-	if (url.includes("https://wahlen.thueringen.de")) return thueringen(options);
+	if (url.includes("wahlen.thueringen.de")) return thueringen(options);
 	if (url.includes("wahlen.sachsen.de")) return sachsen(options);
 	if (url.includes("sachsen-anhalt.de")) return sachsenAnhalt(options);
 	if (url.includes("wahlen.mvnet.de")) return mecklenburgVorpommern(options);
@@ -59,128 +61,28 @@ export function defaultResult() {
 		},
 		anzahl_wähler: 0,
 		anzahl_berechtigte: 0,
+		bundesland_id: null as null | string,
+		bundesland_name: null as null | string,
+		wahlkreis_id: null as null | string,
+		wahlkreis_name: null as null | string,
+		kreis_id: null as null | string,
+		kreis_name: null as null | string,
+		gemeinde_name: null as null | string,
+		gemeinde_id: null as null | string,
+		ortsteil_id: null as null | string,
+		ortsteil_name: null as null | string,
+		wahlbezirk_name: null as null | string,
+		wahlbezirk_id: null as null | string,
 	};
 }
 
 export type ResultType = ReturnType<typeof defaultResult>;
 
-export function WAS(options: Options & { text: string; root?: HTMLElement }) {
-	const root = options.root || parse(options.text);
+export function getIdFromName(name: string) {
+	const id = name.match(/[\d\s-]+/)?.[0];
+	if (!id) return null;
 
-	const table = root.querySelector(`.tablesaw.table-stimmen[data-tablejigsaw], .tablesaw.table-stimmen[data-tablejigsaw-downloadable]`);
-	if (!table) throw new Error("Table not found:" + options.url);
-
-	const rows = table.querySelectorAll("tbody tr");
-
-	const result = defaultResult();
-
-	let ZweitstimmenHeader = table.querySelector(`thead tr th[data-sort="Zweitstimmen"]`);
-	if (ZweitstimmenHeader) {
-		var zweitStimmenSwap = ZweitstimmenHeader.previousElementSibling?.getAttribute("data-sort") !== "Erststimmen";
-	} else {
-		ZweitstimmenHeader = table.querySelector(`thead tr th[data-sort="Zweitstimme"]`);
-		if (ZweitstimmenHeader) {
-			var zweitStimmenSwap = ZweitstimmenHeader?.previousElementSibling?.getAttribute("data-sort") !== "Erststimme";
-		}
-	}
-
-	rows.forEach((row) => {
-		const headers = row.querySelectorAll("th");
-		let cells = row.querySelectorAll("td");
-
-		const [partei, direktmandat] = headers.map((x) => x.structuredText.trim());
-
-		if (cells.length === 7 || cells.length === 5) cells = cells.slice(1);
-		if (cells.length !== 6 && cells.length !== 4) throw new Error("Invalid row count: " + cells.length + " " + options.url);
-
-		if (cells.length === 4) {
-			var [anzahl1, anteil1, anzahl2, anteil2] = cells.map((x) => Number(x.text.replace(/\./g, "")) || 0);
-		} else {
-			var [anzahl1, anteil1, gewinnVerlust1, anzahl2, anteil2, gewinnVerlust2] = cells.map(
-				(x) => Number(x.text.replace(/\./g, "")) || 0
-			);
-		}
-
-		if (zweitStimmenSwap) {
-			[anzahl1, anzahl2] = [anzahl2, anzahl1];
-		}
-
-		if (partei === "Wahlberechtigte") {
-			result.anzahl_berechtigte = anzahl1;
-		} else if (partei === "Wähler" || partei === "Wählende") {
-			result.anzahl_wähler = anzahl1;
-		} else if (partei.includes("Ungültig")) {
-			result.erststimmen.ungültig = anzahl1;
-			result.zweitstimmen.ungültig = anzahl2;
-		} else if (partei.includes("Gültig")) {
-			result.erststimmen.gültig = anzahl1;
-			result.zweitstimmen.gültig = anzahl2;
-		} else {
-			result.erststimmen.parteien[partei] = anzahl1;
-			result.zweitstimmen.parteien[partei] = anzahl2;
-		}
-	});
-
-	return result;
-}
-
-export async function votemanager(options: Options & { text: string }) {
-	const { searchParams, origin, pathname } = new URL(options.url);
-	const wahl_id = searchParams.get("wahl_id")!;
-	const id = searchParams.get("id")!;
-
-	const baseUrl = origin + pathname.replace("/praesentation/ergebnis.html", "");
-	const apiUrl = baseUrl + (options.text.includes("../api") ? "/api/praesentation" : "/daten/api");
-
-	console.log({ baseUrl, apiUrl, url: options.url });
-
-	return votemanagerWithOptions({ url: apiUrl, wahl_id, ebene_id: id });
-}
-
-export async function votemanagerWithOptions({ ebene_id, url, wahl_id }: { url: string; wahl_id: string; ebene_id: string }) {
-	const results = await Promise.all([
-		axiosWithRedirect(`${url}/wahl_${wahl_id}/ergebnis_${ebene_id}_0.json`, { responseType: "json" }),
-		axiosWithRedirect(`${url}/wahl_${wahl_id}/ergebnis_${ebene_id}_1.json`, { responseType: "json" }),
-	]);
-
-	const result = defaultResult();
-
-	const hasError = results.find((x) => !x.data.Komponente?.tabelle);
-	if (hasError)
-		throw new Error(`${url} ${wahl_id} ${ebene_id} Keine Daten ${hasError.data.Komponente?.hinweis_auszaehlung || "Keine Ergebnisse"}`);
-
-	const [stimme1, stimme2] = results.map((x) => {
-		const parteien = {} as Record<string, number>;
-		let gültig = 0;
-		let ungültig = 0;
-
-		x.data.Komponente.tabelle.zeilen.forEach((row: any) => {
-			parteien[row.label.labelKurz] = Number(row.zahl.replace(/\./g, "")) || 0;
-		});
-
-		x.data.Komponente.info.tabelle.zeilen.forEach((row: any) => {
-			const zahl = Number(row.zahl.replace(/\./g, "")) || 0;
-			if (row.label.labelKurz === "Wahlberechtigte") {
-				result.anzahl_berechtigte = zahl;
-			} else if (row.label.labelKurz === "Wähler") {
-				result.anzahl_wähler = zahl;
-			} else if (row.label.labelKurz === "ungültige Stimmen") {
-				ungültig = zahl;
-			} else if (row.label.labelKurz === "gültige Stimmen") {
-				gültig = zahl;
-			}
-		});
-
-		return { parteien, gültig, ungültig };
-	});
-
-	result.erststimmen = stimme1;
-	result.zweitstimmen = stimme2;
-
-	return result;
-
-	// https://wahlen.regioit.de/1/bt2025/05334002/praesentation/ergebnis.html?wahl_id=97&stimmentyp=1&id=ebene_2_id_114
-	// https://wahlen.regioit.de/1/bt2025/05334002/daten/api/wahl_97/ergebnis_ebene_2_id_114_1.json
+	return id.replace(/[\s-]/g, "");
 }
 
 async function degreesEU(options: Options & { text: string }) {

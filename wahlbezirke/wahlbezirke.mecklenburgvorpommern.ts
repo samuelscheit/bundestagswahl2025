@@ -3,6 +3,7 @@ import fs from "fs";
 import iconv from "iconv-lite";
 import csv from "csv-parser";
 import { defaultResult, type ResultType } from "./scrape";
+import { saveResults } from "./wahlbezirke";
 
 const arraybuffer = await axios<ArrayBuffer>("https://wahlen.mvnet.de/dateien/ergebnisse.2025/bundestagswahl/csv/b_wahlbezirke.csv", {
 	responseType: "arraybuffer",
@@ -17,7 +18,7 @@ const parser = csv({
 	separator: ";",
 });
 
-const results = {} as Record<string, Record<string, ResultType>>;
+const results = [] as ResultType[];
 
 const parteien = [
 	"SPD",
@@ -39,22 +40,44 @@ parser.on("data", (data) => {
 	const {
 		Ausgabe,
 		"Erst-/Zweitstimme": art,
-		Gemeindename: gemeinde,
 		"Ungültige Stimmen": ungültige,
 		"Gültige Stimmen": gültige,
 		Wahlberechtigte,
 		Wähler,
-		Wahlbezirksname: wahlbezirk,
+		Gemeindename: gemeinde,
+		Gemeinde: GemeindeID,
+		Wahlbezirksname,
+		Wahlbezirk: WahlbezirksID,
+		Kreis: KreisID,
+		Kreisname,
+		Wahlkreis: WahlkreisID,
+		Wahlkreisname,
+		Amt: AmtID,
+		Amtname,
 	} = data;
 
 	if (Ausgabe !== "A") return; // nur absolute Zahlen keine Prozente
 
-	const obergruppeName = data.Gemeindename;
+	let result = results.find((x) => x.wahlbezirk_id === WahlbezirksID && x.gemeinde_id === GemeindeID);
+	if (!result) {
+		result = defaultResult();
+		results.push(result);
+	}
 
-	if (!results[obergruppeName]) results[obergruppeName] = {};
-	if (!results[obergruppeName][wahlbezirk]) results[obergruppeName][wahlbezirk] = defaultResult();
+	result.bundesland_id = "13";
+	result.bundesland_name = "Mecklenburg-Vorpommern";
 
-	const result = results[obergruppeName][wahlbezirk];
+	result.wahlkreis_id = WahlkreisID;
+	result.wahlkreis_name = Wahlkreisname;
+
+	result.kreis_id = KreisID;
+	result.kreis_name = Kreisname;
+
+	result.gemeinde_name = gemeinde;
+	result.gemeinde_id = GemeindeID;
+
+	result.wahlbezirk_id = WahlbezirksID;
+	result.wahlbezirk_name = Wahlbezirksname;
 
 	const berechtigte = parseInt(Wahlberechtigte) || 0;
 	const wähler = parseInt(Wähler) || 0;
@@ -77,13 +100,7 @@ parser.on("data", (data) => {
 	});
 });
 parser.on("end", () => {
-	console.dir(results, { depth: null });
-
-	const wahlbezirke = require("./data/wahlbezirke.json");
-
-	Object.assign(wahlbezirke, results);
-
-	fs.writeFileSync(__dirname + "/data/wahlbezirke.json", JSON.stringify(wahlbezirke, null, "\t"));
+	saveResults(results);
 });
 
 parser.write(data);

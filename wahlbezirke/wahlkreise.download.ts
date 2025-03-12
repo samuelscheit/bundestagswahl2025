@@ -23,24 +23,19 @@ let test = Object.keys(wahlkreiseQuellen);
 const finalResult = require("./data/out.json");
 
 for (const i of test) {
-	try {
-		const id = i.toString() as keyof typeof wahlkreiseQuellen;
-		console.log("Downloading", id, wahlkreiseQuellen[id]);
-		const result = await download({
-			id: id,
-			url: wahlkreiseQuellen[id],
-		});
-		if (!result) continue;
+	const id = i.toString() as keyof typeof wahlkreiseQuellen;
+	console.log("Downloading", id, wahlkreiseQuellen[id]);
+	const result = await download({
+		id: id,
+		url: wahlkreiseQuellen[id],
+	});
+	if (!result) continue;
 
-		finalResult[id] = result;
+	finalResult[id] = result;
 
-		console.log(i, result);
+	console.log(i, result);
 
-		fs.writeFileSync(__dirname + "/data/out.json", JSON.stringify(finalResult, null, "\t"));
-	} catch (error) {
-		console.error("ERROR", i, error);
-		await new Promise((r) => setTimeout(r, 3000));
-	}
+	fs.writeFileSync(__dirname + "/data/out.json", JSON.stringify(finalResult, null, "\t"));
 }
 
 Object.values(finalResult).forEach((x: any) => {

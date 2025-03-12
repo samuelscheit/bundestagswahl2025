@@ -1,6 +1,7 @@
 import fs from "fs";
 import csv from "csv-parser";
 import { defaultResult, type ResultType } from "./scrape";
+import { getIdFromResult, saveResults } from "./wahlbezirke";
 
 const data = fs.readFileSync(__dirname + "/data/Thüringen.csv");
 
@@ -105,7 +106,7 @@ const parser = csv({
 	],
 });
 
-const results = {} as Record<string, Record<string, ResultType>>;
+const results = [] as ResultType[];
 
 const wahlkreise = {} as Record<string, string>;
 const gemeinden = {} as Record<string, string>;
@@ -124,12 +125,23 @@ parser.on("data", (data) => {
 
 	if (wahlbezirkNr === "0000" || gemeindeNr === "000") return;
 
-	if (!results[gemeindeName]) results[gemeindeName] = {};
-	if (!results[gemeindeName][name]) results[gemeindeName][name] = defaultResult();
+	const result = defaultResult();
+	results.push(result);
 
-	// console.log(data);
+	result.bundesland_id = "16";
+	result.bundesland_name = "Thüringen";
 
-	const result = results[gemeindeName][name];
+	result.wahlkreis_id = wahlkreisNr;
+	result.wahlkreis_name ||= wahlkreisName;
+
+	result.kreis_id = kreisNr;
+	// kreis name is not in data source
+
+	result.gemeinde_id = gemeindeNr;
+	result.gemeinde_name ||= gemeindeName;
+
+	result.wahlbezirk_id = wahlbezirkNr;
+	result.wahlbezirk_name = name;
 
 	result.anzahl_berechtigte = Number(data.wahlberechtigte) || 0;
 	result.anzahl_wähler = Number(data.wähler) || 0;
@@ -149,13 +161,7 @@ parser.on("data", (data) => {
 });
 
 parser.on("end", () => {
-	console.dir(results, { depth: null });
-
-	const wahlbezirke = require("./data/wahlbezirke.json");
-
-	Object.assign(wahlbezirke, results);
-
-	fs.writeFileSync(__dirname + "/data/wahlbezirke.json", JSON.stringify(wahlbezirke, null, "\t"));
+	saveResults(results);
 });
 
 parser.write(data);
