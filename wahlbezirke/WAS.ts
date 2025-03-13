@@ -3,6 +3,7 @@ import { defaultResult, getIdFromName, type Options, type ResultType } from "../
 import { behoerden_queue, gemeinde_queue, queues, wahlbezirke_queue, wahleintrage_queue } from "./wahlbezirke";
 import { wahlkreiseQuellen } from "../wahlkreise/wahlkreise";
 import { axiosWithRedirect } from "./axios";
+import { getWahlbezirkVotemanager } from "./votemanager";
 
 export function WAS(options: Options & { text: string; root?: HTMLElement }) {
 	const root = options.root || parse(options.text);
@@ -105,9 +106,9 @@ export function WAS(options: Options & { text: string; root?: HTMLElement }) {
 			[anzahl1, anzahl2] = [anzahl2, anzahl1];
 		}
 
-		if (partei === "Wahlberechtigte") {
+		if (partei.includes("berechtigt")) {
 			result.anzahl_berechtigte = anzahl1;
-		} else if (partei === "Wähler" || partei === "Wählende") {
+		} else if (partei.includes("Wähler") || partei.includes("Wählende")) {
 			result.anzahl_wähler = anzahl1;
 		} else if (partei.includes("Ungültig")) {
 			result.erststimmen.ungültig = anzahl1;
@@ -129,8 +130,14 @@ export async function getUntergebieteWAS(url: string, depth = 0) {
 
 	if (status >= 400) throw new Error(`Request failed with status code ${status} ${url}`);
 
+	if (html?.type && html?.data) {
+		html = Buffer.from(html.data).toString("utf-8");
+	}
+
 	const isWAS = html?.includes("jigsaw");
-	if (!isWAS) return [];
+	if (!isWAS) {
+		return [];
+	}
 
 	const root = parse(html);
 	const gebiete = root.querySelectorAll(".gebietwaehler .dropdown__content .linklist:not(.header-gebiet__obergebiete) a");

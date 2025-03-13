@@ -3,7 +3,7 @@ import extractUrls from "extract-urls";
 import { axiosWithRedirect, isFinalError } from "./axios";
 import { defaultResult, getIdFromName, type Options, type ResultType } from "../wahlkreise/scrape";
 import { behoerden_queue, concurrency, wahlbezirke_queue, wahleintrage_queue } from "./wahlbezirke";
-import { cleanGemeindeName, getGemeinde } from "./gemeinden";
+import { cleanGemeindeName, gemeinden, getGemeinde } from "./gemeinden";
 import PQueue from "p-queue";
 
 export async function votemanager(options: Options & { text: string }) {
@@ -60,7 +60,17 @@ export interface VotemanagerConfig {
 	server_hash: string;
 }
 
-export async function votemanagerWithOptions({ ebene_id, url, wahl_id }: { url: string; wahl_id: string; ebene_id: string }) {
+export async function votemanagerWithOptions({
+	ebene_id,
+	url,
+	wahl_id,
+	name,
+}: {
+	url: string;
+	wahl_id: string;
+	ebene_id: string;
+	name?: string;
+}) {
 	const results = await Promise.all([
 		axiosWithRedirect<WahlErgebnis>(`${url}/wahl_${wahl_id}/ergebnis_${ebene_id}_0.json`, { responseType: "json" }),
 		axiosWithRedirect<WahlErgebnis>(`${url}/wahl_${wahl_id}/ergebnis_${ebene_id}_1.json`, { responseType: "json" }),
@@ -97,6 +107,38 @@ export async function votemanagerWithOptions({ ebene_id, url, wahl_id }: { url: 
 		return { parteien, gültig, ungültig };
 	});
 
+	const { gebietsverlinkung } = results[0].data.Komponente;
+
+	if (gebietsverlinkung && name) {
+		gebietsverlinkung
+			.find((x) => x.titel.includes("Wahlkreis"))
+			?.gebietslinks?.forEach((x) => {
+				if (x.type !== "ergebnis") return;
+
+				if (x.title.includes("115")) {
+				}
+
+				const gemeinde = getGemeinde(name, x.title);
+
+				if (!gemeinde) return;
+
+				result.gemeinde_name ||= gemeinde.gemeinde_name;
+				result.gemeinde_id ||= gemeinde.gemeinde_id;
+
+				result.kreis_id ||= gemeinde.kreis_id!;
+				result.kreis_name ||= gemeinde.kreis_name!;
+
+				result.wahlkreis_id ||= gemeinde.wahlkreis_id!;
+				result.wahlkreis_name ||= gemeinde.wahlkreis_name!;
+
+				result.bundesland_id ||= gemeinde.bundesland_id!;
+				result.bundesland_name ||= gemeinde.bundesland_name!;
+
+				result.ortsteil_id ||= gemeinde.ortsteil_id!;
+				result.ortsteil_name ||= gemeinde.ortsteil_name!;
+			});
+	}
+
 	result.erststimmen = stimme1;
 	result.zweitstimmen = stimme2;
 
@@ -110,11 +152,15 @@ let results = [] as ResultType[];
 const scraped = new Set<string>();
 
 export async function getWahlbezirkVotemanager(opts: { url: string; name: string; html?: string; bundesland: string; tries?: number }) {
-	if (scraped.has(opts.url)) return;
+	if (scraped.has(opts.url)) return [];
 	scraped.add(opts.url);
 
-	var { data: html, status, url } = await axiosWithRedirect(opts.url, { responseType: "text" });
-	if (status >= 400) throw new Error(`Request failed with status code ${status}`);
+	if (opts.html) {
+		var { html, url } = opts;
+	} else {
+		var { data: html, status, url } = await axiosWithRedirect<string>(opts.url, { responseType: "text" });
+		if (status >= 400) throw new Error(`Request failed with status code ${status}`);
+	}
 
 	const isVoteManager = html.includes("votemanager.de") || html.includes("termine.json") || html.includes("vue_index_container");
 	if (!isVoteManager) throw new Error("Not votemanager: " + opts.url);
@@ -258,22 +304,23 @@ export async function getWahlbezirkVotemanager(opts: { url: string; name: string
 								ebene_id: x.link.id,
 								wahl_id: `${wahleintrag.wahl.id}`,
 								url: apiEndpoint,
+								name: opts.name,
 							});
 
-							wahlbezirk_result.bundesland_name = gemeinde.bundesland_name!;
-							wahlbezirk_result.bundesland_id = gemeinde.bundesland_id!;
+							wahlbezirk_result.bundesland_name ||= gemeinde.bundesland_name!;
+							wahlbezirk_result.bundesland_id ||= gemeinde.bundesland_id!;
 
-							wahlbezirk_result.wahlkreis_id = gemeinde.wahlkreis_id!;
-							wahlbezirk_result.wahlkreis_name = gemeinde.wahlkreis_name!;
+							wahlbezirk_result.wahlkreis_id ||= gemeinde.wahlkreis_id!;
+							wahlbezirk_result.wahlkreis_name ||= gemeinde.wahlkreis_name!;
 
-							wahlbezirk_result.kreis_id = gemeinde.kreis_id!;
-							wahlbezirk_result.kreis_name = gemeinde.kreis_name!;
+							wahlbezirk_result.kreis_id ||= gemeinde.kreis_id!;
+							wahlbezirk_result.kreis_name ||= gemeinde.kreis_name!;
 
-							wahlbezirk_result.gemeinde_id = gemeinde.gemeinde_id;
-							wahlbezirk_result.gemeinde_name = gemeinde.gemeinde_name;
+							wahlbezirk_result.gemeinde_id ||= gemeinde.gemeinde_id;
+							wahlbezirk_result.gemeinde_name ||= gemeinde.gemeinde_name;
 
 							wahlbezirk_result.wahlbezirk_name = x.label;
-							wahlbezirk_result.wahlbezirk_id = getIdFromName(x.label);
+							wahlbezirk_result.wahlbezirk_id = getIdFromName(x.label) || null;
 
 							results.push(wahlbezirk_result);
 						} catch (error) {
@@ -484,6 +531,14 @@ export interface WahlErgebnis {
 			};
 			hinweis: string;
 		};
+		gebietsverlinkung?: {
+			titel: string;
+			gebietslinks?: {
+				id: string;
+				title: string;
+				type: string;
+			}[];
+		}[];
 	};
 	file_version: string;
 	file_timestamp: string;

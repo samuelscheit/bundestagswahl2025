@@ -236,5 +236,9 @@ export async function axiosWithRedirect<T = any, D = any>(
 		}
 	}
 
+	if (typeof response.data === "object" && response.data?.type === "Buffer" && opts.responseType !== "arraybuffer") {
+		response.data = Buffer.from(response.data.data).toString("utf-8");
+	}
+
 	return { ...response, url };
 }

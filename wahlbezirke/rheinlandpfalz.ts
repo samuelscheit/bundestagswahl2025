@@ -124,7 +124,7 @@ parser.on("data", (data) => {
 		results.push(result);
 	}
 
-	result.bundesland_id = "07";
+	result.bundesland_id = "7";
 	result.bundesland_name = "Rheinland-Pfalz";
 
 	result.wahlbezirk_id = wahlbezirkNr;

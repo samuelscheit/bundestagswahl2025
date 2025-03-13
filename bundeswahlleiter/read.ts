@@ -1,13 +1,12 @@
-import axios from "axios";
 import fs from "fs";
 import { parse } from "node-html-parser";
-import { defaultResult } from "../wahlkreise/scrape";
+import { defaultResult, type ResultType } from "../wahlkreise/scrape";
 
 const xml = fs.readFileSync(__dirname + "/data/gesamtergebnis_01.xml", "utf-8");
 
 const root = parse(xml);
 
-export const Bundeswahlleiter = {} as Record<string, ReturnType<typeof defaultResult>>;
+export const Bundeswahlleiter = {} as Record<string, ResultType>;
 
 root.querySelectorAll(`[Gebietsart="WAHLKREIS"]`).forEach((x) => {
 	const id = x.getAttribute("Gebietsnummer")!;

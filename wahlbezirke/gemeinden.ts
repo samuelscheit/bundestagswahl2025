@@ -1,7 +1,8 @@
 import fs from "fs";
 import csv from "csv-parser";
-import type { ResultType } from "../wahlkreise/scrape";
+import { getIdFromName, type ResultType } from "../wahlkreise/scrape";
 import { distance } from "fastest-levenshtein";
+import { getIdFromResult } from "./wahlbezirke";
 
 type Gemeinde = Omit<
 	ResultType,
@@ -12,6 +13,8 @@ type Gemeinde = Omit<
 	region_name: string | null;
 	gemeinde_clean?: string;
 	verbands_clean?: string;
+	kreis_clean?: string;
+	wahlkreis_clean?: string;
 };
 
 export const gemeinden = [] as Gemeinde[];
@@ -67,6 +70,8 @@ await new Promise((resolve) => {
 				region_name: RegionName || null,
 				gemeinde_clean: undefined,
 				verbands_clean: undefined,
+				kreis_clean: undefined,
+				wahlkreis_clean: undefined,
 			};
 
 			for (const suffix of GemeindeName?.split(", ")[1]?.split(" ") || []) {
@@ -123,7 +128,7 @@ export const gemeindeCleanRegex = new RegExp(
 	Array.from(gemeindeSuffixes)
 		.filter((x) => x)
 		.sort((a, b) => b.length - a.length)
-		.map((x) => "(" + x.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&") + ")")
+		.map((x) => "(\\s" + x.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&") + "\\s)")
 		.join("|") + "|\\d{5}",
 	"gi"
 );
@@ -131,22 +136,24 @@ export const gemeindeCleanRegex = new RegExp(
 gemeinden.forEach((v) => {
 	v.gemeinde_clean = cleanGemeindeName(v.gemeinde_name);
 	v.verbands_clean = cleanGemeindeName(v.verbands_name);
+	v.kreis_clean = cleanKreisName(v.kreis_name);
+	v.wahlkreis_clean = cleanKreisName(v.wahlkreis_name);
 });
 
 export function cleanGemeindeName(name?: string | null) {
 	if (!name) return "";
 
-	name = name
+	name = ` ${name} `
 		.toLowerCase()
-		.replaceAll("(rhld.)", "(Rheinland)")
-		.replaceAll("(oldb)", "(Oldenburg)")
+		.replaceAll("rhld.", "rheinland")
+		.replaceAll("(oldb)", "(oldenburg)")
 		.replaceAll("a.d.str.", "an der straße")
 		.replaceAll("a.t.w.", "am teutoburger wald")
 		.replaceAll(gemeindeCleanRegex, "");
 
 	if (name.includes(",")) {
-		const [a, b] = name.split(", ");
-		name = b + " " + a;
+		const [a, b] = name.split(",");
+		name = (b || "") + " " + (a || "");
 	}
 
 	return name.trim();
@@ -161,7 +168,7 @@ export function cleanKreisName(name?: string | null) {
 
 	return name
 		.toLowerCase()
-		.replaceAll(/Landkreis/gi, "")
+		.replaceAll(/Landkreis|wahlkreis|stadt/gi, "")
 		.trim();
 }
 
@@ -212,10 +219,20 @@ export function getGemeinde(name: string, kreis?: string) {
 	}
 
 	if (duplicates.length > 1 && kreis) {
+		let min_distance = Infinity;
+		let min_value = null;
+
 		for (const v of duplicates) {
-			if (v.kreis_name && v.kreis_name.toLowerCase() === kreis) {
-				value = v;
-				break;
+			const dist = Math.min(
+				distance(v.kreis_clean || "", kreis),
+				distance(v.wahlkreis_clean || "", kreis),
+				distance(v.kreis_clean + " " + v.kreis_id, kreis),
+				distance(v.wahlkreis_clean + " " + v.wahlkreis_id, kreis)
+			);
+
+			if (dist < min_distance) {
+				min_distance = dist;
+				min_value = v;
 			}
 		}
 	} else if (duplicates.length === 1) {
@@ -226,7 +243,13 @@ export function getGemeinde(name: string, kreis?: string) {
 		value = { ...verband_value, gemeinde_name: null, gemeinde_id: null };
 	}
 
-	return { ...value, gemeinde_clean: undefined, verbands_clean: undefined };
+	const newValue = { ...value };
+	delete newValue.gemeinde_clean;
+	delete newValue.verbands_clean;
+	delete newValue.kreis_clean;
+	delete newValue.wahlkreis_clean;
+
+	return newValue;
 }
 
 // console.log(getGemeinde("Kreis- und Kurstadt Bad Schwalbach", "Rheingau-Taunus-Kreis"));

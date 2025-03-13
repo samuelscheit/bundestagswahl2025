@@ -1,5 +1,5 @@
 import "./mecklenburgvorpommern";
 import "./rheinlandpfalz";
 import "./thüringen";
-import "./download.votemanager";
-import "./download.was";
+import "./votemanager.download";
+import "./WAS.download";
