@@ -15,11 +15,13 @@ let result = [] as {
 	wahlkreisStimmen: number;
 	bundesStimmen: number;
 	diff: number;
+	absdiff: number;
 }[];
 
 const totalBezirk = {} as Record<string, number>;
 
 const totalPartei = {} as Record<string, number>;
+const totalParteiAbs = {} as Record<string, number>;
 
 Object.keys(Wahlkreise).forEach((id) => {
 	const wahlkreisName = wahlkreiseNamen[id];
@@ -31,10 +33,12 @@ Object.keys(Wahlkreise).forEach((id) => {
 		const bundPartei = bundesergebnis.zweitstimmen.parteien[partei] || 0;
 
 		if (kreisPartei !== bundPartei) {
-			const diff = Math.abs(kreisPartei - bundPartei);
+			const diff = kreisPartei - bundPartei;
+			const absdiff = Math.abs(diff);
+			totalParteiAbs[partei] = (totalParteiAbs[partei] || 0) + absdiff;
 			totalPartei[partei] = (totalPartei[partei] || 0) + diff;
 
-			totalBezirk[wahlkreisName] = (totalBezirk[wahlkreisName] || 0) + diff;
+			totalBezirk[wahlkreisName] = (totalBezirk[wahlkreisName] || 0) + absdiff;
 
 			result.push({
 				wahlkreis: wahlkreisName,
@@ -42,6 +46,7 @@ Object.keys(Wahlkreise).forEach((id) => {
 				wahlkreisStimmen: kreisPartei,
 				bundesStimmen: bundPartei,
 				diff,
+				absdiff,
 			});
 		}
 	});
@@ -56,6 +61,7 @@ console.table(result);
 Object.values(result).forEach((x) => {});
 
 console.table(Object.fromEntries(Object.entries(totalPartei).sort((a, b) => a[1] - b[1])));
+console.table(Object.fromEntries(Object.entries(totalParteiAbs).sort((a, b) => a[1] - b[1])));
 
 console.log(Object.values(totalPartei).reduce((acc, x) => acc + x, 0));
 
