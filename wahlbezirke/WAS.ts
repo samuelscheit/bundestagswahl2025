@@ -1,7 +1,7 @@
 import { HTMLElement, parse } from "node-html-parser";
-import { defaultResult, getIdFromName, type Options, type ResultType } from "./scrape";
+import { defaultResult, getIdFromName, type Options, type ResultType } from "../wahlkreise/scrape";
 import { behoerden_queue, gemeinde_queue, queues, wahlbezirke_queue, wahleintrage_queue } from "./wahlbezirke";
-import { wahlkreiseQuellen } from "./wahlkreise";
+import { wahlkreiseQuellen } from "../wahlkreise/wahlkreise";
 import { axiosWithRedirect } from "./axios";
 
 export function WAS(options: Options & { text: string; root?: HTMLElement }) {
@@ -10,7 +10,7 @@ export function WAS(options: Options & { text: string; root?: HTMLElement }) {
 	const table = root.querySelector(`.tablesaw.table-stimmen[data-tablejigsaw], .tablesaw.table-stimmen[data-tablejigsaw-downloadable]`);
 	if (!table) throw new Error("Table not found:" + options.url);
 
-	const rows = table.querySelectorAll("tbody tr");
+	const rows = table.querySelectorAll("tbody tr").concat(table.querySelectorAll("tfoot tr"));
 
 	const result = defaultResult();
 
