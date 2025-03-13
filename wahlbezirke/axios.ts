@@ -13,7 +13,7 @@ if (!fs.existsSync(cacheDir)) fs.mkdirSync(cacheDir);
 export function generateKey(opts: AxiosRequestConfig) {
 	const url = new URL(opts.url || opts.baseURL!);
 
-	let key = url.host.replace(":", "_") + url.pathname.replaceAll("/", "_").replace(/[^\w]/g, "");
+	let key = url.host.replace(":", "_") + url.pathname.replaceAll("/", "_").replace(/[^\w]/g, "") + url.search.replace(/[^\w]/g, "");
 	if (url.protocol !== "https:") key = "http_" + key;
 
 	return key;
@@ -191,6 +191,9 @@ export async function axiosWithRedirect<T = any, D = any>(
 			var response = await Axios(url, opts);
 		} else {
 			var response = await axios(url, opts);
+			if (opts.responseType === "arraybuffer" && !(response.data instanceof ArrayBuffer || response.data instanceof Buffer)) {
+				throw new Error("not a array buffer");
+			}
 		}
 	} catch (error) {
 		const msg = (error as Error).message;
@@ -198,7 +201,7 @@ export async function axiosWithRedirect<T = any, D = any>(
 
 		if (isFinalError(error as Error)) {
 			throw error;
-		} else if (msg.includes("JSON Parse error")) {
+		} else if (msg.includes("JSON Parse error") || msg.includes("not a array buffer")) {
 			fs.unlinkSync(__dirname + "/cache/" + generateKey({ ...opts, url }));
 		} else {
 			await sleep(2000);
@@ -234,10 +237,6 @@ export async function axiosWithRedirect<T = any, D = any>(
 			console.log("Refresh", newUrl);
 			return axiosWithRedirect(newUrl, opts);
 		}
-	}
-
-	if (typeof response.data === "object" && response.data && response.data instanceof Buffer) {
-		response.data = response.data.toString("utf-8");
 	}
 
 	return { ...response, url };

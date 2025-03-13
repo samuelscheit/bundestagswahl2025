@@ -1,5 +1,5 @@
 import { download } from "./scrape";
-import { wahlkreiseQuellen } from "./wahlkreise";
+import { bundeslandNamen, bundeslandWahlkreise, wahlkreiseBundesland, wahlkreiseNamen, wahlkreiseQuellen } from "./wahlkreise";
 import fs from "fs";
 
 let WASTest = [
@@ -16,9 +16,12 @@ let votemanagerTest: number[] = [
 	294, 295,
 ];
 
+const thüringen = bundeslandWahlkreise["16"];
+
 let test = Object.keys(wahlkreiseQuellen);
-// let test: number[] = [113];
+// let test: number[] = [192];
 // let test: number[] = WASTest;
+// let test = thüringen;
 
 const finalResult = require("./data/out.json");
 
@@ -30,6 +33,11 @@ for (const i of test) {
 		url: wahlkreiseQuellen[id],
 	});
 	if (!result) continue;
+
+	result.wahlkreis_id = id;
+	result.wahlkreis_name = wahlkreiseNamen[id];
+	result.bundesland_id = wahlkreiseBundesland[id];
+	result.bundesland_name = bundeslandNamen[result.bundesland_id as any as keyof typeof bundeslandNamen];
 
 	finalResult[id] = result;
 

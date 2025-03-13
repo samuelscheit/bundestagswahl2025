@@ -226,7 +226,7 @@ export function getGemeinde(name: string, kreis?: string) {
 		value = { ...verband_value, gemeinde_name: null, gemeinde_id: null };
 	}
 
-	return value;
+	return { ...value, gemeinde_clean: undefined, verbands_clean: undefined };
 }
 
 // console.log(getGemeinde("Kreis- und Kurstadt Bad Schwalbach", "Rheingau-Taunus-Kreis"));
