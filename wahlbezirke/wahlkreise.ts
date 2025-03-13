@@ -606,7 +606,7 @@ export function createArray(start: number, end: number) {
 	return Array.from({ length: end - start + 1 }, (_, i) => i + start);
 }
 
-export const landWahlkreise = {
+export const bundeslandWahlkreise = {
 	1: createArray(1, 11), // Schleswig-Holstein
 	2: createArray(18, 23), // Hamburg
 	3: createArray(24, 53), // niedersachsen
@@ -625,7 +625,26 @@ export const landWahlkreise = {
 	16: createArray(188, 195), // thüringen
 };
 
-export const WahlkreiseLand = Object.entries(landWahlkreise).reduce((acc, [land, wahlkreise]) => {
+export const bundeslandNamen = {
+	1: "Schleswig-Holstein",
+	2: "Hamburg",
+	3: "Niedersachsen",
+	4: "Bremen",
+	5: "Nordrhein-Westfalen",
+	6: "Hessen",
+	7: "Rheinland-Pfalz",
+	8: "Baden-Württemberg",
+	9: "Bayern",
+	10: "Saarland",
+	11: "Berlin",
+	12: "Brandenburg",
+	13: "Mecklenburg-Vorpommern",
+	14: "Sachsen",
+	15: "Sachsen-Anhalt",
+	16: "Thüringen",
+};
+
+export const wahlkreiseBundesland = Object.entries(bundeslandWahlkreise).reduce((acc, [land, wahlkreise]) => {
 	wahlkreise.forEach((wahlbezirk) => {
 		acc[wahlbezirk] = land;
 	});
