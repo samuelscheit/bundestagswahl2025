@@ -2,7 +2,7 @@ import axios from "axios";
 import fs from "fs";
 import iconv from "iconv-lite";
 import csv from "csv-parser";
-import { defaultResult, type ResultType } from "./scrape";
+import { defaultResult, type ResultType } from "../wahlkreise/scrape";
 import { saveResults } from "./wahlbezirke";
 
 const arraybuffer = await axios<ArrayBuffer>("https://wahlen.mvnet.de/dateien/ergebnisse.2025/bundestagswahl/csv/b_wahlbezirke.csv", {

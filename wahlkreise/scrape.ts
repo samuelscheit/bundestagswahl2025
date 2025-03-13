@@ -2,9 +2,9 @@ import { HTMLElement, parse } from "node-html-parser";
 import * as cheerio from "cheerio";
 import iconv from "iconv-lite";
 import csv from "csv-parser";
-import { axiosWithRedirect } from "./axios";
-import { WAS } from "./WAS";
-import { votemanager } from "./votemanager";
+import { axiosWithRedirect } from "../wahlbezirke/axios";
+import { WAS } from "../wahlbezirke/WAS";
+import { votemanager } from "../wahlbezirke/votemanager";
 
 // @ts-ignore
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";

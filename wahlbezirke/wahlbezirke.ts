@@ -1,6 +1,6 @@
 import fs from "fs";
 import PQueue from "p-queue";
-import type { ResultType } from "./scrape";
+import type { ResultType } from "../wahlkreise/scrape";
 
 export const concurrency = 10;
 

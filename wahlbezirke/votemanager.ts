@@ -1,7 +1,7 @@
 // @ts-ignore
 import extractUrls from "extract-urls";
 import { axiosWithRedirect, isFinalError } from "./axios";
-import { defaultResult, getIdFromName, type Options, type ResultType } from "./scrape";
+import { defaultResult, getIdFromName, type Options, type ResultType } from "../wahlkreise/scrape";
 import { behoerden_queue, concurrency, wahlbezirke_queue, wahleintrage_queue } from "./wahlbezirke";
 import { cleanGemeindeName, getGemeinde } from "./gemeinden";
 import PQueue from "p-queue";

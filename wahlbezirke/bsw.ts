@@ -1,4 +1,4 @@
-import type { ResultType } from "./scrape";
+import type { ResultType } from "../wahlkreise/scrape";
 
 const wahlbezirke = require("./data/wahlbezirke.json");
 

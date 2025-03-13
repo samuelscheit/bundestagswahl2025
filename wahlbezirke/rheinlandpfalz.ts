@@ -1,6 +1,6 @@
 import fs from "fs";
 import csv from "csv-parser";
-import { defaultResult, type ResultType } from "./scrape";
+import { defaultResult, type ResultType } from "../wahlkreise/scrape";
 import { axios } from "./axios";
 import { getIdFromResult, saveResults } from "./wahlbezirke";
 

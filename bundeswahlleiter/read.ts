@@ -1,7 +1,7 @@
 import axios from "axios";
 import fs from "fs";
 import { parse } from "node-html-parser";
-import { defaultResult } from "../wahlbezirke/scrape";
+import { defaultResult } from "../wahlkreise/scrape";
 
 const xml = fs.readFileSync(__dirname + "/data/gesamtergebnis_01.xml", "utf-8");
 

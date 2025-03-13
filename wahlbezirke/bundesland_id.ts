@@ -1,6 +1,6 @@
 import fs from "fs";
-import type { ResultType } from "./scrape";
-import { bundeslandNamen, wahlkreiseBundesland } from "./wahlkreise";
+import type { ResultType } from "../wahlkreise/scrape";
+import { bundeslandNamen, wahlkreiseBundesland } from "../wahlkreise/wahlkreise";
 
 let wahlbezirke = require("./data/wahlbezirkeList.json") as ResultType[];
 

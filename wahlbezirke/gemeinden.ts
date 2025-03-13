@@ -1,6 +1,6 @@
 import fs from "fs";
 import csv from "csv-parser";
-import type { ResultType } from "./scrape";
+import type { ResultType } from "../wahlkreise/scrape";
 import { distance } from "fastest-levenshtein";
 
 type Gemeinde = Omit<

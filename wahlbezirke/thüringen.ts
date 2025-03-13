@@ -1,6 +1,6 @@
 import fs from "fs";
 import csv from "csv-parser";
-import { defaultResult, type ResultType } from "./scrape";
+import { defaultResult, type ResultType } from "../wahlkreise/scrape";
 import { getIdFromResult, saveResults } from "./wahlbezirke";
 
 const data = fs.readFileSync(__dirname + "/data/Thüringen.csv");
@@ -17,7 +17,7 @@ const parteien = [
 	"mlpd",
 	"bündnis deutschland",
 	"bsw",
-	"einzelbewerber",
+	// "einzelbewerber",
 ];
 
 const parser = csv({
@@ -74,10 +74,10 @@ const parser = csv({
 		"zweitstimmen_grüne_absolut",
 		"zweitstimmen_grüne_prozent",
 
-		"erststimmen_freie_wähler_absolut",
-		"erststimmen_freie_wähler_prozent",
-		"zweitstimmen_freie_wähler_absolut",
-		"zweitstimmen_freie_wähler_prozent",
+		"erststimmen_freie wähler_absolut",
+		"erststimmen_freie wähler_prozent",
+		"zweitstimmen_freie wähler_absolut",
+		"zweitstimmen_freie wähler_prozent",
 
 		"erststimmen_volt_absolut",
 		"erststimmen_volt_prozent",
@@ -89,20 +89,20 @@ const parser = csv({
 		"zweitstimmen_mlpd_absolut",
 		"zweitstimmen_mlpd_prozent",
 
-		"erststimmen_bündnis_deutschland_absolut",
-		"erststimmen_bündnis_deutschland_prozent",
-		"zweitstimmen_bündnis_deutschland_absolut",
-		"zweitstimmen_bündnis_deutschland_prozent",
+		"erststimmen_bündnis deutschland_absolut",
+		"erststimmen_bündnis deutschland_prozent",
+		"zweitstimmen_bündnis deutschland_absolut",
+		"zweitstimmen_bündnis deutschland_prozent",
 
 		"erststimmen_bsw_absolut",
 		"erststimmen_bsw_prozent",
 		"zweitstimmen_bsw_absolut",
 		"zweitstimmen_bsw_prozent",
 
-		"erststimmen_einzelbewerber_absolut",
-		"erststimmen_einzelbewerber_prozent",
-		"zweitstimmen_einzelbewerber_absolut",
-		"zweitstimmen_einzelbewerber_prozent",
+		"erststimmen_einzelbewerber1_absolut",
+		"erststimmen_einzelbewerber1_prozent",
+		"erststimmen_einzelbewerber2_absolut",
+		"erststimmen_einzelbewerber2_prozent",
 	],
 });
 

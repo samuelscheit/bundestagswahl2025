@@ -4,7 +4,7 @@
 
 import fs from "fs";
 import csv from "csv-parser";
-import { defaultResult, type ResultType } from "./scrape";
+import { defaultResult, type ResultType } from "../wahlkreise/scrape";
 import { saveResults } from "./wahlbezirke";
 
 const parser = csv({
