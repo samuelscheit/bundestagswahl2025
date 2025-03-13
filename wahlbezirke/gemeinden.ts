@@ -3,13 +3,16 @@ import csv from "csv-parser";
 import type { ResultType } from "./scrape";
 import { distance } from "fastest-levenshtein";
 
-type Gemeinde = Required<
-	Omit<ResultType, "erststimmen" | "zweitstimmen" | "anzahl_wähler" | "anzahl_berechtigte" | "wahlbezirk_name" | "wahlbezirk_id"> & {
-		verbands_id: string | null;
-		verbands_name: string | null;
-		region_name: string | null;
-	}
->;
+type Gemeinde = Omit<
+	ResultType,
+	"erststimmen" | "zweitstimmen" | "anzahl_wähler" | "anzahl_berechtigte" | "wahlbezirk_name" | "wahlbezirk_id"
+> & {
+	verbands_id: string | null;
+	verbands_name: string | null;
+	region_name: string | null;
+	gemeinde_clean?: string;
+	verbands_clean?: string;
+};
 
 export const gemeinden = [] as Gemeinde[];
 
@@ -62,6 +65,8 @@ await new Promise((resolve) => {
 				verbands_id: GemeindeverbandNr || null,
 				verbands_name: GemeindeverbandName || null,
 				region_name: RegionName || null,
+				gemeinde_clean: undefined,
+				verbands_clean: undefined,
 			};
 
 			for (const suffix of GemeindeName?.split(", ")[1]?.split(" ") || []) {
@@ -109,6 +114,11 @@ gemeindeSuffixes.add("/Ostfriesland");
 gemeindeSuffixes.add("Gartenstadt");
 gemeindeSuffixes.add("Gemeindewahlbehörde");
 
+for (const suffix of [...gemeindeSuffixes.values()]) {
+	gemeindeSuffixes.delete(suffix);
+	gemeindeSuffixes.add(suffix.toLowerCase());
+}
+
 export const gemeindeCleanRegex = new RegExp(
 	Array.from(gemeindeSuffixes)
 		.filter((x) => x)
@@ -117,6 +127,11 @@ export const gemeindeCleanRegex = new RegExp(
 		.join("|") + "|\\d{5}",
 	"gi"
 );
+
+gemeinden.forEach((v) => {
+	v.gemeinde_clean = cleanGemeindeName(v.gemeinde_name);
+	v.verbands_clean = cleanGemeindeName(v.verbands_name);
+});
 
 export function cleanGemeindeName(name?: string | null) {
 	if (!name) return "";
@@ -162,23 +177,21 @@ export function getGemeinde(name: string, kreis?: string) {
 	const duplicates = [] as Gemeinde[];
 
 	for (const v of gemeinden) {
-		let distGemeinde = distance(cleanGemeindeName(v.gemeinde_name!), name);
+		let distGemeinde = distance(v.gemeinde_clean || "", name);
 		let distGemeinde2 = distance(v.gemeinde_name?.split(", ")[0] || "", name);
 
 		if (distGemeinde2 < distGemeinde) {
 			distGemeinde = distGemeinde2;
 		}
 
-		cleanGemeindeName(v.gemeinde_name)
-			?.split(" / ")
-			.forEach((n) => {
-				const dist = distance(n, name);
-				if (dist < distGemeinde) {
-					distGemeinde = dist;
-				}
-			});
+		v.gemeinde_clean?.split(" / ").forEach((n) => {
+			const dist = distance(n, name);
+			if (dist < distGemeinde) {
+				distGemeinde = dist;
+			}
+		});
 
-		const distVerband = distance(cleanGemeindeName(v.verbands_name!), name);
+		const distVerband = distance(v.verbands_clean || "", name);
 
 		if (distVerband <= verband_distance) {
 			verband_distance = distVerband;
@@ -200,7 +213,7 @@ export function getGemeinde(name: string, kreis?: string) {
 
 	if (duplicates.length > 1 && kreis) {
 		for (const v of duplicates) {
-			if (v.kreis_name && cleanGemeindeName(v.kreis_name) === kreis) {
+			if (v.kreis_name && v.kreis_name.toLowerCase() === kreis) {
 				value = v;
 				break;
 			}

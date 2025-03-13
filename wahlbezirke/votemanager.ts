@@ -160,15 +160,13 @@ export async function getWahlbezirkVotemanager(opts: { url: string; name: string
 	// console.log(name, terminUrl);
 	// console.log(name, base + "/" + btw25.url);
 
-	let results = [] as ResultType[];
-
 	const { data: config } = await axiosWithRedirect<VotemanagerConfig>(`${apiEndpoint}/config.json`, { responseType: "json" });
 
 	if (!opts.name) opts.name = config.behoerde;
 
-	const unterGemeinden = behoerden_queue.addAll(
-		(config.behoerden_links?.links || []).map((x) => async () => {
-			try {
+	behoerden_queue.addAll(
+		(config.behoerden_links?.links || [])
+			.map((x) => {
 				if (!x.url) return;
 				if (!x.url.startsWith("../")) return;
 
@@ -183,23 +181,26 @@ export async function getWahlbezirkVotemanager(opts: { url: string; name: string
 
 				newUrl.pathname = newUrl.pathname.replace(/\/(\d+)(?!.*\/\d+)/, `/${id}`);
 
-				const result = await getWahlbezirkVotemanager({
-					url: newUrl.href,
-					name: x.text,
-					bundesland: opts.bundesland,
-				});
-				if (!result) return;
+				return { text: x.text, url: newUrl.href };
+			})
+			.filter((x) => x)
+			.map((x) => async () => {
+				try {
+					const result = await getWahlbezirkVotemanager({
+						url: x!.url,
+						name: x!.text,
+						bundesland: opts.bundesland,
+					});
+					if (!result) return;
+				} catch (error) {
+					if ((error as Error).message.includes("Keine BTW25")) return;
 
-				results = results.concat(result);
-			} catch (error) {
-				if ((error as Error).message.includes("Keine BTW25")) return;
+					var e = error;
+					e;
 
-				var e = error;
-				e;
-
-				throw new Error("Error " + x.text + " " + x.url + " " + (error as Error).message);
-			}
-		}),
+					throw new Error("Error " + x!.text + " " + x!.url + " " + (error as Error).message);
+				}
+			}),
 		{
 			priority: 1,
 		}
@@ -208,18 +209,17 @@ export async function getWahlbezirkVotemanager(opts: { url: string; name: string
 	let gemeinde = getGemeinde(opts.name, config.behoerden_links?.header.text);
 	if (!gemeinde) {
 		console.log(config.behoerde, "NOT FOUND", cleanGemeindeName);
-		await unterGemeinden;
 		return results;
 	}
 
 	if (!gemeinde.gemeinde_name && !opts.name.includes("Verbandsgemeinde")) {
 		console.log("NO GEMEINDE name", gemeinde, opts.name, config.behoerden_links?.header.text, url);
-		gemeinde = getGemeinde(opts.name, config.behoerden_links?.header.text);
+		// gemeinde = getGemeinde(opts.name, config.behoerden_links?.header.text);
 	}
 
-	// console.log(gemeinde.gemeinde_name, opts.name);
+	console.log(gemeinde.gemeinde_name, opts.name);
 
-	const queue = new PQueue({ concurrency });
+	const queue = new PQueue({ concurrency: 1 });
 
 	await Promise.all(
 		wahleintraege.map(async (wahleintrag) => {
@@ -313,8 +313,6 @@ export async function getWahlbezirkeVotemanager() {
 						bundesland,
 					});
 					if (!bezirk_result) return;
-
-					results = results.concat(bezirk_result);
 				} catch (error) {
 					const msg = (error as Error).message || "";
 					if (isFinalError(error as Error, url, name)) return;

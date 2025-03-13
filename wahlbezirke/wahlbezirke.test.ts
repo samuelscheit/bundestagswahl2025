@@ -1,10 +1,15 @@
 import { getWahlbezirkVotemanager } from "./votemanager";
+import { behoerden_queue, saveResults } from "./wahlbezirke";
 
-await getWahlbezirkVotemanager({
+const results = await getWahlbezirkVotemanager({
 	bundesland: "",
 	name: "",
-	url: "https://wahlen.kdvz.nrw/production/05374044/",
+	url: "https://wahlen.heidekreis.de/03358017/",
 });
+
+await behoerden_queue.onIdle();
+
+console.log(results);
 
 // @ts-ignore
 
@@ -26,4 +31,4 @@ await getWahlbezirkVotemanager({
 
 // const results = await getWahlbezirkeVotemanager();
 
-// saveResults(results);
+saveResults(results);
