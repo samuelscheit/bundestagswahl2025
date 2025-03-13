@@ -38,10 +38,6 @@ export function saveResults(results: ResultType[]) {
 		}
 	});
 
-	console.log(wahlbezirke.length, results.length);
-
-	const invalid = wahlbezirke.filter((x) => x.wahlbezirk_name === null && x.wahlbezirk_id === null);
-	console.log(invalid);
 	wahlbezirke = wahlbezirke.filter((x) => x.wahlbezirk_name !== null || x.wahlbezirk_id !== null);
 
 	console.log(wahlbezirke.length, results.length);
