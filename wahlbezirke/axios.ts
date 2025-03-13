@@ -191,9 +191,6 @@ export async function axiosWithRedirect<T = any, D = any>(
 			var response = await Axios(url, opts);
 		} else {
 			var response = await axios(url, opts);
-			if (opts.responseType === "arraybuffer" && !(response.data instanceof ArrayBuffer || response.data instanceof Buffer)) {
-				throw new Error("not a array buffer");
-			}
 		}
 	} catch (error) {
 		const msg = (error as Error).message;
@@ -201,7 +198,7 @@ export async function axiosWithRedirect<T = any, D = any>(
 
 		if (isFinalError(error as Error)) {
 			throw error;
-		} else if (msg.includes("JSON Parse error") || msg.includes("not a array buffer")) {
+		} else if (msg.includes("JSON Parse error")) {
 			fs.unlinkSync(__dirname + "/cache/" + generateKey({ ...opts, url }));
 		} else {
 			await sleep(2000);

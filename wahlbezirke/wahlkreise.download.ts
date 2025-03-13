@@ -38,6 +38,15 @@ for (const i of test) {
 	result.wahlkreis_name = wahlkreiseNamen[id];
 	result.bundesland_id = wahlkreiseBundesland[id];
 	result.bundesland_name = bundeslandNamen[result.bundesland_id as any as keyof typeof bundeslandNamen];
+	// @ts-ignore
+	delete result.kreis_id; // @ts-ignore
+	delete result.kreis_name; // @ts-ignore
+	delete result.wahlbezirk_id; // @ts-ignore
+	delete result.wahlbezirk_name; // @ts-ignore
+	delete result.gemeinde_id; // @ts-ignore
+	delete result.gemeinde_name; // @ts-ignore
+	delete result.ortsteil_id; // @ts-ignore
+	delete result.ortsteil_name;
 
 	finalResult[id] = result;
 

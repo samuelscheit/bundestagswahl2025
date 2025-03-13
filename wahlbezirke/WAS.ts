@@ -26,7 +26,6 @@ export function WAS(options: Options & { text: string; root?: HTMLElement }) {
 
 	let gebietBreadcrumb = root.querySelector(`.gebiet ul.breadcrumb`);
 	if (!gebietBreadcrumb) gebietBreadcrumb = root.querySelector(`.gebietwaehler .dropdown__content .linklist.header-gebiet__obergebiete`);
-	if (!gebietBreadcrumb) throw new Error("Breadcrumb not found: " + options.url);
 
 	gebietBreadcrumb?.querySelectorAll("li a").forEach((x) => {
 		const href = x.getAttribute("href");
