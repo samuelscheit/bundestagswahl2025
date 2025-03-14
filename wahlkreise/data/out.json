@@ -1066,7 +1066,7 @@
 			"gültig": 154683,
 			"ungültig": 1016
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 155699,
 		"anzahl_berechtigte": 189800,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1109,7 +1109,7 @@
 			"gültig": 197223,
 			"ungültig": 1050
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 198273,
 		"anzahl_berechtigte": 237527,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1155,7 +1155,7 @@
 			"gültig": 149918,
 			"ungültig": 888
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 150806,
 		"anzahl_berechtigte": 185864,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1199,7 +1199,7 @@
 			"gültig": 193187,
 			"ungültig": 801
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 193988,
 		"anzahl_berechtigte": 229344,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1243,7 +1243,7 @@
 			"gültig": 184090,
 			"ungültig": 966
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 185056,
 		"anzahl_berechtigte": 225017,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1286,7 +1286,7 @@
 			"gültig": 154389,
 			"ungültig": 776
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 155165,
 		"anzahl_berechtigte": 187074,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1329,7 +1329,7 @@
 			"gültig": 166373,
 			"ungültig": 765
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 167138,
 		"anzahl_berechtigte": 197893,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1373,7 +1373,7 @@
 			"gültig": 198610,
 			"ungültig": 919
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 199529,
 		"anzahl_berechtigte": 233785,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1416,7 +1416,7 @@
 			"gültig": 186176,
 			"ungültig": 1000
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 187176,
 		"anzahl_berechtigte": 225099,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1459,7 +1459,7 @@
 			"gültig": 161340,
 			"ungültig": 754
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 162094,
 		"anzahl_berechtigte": 194011,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1502,7 +1502,7 @@
 			"gültig": 165420,
 			"ungültig": 748
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 166168,
 		"anzahl_berechtigte": 196082,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1545,7 +1545,7 @@
 			"gültig": 138590,
 			"ungültig": 803
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 139393,
 		"anzahl_berechtigte": 168109,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1554,8 +1554,8 @@
 	},
 	"36": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 173955,
+			"ungültig": 1180,
 			"parteien": {
 				"SPD": 45738,
 				"CDU": 57718,
@@ -1577,8 +1577,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 174429,
+			"ungültig": 706,
 			"parteien": {
 				"SPD": 35733,
 				"CDU": 53030,
@@ -1599,8 +1599,8 @@
 				"EB:MANSKE": 0
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 175135,
+		"anzahl_berechtigte": 202671,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
 		"wahlkreis_id": "36",
@@ -1644,7 +1644,7 @@
 			"gültig": 154343,
 			"ungültig": 676
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 155019,
 		"anzahl_berechtigte": 182679,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1688,7 +1688,7 @@
 			"gültig": 166906,
 			"ungültig": 841
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 167747,
 		"anzahl_berechtigte": 199476,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1733,7 +1733,7 @@
 			"gültig": 160869,
 			"ungültig": 666
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 161535,
 		"anzahl_berechtigte": 192267,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1779,7 +1779,7 @@
 			"gültig": 156692,
 			"ungültig": 821
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 157513,
 		"anzahl_berechtigte": 191029,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1825,7 +1825,7 @@
 			"gültig": 142953,
 			"ungültig": 796
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 143749,
 		"anzahl_berechtigte": 175419,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1872,7 +1872,7 @@
 			"gültig": 158271,
 			"ungültig": 782
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 159053,
 		"anzahl_berechtigte": 189782,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1917,7 +1917,7 @@
 			"gültig": 191251,
 			"ungültig": 981
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 192232,
 		"anzahl_berechtigte": 227327,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -1926,8 +1926,8 @@
 	},
 	"44": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 173651,
+			"ungültig": 1221,
 			"parteien": {
 				"SPD": 40066,
 				"CDU": 61127,
@@ -1948,8 +1948,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 173964,
+			"ungültig": 908,
 			"parteien": {
 				"SPD": 36325,
 				"CDU": 51640,
@@ -1969,8 +1969,8 @@
 				"BSW": 6315
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 174872,
+		"anzahl_berechtigte": 212447,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
 		"wahlkreis_id": "44",
@@ -2014,7 +2014,7 @@
 			"gültig": 182932,
 			"ungültig": 919
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 183851,
 		"anzahl_berechtigte": 216950,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -2057,7 +2057,7 @@
 			"gültig": 144462,
 			"ungültig": 888
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 145350,
 		"anzahl_berechtigte": 179071,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -2103,7 +2103,7 @@
 			"gültig": 196714,
 			"ungültig": 1064
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 197778,
 		"anzahl_berechtigte": 234055,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -2148,7 +2148,7 @@
 			"gültig": 175762,
 			"ungültig": 919
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 176681,
 		"anzahl_berechtigte": 211156,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -2193,7 +2193,7 @@
 			"gültig": 158601,
 			"ungültig": 992
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 159593,
 		"anzahl_berechtigte": 195221,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -2239,7 +2239,7 @@
 			"gültig": 154570,
 			"ungültig": 832
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 155402,
 		"anzahl_berechtigte": 186358,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -2284,7 +2284,7 @@
 			"gültig": 143357,
 			"ungültig": 842
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 144199,
 		"anzahl_berechtigte": 176276,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -2329,7 +2329,7 @@
 			"gültig": 154617,
 			"ungültig": 970
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 155587,
 		"anzahl_berechtigte": 191421,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -2374,7 +2374,7 @@
 			"gültig": 174635,
 			"ungültig": 918
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 175553,
 		"anzahl_berechtigte": 210202,
 		"bundesland_id": "3",
 		"bundesland_name": "Niedersachsen",
@@ -2383,8 +2383,8 @@
 	},
 	"54": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 193127,
+			"ungültig": 1634,
 			"parteien": {
 				"SPD": 48663,
 				"GRÜNE": 36571,
@@ -2405,8 +2405,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 193781,
+			"ungültig": 980,
 			"parteien": {
 				"SPD": 42457,
 				"GRÜNE": 35812,
@@ -2426,8 +2426,8 @@
 				"STIMME FÜR VOLKSENTSCHEIDE": 0
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 194761,
+		"anzahl_berechtigte": 239863,
 		"bundesland_id": "4",
 		"bundesland_name": "Bremen",
 		"wahlkreis_id": "54",
@@ -2435,8 +2435,8 @@
 	},
 	"55": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 153953,
+			"ungültig": 1652,
 			"parteien": {
 				"SPD": 46604,
 				"GRÜNE": 16716,
@@ -2456,8 +2456,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 154475,
+			"ungültig": 1130,
 			"parteien": {
 				"SPD": 38147,
 				"GRÜNE": 18468,
@@ -2476,8 +2476,8 @@
 				"VERJÜNGUNGSFORSCHUNG": 156
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 155605,
+		"anzahl_berechtigte": 210701,
 		"bundesland_id": "4",
 		"bundesland_name": "Bremen",
 		"wahlkreis_id": "55",
@@ -2963,7 +2963,7 @@
 			"gültig": 177166,
 			"ungültig": 1310
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 178476,
 		"anzahl_berechtigte": 227996,
 		"bundesland_id": "15",
 		"bundesland_name": "Sachsen-Anhalt",
@@ -3004,7 +3004,7 @@
 			"gültig": 168962,
 			"ungültig": 1471
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 170433,
 		"anzahl_berechtigte": 217023,
 		"bundesland_id": "15",
 		"bundesland_name": "Sachsen-Anhalt",
@@ -3050,8 +3050,8 @@
 	},
 	"69": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 172048,
+			"ungültig": 2420,
 			"parteien": {
 				"SPD": 29617,
 				"CDU": 39726,
@@ -3068,8 +3068,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 173227,
+			"ungültig": 1241,
 			"parteien": {
 				"SPD": 21865,
 				"CDU": 32205,
@@ -3085,8 +3085,8 @@
 				"BSW": 19460
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 174468,
+		"anzahl_berechtigte": 222983,
 		"bundesland_id": "15",
 		"bundesland_name": "Sachsen-Anhalt",
 		"wahlkreis_id": "69",
@@ -3135,8 +3135,8 @@
 	},
 	"71": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 171490,
+			"ungültig": 2109,
 			"parteien": {
 				"SPD": 30798,
 				"CDU": 38174,
@@ -3153,8 +3153,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 172278,
+			"ungültig": 1321,
 			"parteien": {
 				"SPD": 20794,
 				"CDU": 31132,
@@ -3210,7 +3210,7 @@
 			"gültig": 156208,
 			"ungültig": 1140
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 157348,
 		"anzahl_berechtigte": 203597,
 		"bundesland_id": "15",
 		"bundesland_name": "Sachsen-Anhalt",
@@ -3251,7 +3251,7 @@
 			"gültig": 161655,
 			"ungültig": 1528
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 163183,
 		"anzahl_berechtigte": 210496,
 		"bundesland_id": "15",
 		"bundesland_name": "Sachsen-Anhalt",
@@ -3260,8 +3260,8 @@
 	},
 	"74": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 160820,
+			"ungültig": 1053,
 			"parteien": {
 				"SPD": 26816,
 				"GRÜNE": 40671,
@@ -3284,8 +3284,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 160984,
+			"ungültig": 889,
 			"parteien": {
 				"SPD": 24189,
 				"GRÜNE": 34920,
@@ -3307,8 +3307,8 @@
 				"PDF": 217
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 161873,
+		"anzahl_berechtigte": 207445,
 		"bundesland_id": "11",
 		"bundesland_name": "Berlin",
 		"wahlkreis_id": "74",
@@ -3316,8 +3316,8 @@
 	},
 	"75": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 196807,
+			"ungültig": 2264,
 			"parteien": {
 				"SPD": 26103,
 				"GRÜNE": 50855,
@@ -3340,8 +3340,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 198140,
+			"ungültig": 931,
 			"parteien": {
 				"SPD": 26046,
 				"GRÜNE": 38821,
@@ -3363,8 +3363,8 @@
 				"PDF": 371
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 199071,
+		"anzahl_berechtigte": 235392,
 		"bundesland_id": "11",
 		"bundesland_name": "Berlin",
 		"wahlkreis_id": "75",
@@ -3372,8 +3372,8 @@
 	},
 	"76": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 132331,
+			"ungültig": 1813,
 			"parteien": {
 				"SPD": 28953,
 				"GRÜNE": 17132,
@@ -3396,8 +3396,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 133055,
+			"ungültig": 1089,
 			"parteien": {
 				"SPD": 22996,
 				"GRÜNE": 17074,
@@ -3419,8 +3419,8 @@
 				"PDF": 247
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 134144,
+		"anzahl_berechtigte": 172428,
 		"bundesland_id": "11",
 		"bundesland_name": "Berlin",
 		"wahlkreis_id": "76",
@@ -3428,8 +3428,8 @@
 	},
 	"77": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 131439,
+			"ungültig": 1813,
 			"parteien": {
 				"SPD": 36159,
 				"GRÜNE": 12216,
@@ -3452,8 +3452,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 132092,
+			"ungültig": 1160,
 			"parteien": {
 				"SPD": 24292,
 				"GRÜNE": 14626,
@@ -3475,8 +3475,8 @@
 				"PDF": 240
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 133252,
+		"anzahl_berechtigte": 176535,
 		"bundesland_id": "11",
 		"bundesland_name": "Berlin",
 		"wahlkreis_id": "77",
@@ -3484,8 +3484,8 @@
 	},
 	"78": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 180175,
+			"ungültig": 1697,
 			"parteien": {
 				"SPD": 40357,
 				"GRÜNE": 39846,
@@ -3508,8 +3508,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 181038,
+			"ungültig": 834,
 			"parteien": {
 				"SPD": 32978,
 				"GRÜNE": 35849,
@@ -3531,8 +3531,8 @@
 				"PDF": 301
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 181872,
+		"anzahl_berechtigte": 214757,
 		"bundesland_id": "11",
 		"bundesland_name": "Berlin",
 		"wahlkreis_id": "78",
@@ -3540,8 +3540,8 @@
 	},
 	"79": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 160968,
+			"ungültig": 1334,
 			"parteien": {
 				"SPD": 38183,
 				"GRÜNE": 38672,
@@ -3564,8 +3564,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 161543,
+			"ungültig": 759,
 			"parteien": {
 				"SPD": 28927,
 				"GRÜNE": 35121,
@@ -3587,8 +3587,8 @@
 				"PDF": 174
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 162302,
+		"anzahl_berechtigte": 195504,
 		"bundesland_id": "11",
 		"bundesland_name": "Berlin",
 		"wahlkreis_id": "79",
@@ -3596,8 +3596,8 @@
 	},
 	"80": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 185019,
+			"ungültig": 1795,
 			"parteien": {
 				"SPD": 37948,
 				"GRÜNE": 45632,
@@ -3621,8 +3621,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 185678,
+			"ungültig": 1136,
 			"parteien": {
 				"SPD": 32866,
 				"GRÜNE": 36894,
@@ -3645,8 +3645,8 @@
 				"THOMAS": 0
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 186814,
+		"anzahl_berechtigte": 229228,
 		"bundesland_id": "11",
 		"bundesland_name": "Berlin",
 		"wahlkreis_id": "80",
@@ -3654,8 +3654,8 @@
 	},
 	"81": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 144839,
+			"ungültig": 1396,
 			"parteien": {
 				"SPD": 27265,
 				"GRÜNE": 16137,
@@ -3679,8 +3679,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 145172,
+			"ungültig": 1063,
 			"parteien": {
 				"SPD": 22853,
 				"GRÜNE": 22260,
@@ -3703,8 +3703,8 @@
 				"PAPE": 0
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 146235,
+		"anzahl_berechtigte": 192506,
 		"bundesland_id": "11",
 		"bundesland_name": "Berlin",
 		"wahlkreis_id": "81",
@@ -3712,8 +3712,8 @@
 	},
 	"82": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 179040,
+			"ungültig": 1836,
 			"parteien": {
 				"SPD": 23516,
 				"GRÜNE": 54769,
@@ -3738,8 +3738,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 180140,
+			"ungültig": 736,
 			"parteien": {
 				"SPD": 24137,
 				"GRÜNE": 46622,
@@ -3763,8 +3763,8 @@
 				"HEIDER": 0
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 180876,
+		"anzahl_berechtigte": 218729,
 		"bundesland_id": "11",
 		"bundesland_name": "Berlin",
 		"wahlkreis_id": "82",
@@ -3772,8 +3772,8 @@
 	},
 	"83": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 168680,
+			"ungültig": 1133,
 			"parteien": {
 				"SPD": 14472,
 				"GRÜNE": 8081,
@@ -3796,8 +3796,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 168783,
+			"ungültig": 1030,
 			"parteien": {
 				"SPD": 21403,
 				"GRÜNE": 20226,
@@ -3819,8 +3819,8 @@
 				"PDF": 367
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 169813,
+		"anzahl_berechtigte": 206841,
 		"bundesland_id": "11",
 		"bundesland_name": "Berlin",
 		"wahlkreis_id": "83",
@@ -3828,8 +3828,8 @@
 	},
 	"84": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 148198,
+			"ungültig": 1287,
 			"parteien": {
 				"SPD": 12927,
 				"GRÜNE": 6089,
@@ -3852,8 +3852,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 148444,
+			"ungültig": 1041,
 			"parteien": {
 				"SPD": 16171,
 				"GRÜNE": 8911,
@@ -3875,8 +3875,8 @@
 				"PDF": 395
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 149485,
+		"anzahl_berechtigte": 195867,
 		"bundesland_id": "11",
 		"bundesland_name": "Berlin",
 		"wahlkreis_id": "84",
@@ -3884,8 +3884,8 @@
 	},
 	"85": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 154151,
+			"ungültig": 1273,
 			"parteien": {
 				"SPD": 13928,
 				"GRÜNE": 8109,
@@ -3908,8 +3908,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 154330,
+			"ungültig": 1094,
 			"parteien": {
 				"SPD": 18332,
 				"GRÜNE": 16698,
@@ -3931,8 +3931,8 @@
 				"PDF": 388
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 155424,
+		"anzahl_berechtigte": 196799,
 		"bundesland_id": "11",
 		"bundesland_name": "Berlin",
 		"wahlkreis_id": "85",
@@ -7569,7 +7569,7 @@
 			"gültig": 183000,
 			"ungültig": 932
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 183932,
 		"anzahl_berechtigte": 225020,
 		"bundesland_id": "14",
 		"bundesland_name": "Sachsen",
@@ -7615,7 +7615,7 @@
 			"gültig": 195243,
 			"ungültig": 737
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 195980,
 		"anzahl_berechtigte": 232750,
 		"bundesland_id": "14",
 		"bundesland_name": "Sachsen",
@@ -7874,8 +7874,8 @@
 	},
 	"158": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 183065,
+			"ungültig": 1857,
 			"parteien": {
 				"AfD": 53853,
 				"SPD": 21457,
@@ -7895,8 +7895,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 184076,
+			"ungültig": 846,
 			"parteien": {
 				"AFD": 50386,
 				"SPD": 18241,
@@ -7915,8 +7915,8 @@
 				"BSW": 15474
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 184922,
+		"anzahl_berechtigte": 225103,
 		"bundesland_id": "14",
 		"bundesland_name": "Sachsen",
 		"wahlkreis_id": "158",
@@ -7924,8 +7924,8 @@
 	},
 	"159": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 194778,
+			"ungültig": 1555,
 			"parteien": {
 				"AfD": 58238,
 				"SPD": 18245,
@@ -7945,8 +7945,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 195456,
+			"ungültig": 877,
 			"parteien": {
 				"AFD": 55900,
 				"SPD": 16601,
@@ -7965,8 +7965,8 @@
 				"BSW": 15249
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 196333,
+		"anzahl_berechtigte": 233483,
 		"bundesland_id": "14",
 		"bundesland_name": "Sachsen",
 		"wahlkreis_id": "159",
@@ -8062,7 +8062,7 @@
 			"gültig": 144229,
 			"ungültig": 692
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 144921,
 		"anzahl_berechtigte": 183295,
 		"bundesland_id": "14",
 		"bundesland_name": "Sachsen",
@@ -8305,7 +8305,7 @@
 			"gültig": 148712,
 			"ungültig": 1370
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 150082,
 		"anzahl_berechtigte": 180475,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8348,7 +8348,7 @@
 			"gültig": 173594,
 			"ungültig": 1571
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 175165,
 		"anzahl_berechtigte": 214132,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8391,7 +8391,7 @@
 			"gültig": 137188,
 			"ungültig": 1419
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 138607,
 		"anzahl_berechtigte": 167770,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8432,7 +8432,7 @@
 			"gültig": 152041,
 			"ungültig": 1548
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 153589,
 		"anzahl_berechtigte": 182420,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8477,7 +8477,7 @@
 			"gültig": 151385,
 			"ungültig": 967
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 152352,
 		"anzahl_berechtigte": 179872,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8519,7 +8519,7 @@
 			"gültig": 164676,
 			"ungültig": 1373
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 166049,
 		"anzahl_berechtigte": 203567,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8561,7 +8561,7 @@
 			"gültig": 177248,
 			"ungültig": 1408
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 178656,
 		"anzahl_berechtigte": 215142,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8605,7 +8605,7 @@
 			"gültig": 173678,
 			"ungültig": 1270
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 174948,
 		"anzahl_berechtigte": 206544,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8648,7 +8648,7 @@
 			"gültig": 145627,
 			"ungültig": 1287
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 146914,
 		"anzahl_berechtigte": 175443,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8690,7 +8690,7 @@
 			"gültig": 151704,
 			"ungültig": 1001
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 152705,
 		"anzahl_berechtigte": 178433,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8732,7 +8732,7 @@
 			"gültig": 148633,
 			"ungültig": 1163
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 149796,
 		"anzahl_berechtigte": 176870,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8774,7 +8774,7 @@
 			"gültig": 181581,
 			"ungültig": 1201
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 182782,
 		"anzahl_berechtigte": 217091,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8816,7 +8816,7 @@
 			"gültig": 147209,
 			"ungültig": 1006
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 148215,
 		"anzahl_berechtigte": 186038,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8858,7 +8858,7 @@
 			"gültig": 142260,
 			"ungültig": 1169
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 143429,
 		"anzahl_berechtigte": 175243,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8901,7 +8901,7 @@
 			"gültig": 164857,
 			"ungültig": 1028
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 165885,
 		"anzahl_berechtigte": 193390,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8945,7 +8945,7 @@
 			"gültig": 159020,
 			"ungültig": 1159
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 160179,
 		"anzahl_berechtigte": 202372,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -8991,7 +8991,7 @@
 			"gültig": 190432,
 			"ungültig": 1100
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 191532,
 		"anzahl_berechtigte": 230870,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -9034,7 +9034,7 @@
 			"gültig": 139427,
 			"ungültig": 1253
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 140680,
 		"anzahl_berechtigte": 172314,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -9075,7 +9075,7 @@
 			"gültig": 172965,
 			"ungültig": 1408
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 174373,
 		"anzahl_berechtigte": 218352,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -9120,7 +9120,7 @@
 			"gültig": 201734,
 			"ungültig": 1274
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 203008,
 		"anzahl_berechtigte": 239490,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -9162,7 +9162,7 @@
 			"gültig": 193214,
 			"ungültig": 1617
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 194831,
 		"anzahl_berechtigte": 230672,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -9204,7 +9204,7 @@
 			"gültig": 163647,
 			"ungültig": 1230
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 164877,
 		"anzahl_berechtigte": 195419,
 		"bundesland_id": "6",
 		"bundesland_name": "Hessen",
@@ -10194,8 +10194,8 @@
 	},
 	"211": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 136967,
+			"ungültig": 746,
 			"parteien": {
 				"CSU": 60164,
 				"SPD": 11870,
@@ -10217,8 +10217,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 137251,
+			"ungültig": 462,
 			"parteien": {
 				"CSU": 54392,
 				"SPD": 11493,
@@ -10239,8 +10239,8 @@
 				"BSW": 4561
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 137713,
+		"anzahl_berechtigte": 168462,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "211",
@@ -10248,8 +10248,8 @@
 	},
 	"212": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 174443,
+			"ungültig": 720,
 			"parteien": {
 				"CSU": 80087,
 				"SPD": 17609,
@@ -10272,8 +10272,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 174731,
+			"ungültig": 432,
 			"parteien": {
 				"CSU": 70010,
 				"SPD": 17632,
@@ -10295,8 +10295,8 @@
 				"EB:WINTER": 0
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 175163,
+		"anzahl_berechtigte": 201029,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "212",
@@ -10304,8 +10304,8 @@
 	},
 	"213": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 204067,
+			"ungültig": 913,
 			"parteien": {
 				"CSU": 88025,
 				"SPD": 23356,
@@ -10327,8 +10327,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 204429,
+			"ungültig": 551,
 			"parteien": {
 				"CSU": 78622,
 				"SPD": 20233,
@@ -10349,8 +10349,8 @@
 				"BSW": 5836
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 204980,
+		"anzahl_berechtigte": 238829,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "213",
@@ -10358,8 +10358,8 @@
 	},
 	"214": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 198599,
+			"ungültig": 799,
 			"parteien": {
 				"CSU": 84651,
 				"SPD": 29795,
@@ -10381,8 +10381,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 198896,
+			"ungültig": 502,
 			"parteien": {
 				"CSU": 78930,
 				"SPD": 23133,
@@ -10403,8 +10403,8 @@
 				"BSW": 5339
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 199398,
+		"anzahl_berechtigte": 230710,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "214",
@@ -10412,8 +10412,8 @@
 	},
 	"215": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 195080,
+			"ungültig": 956,
 			"parteien": {
 				"CSU": 91837,
 				"SPD": 21555,
@@ -10435,8 +10435,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 195332,
+			"ungültig": 704,
 			"parteien": {
 				"CSU": 78647,
 				"SPD": 19812,
@@ -10457,8 +10457,8 @@
 				"BSW": 5869
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 196036,
+		"anzahl_berechtigte": 237848,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "215",
@@ -10466,8 +10466,8 @@
 	},
 	"216": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 184655,
+			"ungültig": 976,
 			"parteien": {
 				"CSU": 59875,
 				"SPD": 36495,
@@ -10489,8 +10489,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 185147,
+			"ungültig": 484,
 			"parteien": {
 				"CSU": 53509,
 				"SPD": 28469,
@@ -10520,8 +10520,8 @@
 	},
 	"217": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 204003,
+			"ungültig": 1037,
 			"parteien": {
 				"CSU": 74027,
 				"SPD": 31546,
@@ -10543,8 +10543,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 204493,
+			"ungültig": 547,
 			"parteien": {
 				"CSU": 63562,
 				"SPD": 30960,
@@ -10574,8 +10574,8 @@
 	},
 	"218": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 180632,
+			"ungültig": 623,
 			"parteien": {
 				"CSU": 54859,
 				"SPD": 26461,
@@ -10597,8 +10597,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 180809,
+			"ungültig": 446,
 			"parteien": {
 				"CSU": 51867,
 				"SPD": 28049,
@@ -10628,8 +10628,8 @@
 	},
 	"219": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 208136,
+			"ungültig": 2726,
 			"parteien": {
 				"CSU": 72200,
 				"SPD": 33018,
@@ -10653,8 +10653,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 210467,
+			"ungültig": 395,
 			"parteien": {
 				"CSU": 60504,
 				"SPD": 32311,
@@ -10686,8 +10686,8 @@
 	},
 	"220": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 204759,
+			"ungültig": 798,
 			"parteien": {
 				"CSU": 88197,
 				"SPD": 27304,
@@ -10709,8 +10709,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 205093,
+			"ungültig": 464,
 			"parteien": {
 				"CSU": 80084,
 				"SPD": 26648,
@@ -10731,8 +10731,8 @@
 				"BSW": 5268
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 205557,
+		"anzahl_berechtigte": 233438,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "220",
@@ -10740,8 +10740,8 @@
 	},
 	"221": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 200689,
+			"ungültig": 895,
 			"parteien": {
 				"CSU": 82023,
 				"SPD": 17916,
@@ -10763,8 +10763,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 200985,
+			"ungültig": 599,
 			"parteien": {
 				"CSU": 75533,
 				"SPD": 19272,
@@ -10785,8 +10785,8 @@
 				"BSW": 6090
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 201584,
+		"anzahl_berechtigte": 238910,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "221",
@@ -10794,8 +10794,8 @@
 	},
 	"222": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 141146,
+			"ungültig": 719,
 			"parteien": {
 				"CSU": 65481,
 				"SPD": 10901,
@@ -10817,8 +10817,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 141402,
+			"ungültig": 463,
 			"parteien": {
 				"CSU": 59236,
 				"SPD": 12829,
@@ -10839,8 +10839,8 @@
 				"BSW": 3866
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 141865,
+		"anzahl_berechtigte": 165895,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "222",
@@ -10848,8 +10848,8 @@
 	},
 	"223": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 187546,
+			"ungültig": 774,
 			"parteien": {
 				"CSU": 80441,
 				"SPD": 24177,
@@ -10871,8 +10871,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 187763,
+			"ungültig": 557,
 			"parteien": {
 				"CSU": 72641,
 				"SPD": 21606,
@@ -10893,8 +10893,8 @@
 				"BSW": 5031
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 188320,
+		"anzahl_berechtigte": 215662,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "223",
@@ -10902,8 +10902,8 @@
 	},
 	"224": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 171750,
+			"ungültig": 822,
 			"parteien": {
 				"CSU": 80507,
 				"SPD": 20845,
@@ -10925,8 +10925,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 172024,
+			"ungültig": 548,
 			"parteien": {
 				"CSU": 66829,
 				"SPD": 16925,
@@ -10947,8 +10947,8 @@
 				"BSW": 5906
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 172572,
+		"anzahl_berechtigte": 209020,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "224",
@@ -10956,8 +10956,8 @@
 	},
 	"225": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 142916,
+			"ungültig": 782,
 			"parteien": {
 				"CSU": 65409,
 				"SPD": 13489,
@@ -10979,8 +10979,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 143330,
+			"ungültig": 368,
 			"parteien": {
 				"CSU": 59686,
 				"SPD": 13888,
@@ -11001,8 +11001,8 @@
 				"BSW": 4032
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 143698,
+		"anzahl_berechtigte": 168111,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "225",
@@ -11010,8 +11010,8 @@
 	},
 	"226": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 134810,
+			"ungültig": 675,
 			"parteien": {
 				"CSU": 58347,
 				"SPD": 12156,
@@ -11033,8 +11033,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 135137,
+			"ungültig": 348,
 			"parteien": {
 				"CSU": 51953,
 				"SPD": 10913,
@@ -11055,8 +11055,8 @@
 				"BSW": 3992
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 135485,
+		"anzahl_berechtigte": 165283,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "226",
@@ -11064,8 +11064,8 @@
 	},
 	"227": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 207304,
+			"ungültig": 828,
 			"parteien": {
 				"CSU": 70986,
 				"SPD": 18800,
@@ -11087,8 +11087,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 207547,
+			"ungültig": 585,
 			"parteien": {
 				"CSU": 75202,
 				"SPD": 19631,
@@ -11109,8 +11109,8 @@
 				"BSW": 6097
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 208132,
+		"anzahl_berechtigte": 247907,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "227",
@@ -11118,8 +11118,8 @@
 	},
 	"228": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 143520,
+			"ungültig": 595,
 			"parteien": {
 				"CSU": 58538,
 				"SPD": 20121,
@@ -11141,8 +11141,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 143712,
+			"ungültig": 403,
 			"parteien": {
 				"CSU": 55447,
 				"SPD": 13904,
@@ -11163,8 +11163,8 @@
 				"BSW": 4906
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 144115,
+		"anzahl_berechtigte": 176118,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "228",
@@ -11172,8 +11172,8 @@
 	},
 	"229": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 142070,
+			"ungültig": 639,
 			"parteien": {
 				"CSU": 49582,
 				"SPD": 9947,
@@ -11195,8 +11195,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 142326,
+			"ungültig": 383,
 			"parteien": {
 				"CSU": 54710,
 				"SPD": 10899,
@@ -11217,8 +11217,8 @@
 				"BSW": 4151
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 142709,
+		"anzahl_berechtigte": 172941,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "229",
@@ -11226,8 +11226,8 @@
 	},
 	"230": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 140943,
+			"ungültig": 597,
 			"parteien": {
 				"CSU": 65291,
 				"SPD": 11132,
@@ -11249,8 +11249,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 141126,
+			"ungültig": 414,
 			"parteien": {
 				"CSU": 55428,
 				"SPD": 11310,
@@ -11271,8 +11271,8 @@
 				"BSW": 4141
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 141540,
+		"anzahl_berechtigte": 172562,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "230",
@@ -11280,8 +11280,8 @@
 	},
 	"231": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 181133,
+			"ungültig": 829,
 			"parteien": {
 				"CSU": 80626,
 				"SPD": 19705,
@@ -11303,8 +11303,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 181326,
+			"ungültig": 636,
 			"parteien": {
 				"CSU": 72672,
 				"SPD": 19339,
@@ -11325,8 +11325,8 @@
 				"BSW": 5083
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 181962,
+		"anzahl_berechtigte": 214379,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "231",
@@ -11334,8 +11334,8 @@
 	},
 	"232": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 211967,
+			"ungültig": 729,
 			"parteien": {
 				"CSU": 81105,
 				"SPD": 27626,
@@ -11357,8 +11357,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 212142,
+			"ungültig": 554,
 			"parteien": {
 				"CSU": 75682,
 				"SPD": 23607,
@@ -11379,8 +11379,8 @@
 				"BSW": 6268
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 212696,
+		"anzahl_berechtigte": 250984,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "232",
@@ -11388,8 +11388,8 @@
 	},
 	"233": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 184149,
+			"ungültig": 915,
 			"parteien": {
 				"CSU": 77716,
 				"SPD": 25536,
@@ -11411,8 +11411,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 184507,
+			"ungültig": 557,
 			"parteien": {
 				"CSU": 72443,
 				"SPD": 17112,
@@ -11433,8 +11433,8 @@
 				"BSW": 4543
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 185064,
+		"anzahl_berechtigte": 220942,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "233",
@@ -11442,8 +11442,8 @@
 	},
 	"234": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 136146,
+			"ungültig": 641,
 			"parteien": {
 				"CSU": 59268,
 				"SPD": 16294,
@@ -11466,8 +11466,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 136363,
+			"ungültig": 424,
 			"parteien": {
 				"CSU": 55094,
 				"SPD": 15930,
@@ -11489,8 +11489,8 @@
 				"EB:DIPPEL": 0
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 136787,
+		"anzahl_berechtigte": 162689,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "234",
@@ -11498,8 +11498,8 @@
 	},
 	"235": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 154868,
+			"ungültig": 661,
 			"parteien": {
 				"CSU": 61044,
 				"SPD": 22569,
@@ -11521,8 +11521,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 155058,
+			"ungültig": 471,
 			"parteien": {
 				"CSU": 57362,
 				"SPD": 17553,
@@ -11543,8 +11543,8 @@
 				"BSW": 4566
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 155529,
+		"anzahl_berechtigte": 181281,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "235",
@@ -11552,8 +11552,8 @@
 	},
 	"236": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 133465,
+			"ungültig": 602,
 			"parteien": {
 				"CSU": 59366,
 				"SPD": 19031,
@@ -11575,8 +11575,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 133682,
+			"ungültig": 385,
 			"parteien": {
 				"CSU": 51466,
 				"SPD": 16403,
@@ -11597,8 +11597,8 @@
 				"BSW": 3980
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 134067,
+		"anzahl_berechtigte": 159361,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "236",
@@ -11606,8 +11606,8 @@
 	},
 	"237": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 128177,
+			"ungültig": 592,
 			"parteien": {
 				"CSU": 53725,
 				"SPD": 18425,
@@ -11629,8 +11629,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 128303,
+			"ungültig": 466,
 			"parteien": {
 				"CSU": 47710,
 				"SPD": 18401,
@@ -11651,8 +11651,8 @@
 				"BSW": 4332
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 128769,
+		"anzahl_berechtigte": 153429,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "237",
@@ -11660,8 +11660,8 @@
 	},
 	"238": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 128662,
+			"ungültig": 762,
 			"parteien": {
 				"CSU": 51926,
 				"SPD": 22966,
@@ -11683,8 +11683,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 129002,
+			"ungültig": 422,
 			"parteien": {
 				"CSU": 48966,
 				"SPD": 17421,
@@ -11705,8 +11705,8 @@
 				"BSW": 4640
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 129424,
+		"anzahl_berechtigte": 157915,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "238",
@@ -11714,8 +11714,8 @@
 	},
 	"239": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 140765,
+			"ungültig": 760,
 			"parteien": {
 				"CSU": 69446,
 				"SPD": 13210,
@@ -11737,8 +11737,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 141075,
+			"ungültig": 450,
 			"parteien": {
 				"CSU": 56800,
 				"SPD": 15327,
@@ -11759,8 +11759,8 @@
 				"BSW": 4186
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 141525,
+		"anzahl_berechtigte": 165464,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "239",
@@ -11768,8 +11768,8 @@
 	},
 	"240": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 202816,
+			"ungültig": 1008,
 			"parteien": {
 				"CSU": 84723,
 				"SPD": 26718,
@@ -11791,8 +11791,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 203187,
+			"ungültig": 637,
 			"parteien": {
 				"CSU": 75749,
 				"SPD": 24617,
@@ -11813,8 +11813,8 @@
 				"BSW": 7402
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 203824,
+		"anzahl_berechtigte": 241618,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "240",
@@ -11822,8 +11822,8 @@
 	},
 	"241": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 161420,
+			"ungültig": 844,
 			"parteien": {
 				"CSU": 57971,
 				"SPD": 28003,
@@ -11845,8 +11845,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 161803,
+			"ungültig": 461,
 			"parteien": {
 				"CSU": 54594,
 				"SPD": 22446,
@@ -11867,8 +11867,8 @@
 				"BSW": 4796
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 162264,
+		"anzahl_berechtigte": 186938,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "241",
@@ -11876,8 +11876,8 @@
 	},
 	"242": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 207133,
+			"ungültig": 1066,
 			"parteien": {
 				"CSU": 77512,
 				"SPD": 36983,
@@ -11899,8 +11899,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 207494,
+			"ungültig": 705,
 			"parteien": {
 				"CSU": 71313,
 				"SPD": 29396,
@@ -11921,8 +11921,8 @@
 				"BSW": 7396
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 208199,
+		"anzahl_berechtigte": 248612,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "242",
@@ -11930,8 +11930,8 @@
 	},
 	"243": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 150494,
+			"ungültig": 878,
 			"parteien": {
 				"CSU": 45424,
 				"SPD": 26738,
@@ -11953,8 +11953,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 150754,
+			"ungültig": 618,
 			"parteien": {
 				"CSU": 41088,
 				"SPD": 23567,
@@ -11975,8 +11975,8 @@
 				"BSW": 5626
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 151372,
+		"anzahl_berechtigte": 187179,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "243",
@@ -11984,8 +11984,8 @@
 	},
 	"244": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 135854,
+			"ungültig": 1006,
 			"parteien": {
 				"CSU": 48913,
 				"SPD": 24213,
@@ -12007,8 +12007,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 136144,
+			"ungültig": 716,
 			"parteien": {
 				"CSU": 43913,
 				"SPD": 20814,
@@ -12029,8 +12029,8 @@
 				"BSW": 6073
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 136860,
+		"anzahl_berechtigte": 174758,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "244",
@@ -12038,8 +12038,8 @@
 	},
 	"245": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 196205,
+			"ungültig": 957,
 			"parteien": {
 				"CSU": 84151,
 				"SPD": 25561,
@@ -12062,8 +12062,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 196567,
+			"ungültig": 595,
 			"parteien": {
 				"CSU": 74215,
 				"SPD": 26325,
@@ -12085,8 +12085,8 @@
 				"STIMME FÜR VOLKSENTSCHEIDE": 0
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 197162,
+		"anzahl_berechtigte": 227696,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "245",
@@ -12094,8 +12094,8 @@
 	},
 	"246": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 154337,
+			"ungültig": 956,
 			"parteien": {
 				"CSU": 67597,
 				"SPD": 19006,
@@ -12118,8 +12118,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 154583,
+			"ungültig": 710,
 			"parteien": {
 				"CSU": 58810,
 				"SPD": 19696,
@@ -12141,8 +12141,8 @@
 				"EB:HAMID": 0
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 155293,
+		"anzahl_berechtigte": 181144,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "246",
@@ -12150,8 +12150,8 @@
 	},
 	"247": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 172919,
+			"ungültig": 7608,
 			"parteien": {
 				"CSU": 87357,
 				"SPD": 25127,
@@ -12173,8 +12173,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 179830,
+			"ungültig": 697,
 			"parteien": {
 				"CSU": 75101,
 				"SPD": 17374,
@@ -12195,8 +12195,8 @@
 				"BSW": 5266
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 180527,
+		"anzahl_berechtigte": 210364,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "247",
@@ -12204,8 +12204,8 @@
 	},
 	"248": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 164539,
+			"ungültig": 924,
 			"parteien": {
 				"CSU": 74896,
 				"SPD": 25806,
@@ -12227,8 +12227,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 164886,
+			"ungültig": 577,
 			"parteien": {
 				"CSU": 67784,
 				"SPD": 20553,
@@ -12249,8 +12249,8 @@
 				"BSW": 5198
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 165463,
+		"anzahl_berechtigte": 192185,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "248",
@@ -12258,8 +12258,8 @@
 	},
 	"249": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 162497,
+			"ungültig": 949,
 			"parteien": {
 				"CSU": 70455,
 				"SPD": 21834,
@@ -12281,8 +12281,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 162846,
+			"ungültig": 600,
 			"parteien": {
 				"CSU": 64166,
 				"SPD": 18706,
@@ -12303,8 +12303,8 @@
 				"BSW": 5290
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 163446,
+		"anzahl_berechtigte": 194125,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "249",
@@ -12312,8 +12312,8 @@
 	},
 	"250": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 191416,
+			"ungültig": 990,
 			"parteien": {
 				"CSU": 74917,
 				"SPD": 26349,
@@ -12335,8 +12335,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 191868,
+			"ungültig": 538,
 			"parteien": {
 				"CSU": 68679,
 				"SPD": 25841,
@@ -12357,8 +12357,8 @@
 				"BSW": 5321
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 192406,
+		"anzahl_berechtigte": 222633,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "250",
@@ -12366,8 +12366,8 @@
 	},
 	"251": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 147299,
+			"ungültig": 798,
 			"parteien": {
 				"CSU": 45742,
 				"SPD": 20701,
@@ -12389,8 +12389,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 147555,
+			"ungültig": 542,
 			"parteien": {
 				"CSU": 41916,
 				"SPD": 19791,
@@ -12411,8 +12411,8 @@
 				"BSW": 5830
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 148097,
+		"anzahl_berechtigte": 186448,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "251",
@@ -12420,8 +12420,8 @@
 	},
 	"252": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 198616,
+			"ungültig": 948,
 			"parteien": {
 				"CSU": 88388,
 				"SPD": 25217,
@@ -12443,8 +12443,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 198958,
+			"ungültig": 606,
 			"parteien": {
 				"CSU": 79060,
 				"SPD": 21263,
@@ -12465,8 +12465,8 @@
 				"BSW": 5854
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 199564,
+		"anzahl_berechtigte": 232095,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "252",
@@ -12474,8 +12474,8 @@
 	},
 	"253": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 162644,
+			"ungültig": 646,
 			"parteien": {
 				"CSU": 73296,
 				"SPD": 19720,
@@ -12497,8 +12497,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 162759,
+			"ungültig": 531,
 			"parteien": {
 				"CSU": 67118,
 				"SPD": 15226,
@@ -12519,8 +12519,8 @@
 				"BSW": 4968
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 163290,
+		"anzahl_berechtigte": 196120,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "253",
@@ -12528,8 +12528,8 @@
 	},
 	"254": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 177392,
+			"ungültig": 1043,
 			"parteien": {
 				"CSU": 75359,
 				"SPD": 18762,
@@ -12551,8 +12551,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 177791,
+			"ungültig": 644,
 			"parteien": {
 				"CSU": 65850,
 				"SPD": 19105,
@@ -12573,8 +12573,8 @@
 				"BSW": 6554
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 178435,
+		"anzahl_berechtigte": 215191,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "254",
@@ -12582,8 +12582,8 @@
 	},
 	"255": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 133601,
+			"ungültig": 948,
 			"parteien": {
 				"CSU": 58477,
 				"SPD": 12674,
@@ -12605,8 +12605,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 134130,
+			"ungültig": 419,
 			"parteien": {
 				"CSU": 52441,
 				"SPD": 12136,
@@ -12627,8 +12627,8 @@
 				"BSW": 4063
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 134549,
+		"anzahl_berechtigte": 159352,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "255",
@@ -12636,8 +12636,8 @@
 	},
 	"256": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 190709,
+			"ungültig": 999,
 			"parteien": {
 				"CSU": 70228,
 				"SPD": 16061,
@@ -12661,8 +12661,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 190988,
+			"ungültig": 720,
 			"parteien": {
 				"CSU": 72528,
 				"SPD": 20116,
@@ -12685,8 +12685,8 @@
 				"EB:WENZ": 0
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 191708,
+		"anzahl_berechtigte": 227116,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "256",
@@ -12694,8 +12694,8 @@
 	},
 	"257": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 135925,
+			"ungültig": 913,
 			"parteien": {
 				"CSU": 61899,
 				"SPD": 13508,
@@ -12717,8 +12717,8 @@
 			}
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
+			"gültig": 136417,
+			"ungültig": 421,
 			"parteien": {
 				"CSU": 54705,
 				"SPD": 12693,
@@ -12739,8 +12739,8 @@
 				"BSW": 4291
 			}
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 136838,
+		"anzahl_berechtigte": 161048,
 		"bundesland_id": "9",
 		"bundesland_name": "Bayern",
 		"wahlkreis_id": "257",
@@ -12877,7 +12877,7 @@
 			"gültig": 204020,
 			"ungültig": 926
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 204946,
 		"anzahl_berechtigte": 243100,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -12922,7 +12922,7 @@
 			"gültig": 138802,
 			"ungültig": 584
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 139386,
 		"anzahl_berechtigte": 165367,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -12965,7 +12965,7 @@
 			"gültig": 172431,
 			"ungültig": 761
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 173192,
 		"anzahl_berechtigte": 203455,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13011,7 +13011,7 @@
 			"gültig": 143045,
 			"ungültig": 832
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 143877,
 		"anzahl_berechtigte": 174712,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13055,7 +13055,7 @@
 			"gültig": 184099,
 			"ungültig": 819
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 184918,
 		"anzahl_berechtigte": 219691,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13101,7 +13101,7 @@
 			"gültig": 179166,
 			"ungültig": 715
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 179881,
 		"anzahl_berechtigte": 212465,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13147,7 +13147,7 @@
 			"gültig": 195017,
 			"ungültig": 873
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 195890,
 		"anzahl_berechtigte": 228598,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13194,7 +13194,7 @@
 			"gültig": 193457,
 			"ungültig": 1219
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 194676,
 		"anzahl_berechtigte": 238592,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13240,7 +13240,7 @@
 			"gültig": 185017,
 			"ungültig": 1091
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 186108,
 		"anzahl_berechtigte": 224446,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13285,7 +13285,7 @@
 			"gültig": 145691,
 			"ungültig": 724
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 146415,
 		"anzahl_berechtigte": 175503,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13330,7 +13330,7 @@
 			"gültig": 179564,
 			"ungültig": 999
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 180563,
 		"anzahl_berechtigte": 217574,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13376,7 +13376,7 @@
 			"gültig": 167845,
 			"ungültig": 711
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 168556,
 		"anzahl_berechtigte": 202812,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13421,7 +13421,7 @@
 			"gültig": 175405,
 			"ungültig": 854
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 176259,
 		"anzahl_berechtigte": 207276,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13465,7 +13465,7 @@
 			"gültig": 162936,
 			"ungültig": 1037
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 163973,
 		"anzahl_berechtigte": 200964,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13511,7 +13511,7 @@
 			"gültig": 185741,
 			"ungültig": 752
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 186493,
 		"anzahl_berechtigte": 218284,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13557,7 +13557,7 @@
 			"gültig": 152277,
 			"ungültig": 869
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 153146,
 		"anzahl_berechtigte": 195336,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13601,7 +13601,7 @@
 			"gültig": 170343,
 			"ungültig": 1072
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 171415,
 		"anzahl_berechtigte": 206482,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13645,7 +13645,7 @@
 			"gültig": 163014,
 			"ungültig": 884
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 163898,
 		"anzahl_berechtigte": 195510,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13689,7 +13689,7 @@
 			"gültig": 161471,
 			"ungültig": 950
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 162421,
 		"anzahl_berechtigte": 194216,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13731,7 +13731,7 @@
 			"gültig": 173341,
 			"ungültig": 980
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 174321,
 		"anzahl_berechtigte": 212982,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13778,7 +13778,7 @@
 			"gültig": 162822,
 			"ungültig": 860
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 163682,
 		"anzahl_berechtigte": 197556,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13824,7 +13824,7 @@
 			"gültig": 195270,
 			"ungültig": 797
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 196067,
 		"anzahl_berechtigte": 228338,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13868,7 +13868,7 @@
 			"gültig": 186786,
 			"ungültig": 1023
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 187809,
 		"anzahl_berechtigte": 229946,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13911,7 +13911,7 @@
 			"gültig": 181318,
 			"ungültig": 993
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 182311,
 		"anzahl_berechtigte": 218790,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13955,7 +13955,7 @@
 			"gültig": 166802,
 			"ungültig": 1031
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 167833,
 		"anzahl_berechtigte": 204805,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -13999,7 +13999,7 @@
 			"gültig": 160261,
 			"ungültig": 1145
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 161406,
 		"anzahl_berechtigte": 196201,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -14044,7 +14044,7 @@
 			"gültig": 130236,
 			"ungültig": 899
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 131135,
 		"anzahl_berechtigte": 160376,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -14089,7 +14089,7 @@
 			"gültig": 169951,
 			"ungültig": 789
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 170740,
 		"anzahl_berechtigte": 207094,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -14134,7 +14134,7 @@
 			"gültig": 144671,
 			"ungültig": 712
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 145383,
 		"anzahl_berechtigte": 176262,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -14179,7 +14179,7 @@
 			"gültig": 164654,
 			"ungültig": 812
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 165466,
 		"anzahl_berechtigte": 197827,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -14225,7 +14225,7 @@
 			"gültig": 171482,
 			"ungültig": 702
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 172184,
 		"anzahl_berechtigte": 199799,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -14272,7 +14272,7 @@
 			"gültig": 189141,
 			"ungültig": 879
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 190020,
 		"anzahl_berechtigte": 223539,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -14317,7 +14317,7 @@
 			"gültig": 143746,
 			"ungültig": 784
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 144530,
 		"anzahl_berechtigte": 169789,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -14362,7 +14362,7 @@
 			"gültig": 144362,
 			"ungültig": 753
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 145115,
 		"anzahl_berechtigte": 173329,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -14406,7 +14406,7 @@
 			"gültig": 157236,
 			"ungültig": 746
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 157982,
 		"anzahl_berechtigte": 188225,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -14451,7 +14451,7 @@
 			"gültig": 147931,
 			"ungültig": 857
 		},
-		"anzahl_wähler": 0,
+		"anzahl_wähler": 148788,
 		"anzahl_berechtigte": 180742,
 		"bundesland_id": "8",
 		"bundesland_name": "Baden-Württemberg",
@@ -14460,45 +14460,40 @@
 	},
 	"296": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
 			"parteien": {
-				"SPD": 47529,
-				"CDU": 36390,
-				"FDP": 5280,
-				"AfD": 30329,
-				"Die Linke": 12423,
-				"Tierschutzpartei": 0,
-				"FREIE WÄHLER": 3524,
-				"Volt": 0,
-				"PIRATEN": 0,
-				"MLPD": 553,
-				"BÜNDNIS DEUTSCHLAND": 0,
-				"GRÜNE": 10868,
-				"BSW": 0
-			}
+				"Ortleb, SPD": 47772,
+				"Brück, CDU": 36514,
+				"König, FDP": 5305,
+				"Gamanov, AfD": 30422,
+				"Pies, Die Linke": 12484,
+				"Schlote, FREIE WÄHLER": 3532,
+				"Tickert, MLPD": 556,
+				"Dillschneider, GRÜNE": 10931
+			},
+			"gültig": 147516,
+			"ungültig": 1852
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
 			"parteien": {
-				"SPD": 32526,
-				"CDU": 33745,
-				"FDP": 6455,
-				"AFD": 29591,
-				"DIE LINKE": 14566,
-				"TIERSCHUTZPARTEI": 2998,
-				"FREIE WÄHLER": 1457,
-				"VOLT": 1217,
-				"PIRATEN": 468,
-				"MLPD": 133,
-				"BÜNDNIS DEUTSCHLAND": 374,
-				"GRÜNE": 14614,
-				"BSW": 9342
-			}
+				"SPD": 32650,
+				"CDU": 33860,
+				"FDP": 6488,
+				"AFD": 29681,
+				"DIE LINKE": 14661,
+				"TIERSCHUTZPARTEI": 3006,
+				"FREIE WÄHLER": 1470,
+				"VOLT": 1224,
+				"PIRATEN": 470,
+				"MLPD": 134,
+				"BÜNDNIS DEUTSCHLAND": 376,
+				"GRÜNE": 14721,
+				"BSW": 9378
+			},
+			"gültig": 148119,
+			"ungültig": 1249
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 149368,
+		"anzahl_berechtigte": 187345,
 		"bundesland_id": "10",
 		"bundesland_name": "Saarland",
 		"wahlkreis_id": "296",
@@ -14506,45 +14501,39 @@
 	},
 	"297": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
 			"parteien": {
-				"SPD": 46006,
-				"CDU": 51702,
-				"FDP": 5260,
-				"AfD": 35619,
-				"Die Linke": 10902,
-				"Tierschutzpartei": 0,
-				"FREIE WÄHLER": 5170,
-				"Volt": 0,
-				"PIRATEN": 0,
-				"MLPD": 0,
-				"BÜNDNIS DEUTSCHLAND": 0,
-				"GRÜNE": 7726,
-				"BSW": 0
-			}
+				"Maaß, SPD": 46008,
+				"Hoffmann, CDU": 51704,
+				"Bierbrauer-Haupenthal, FDP": 5260,
+				"Becker, AfD": 35621,
+				"Michely, Die Linke": 10903,
+				"Hoffmann, FREIE WÄHLER": 5170,
+				"Morbe, GRÜNE": 7726
+			},
+			"gültig": 162392,
+			"ungültig": 2373
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
 			"parteien": {
-				"SPD": 34687,
-				"CDU": 46087,
+				"SPD": 34688,
+				"CDU": 46089,
 				"FDP": 7259,
-				"AFD": 35420,
+				"AFD": 35421,
 				"DIE LINKE": 11036,
 				"TIERSCHUTZPARTEI": 3333,
 				"FREIE WÄHLER": 2170,
 				"VOLT": 1000,
-				"PIRATEN": 469,
+				"PIRATEN": 463,
 				"MLPD": 55,
 				"BÜNDNIS DEUTSCHLAND": 384,
-				"GRÜNE": 10185,
-				"BSW": 11041
-			}
+				"GRÜNE": 10190,
+				"BSW": 11043
+			},
+			"gültig": 163131,
+			"ungültig": 1634
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 164765,
+		"anzahl_berechtigte": 198307,
 		"bundesland_id": "10",
 		"bundesland_name": "Saarland",
 		"wahlkreis_id": "297",
@@ -14552,45 +14541,39 @@
 	},
 	"298": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
 			"parteien": {
-				"SPD": 40409,
-				"CDU": 47870,
-				"FDP": 5363,
-				"AfD": 29033,
-				"Die Linke": 8133,
-				"Tierschutzpartei": 0,
-				"FREIE WÄHLER": 5160,
-				"Volt": 0,
-				"PIRATEN": 0,
-				"MLPD": 0,
-				"BÜNDNIS DEUTSCHLAND": 0,
-				"GRÜNE": 5341,
-				"BSW": 0
-			}
+				"Petry, SPD": 40408,
+				"Theis, CDU": 47875,
+				"Luksic, FDP": 5361,
+				"Klesmann, AfD": 29038,
+				"Scheit, Die Linke": 8133,
+				"Schmitt, FREIE WÄHLER": 5166,
+				"Bonenberger, GRÜNE": 5342
+			},
+			"gültig": 141323,
+			"ungültig": 1858
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
 			"parteien": {
-				"SPD": 31470,
-				"CDU": 42958,
-				"FDP": 5753,
-				"AFD": 29390,
-				"DIE LINKE": 8583,
-				"TIERSCHUTZPARTEI": 2892,
-				"FREIE WÄHLER": 2322,
-				"VOLT": 688,
-				"PIRATEN": 409,
+				"SPD": 31468,
+				"CDU": 42957,
+				"FDP": 5755,
+				"AFD": 29391,
+				"DIE LINKE": 8576,
+				"TIERSCHUTZPARTEI": 2900,
+				"FREIE WÄHLER": 2328,
+				"VOLT": 687,
+				"PIRATEN": 410,
 				"MLPD": 47,
-				"BÜNDNIS DEUTSCHLAND": 363,
-				"GRÜNE": 8744,
-				"BSW": 8118
-			}
+				"BÜNDNIS DEUTSCHLAND": 365,
+				"GRÜNE": 8801,
+				"BSW": 8120
+			},
+			"gültig": 141805,
+			"ungültig": 1376
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 143181,
+		"anzahl_berechtigte": 168073,
 		"bundesland_id": "10",
 		"bundesland_name": "Saarland",
 		"wahlkreis_id": "298",
@@ -14598,45 +14581,39 @@
 	},
 	"299": {
 		"erststimmen": {
-			"gültig": 0,
-			"ungültig": 0,
 			"parteien": {
-				"SPD": 44560,
-				"CDU": 40910,
-				"FDP": 4685,
-				"AfD": 34096,
-				"Die Linke": 9695,
-				"Tierschutzpartei": 0,
-				"FREIE WÄHLER": 5591,
-				"Volt": 0,
-				"PIRATEN": 0,
-				"MLPD": 0,
-				"BÜNDNIS DEUTSCHLAND": 0,
-				"GRÜNE": 6479,
-				"BSW": 0
-			}
+				"Limbacher, SPD": 44557,
+				"Uhl, CDU": 40910,
+				"Dr. Kieser, FDP": 4685,
+				"Shvydkyi, AfD": 34096,
+				"Dr. Arndt, Die Linke": 9695,
+				"Kammerer, FREIE WÄHLER": 5590,
+				"De Marino, GRÜNE": 6478
+			},
+			"gültig": 146011,
+			"ungültig": 1968
 		},
 		"zweitstimmen": {
-			"gültig": 0,
-			"ungültig": 0,
 			"parteien": {
-				"SPD": 32333,
-				"CDU": 38206,
-				"FDP": 6222,
-				"AFD": 34800,
-				"DIE LINKE": 9813,
+				"SPD": 32330,
+				"CDU": 38207,
+				"FDP": 6223,
+				"AFD": 34801,
+				"DIE LINKE": 9807,
 				"TIERSCHUTZPARTEI": 3024,
-				"FREIE WÄHLER": 2504,
+				"FREIE WÄHLER": 2508,
 				"VOLT": 809,
 				"PIRATEN": 410,
 				"MLPD": 68,
-				"BÜNDNIS DEUTSCHLAND": 363,
-				"GRÜNE": 9652,
-				"BSW": 8459
-			}
+				"BÜNDNIS DEUTSCHLAND": 362,
+				"GRÜNE": 9659,
+				"BSW": 8460
+			},
+			"gültig": 146668,
+			"ungültig": 1311
 		},
-		"anzahl_wähler": 0,
-		"anzahl_berechtigte": 0,
+		"anzahl_wähler": 147979,
+		"anzahl_berechtigte": 180479,
 		"bundesland_id": "10",
 		"bundesland_name": "Saarland",
 		"wahlkreis_id": "299",

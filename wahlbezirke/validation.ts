@@ -1,6 +1,6 @@
-import { Bundeswahlleiter } from "../bundeswahlleiter/read";
+import { getBundeswahlleiterDaten } from "../bundeswahlleiter/read";
 import { defaultResult, type ResultType } from "../wahlkreise/scrape";
-import { wahlkreiseBundesland } from "../wahlkreise/wahlkreise";
+import { wahlkreiseBundesland, wahlkreiseNamen } from "../wahlkreise/wahlkreise";
 import { cleanGemeindeName } from "./gemeinden";
 import { getIdFromResult } from "./wahlbezirke";
 import fs from "fs";
@@ -44,8 +44,11 @@ wahlbezirke.forEach((x, i) => {
 	}
 });
 
-const bezirke = wahlkreisBezirke["24"];
+const wahlkreis = "2";
+const bezirke = wahlkreisBezirke[wahlkreis];
+
 const gemeinden = new Set(bezirke.map((x) => x.gemeinde_name));
+let total = 0;
 
 gemeinden.forEach((gemeinde) => {
 	let wähler = 0;
@@ -54,10 +57,14 @@ gemeinden.forEach((gemeinde) => {
 		if (bezirk.gemeinde_name !== gemeinde) return;
 
 		wähler += bezirk.anzahl_wähler;
+		total += bezirk.anzahl_wähler;
 	});
 
 	console.log(gemeinde, wähler);
 });
+
+console.log("____________________");
+console.log("total", wahlkreiseNamen[wahlkreis], total);
 
 const toDelete = new Set<string>();
 
@@ -97,9 +104,9 @@ wahlbezirke.forEach((x) => {
 		const avg = wählerSum / countMatches;
 		const percentage = x.anzahl_wähler / avg;
 
-		if (x.gemeinde_name.includes("Saarbrücken")) {
-			debugger;
-		}
+		// if (x.gemeinde_name.includes("Saarbrücken")) {
+		// 	debugger;
+		// }
 
 		if (match && ((diff < 50 && percentage >= 3.9) || percentage > 10)) {
 			toDelete.add(getIdFromResult(x));
@@ -116,6 +123,7 @@ wahlbezirke.forEach((x) => {
 });
 
 console.log(toDelete.size, " double gemeinde and wahlbezirk data");
+const Bundeswahlleiter = getBundeswahlleiterDaten("gesamtergebnis_01.xml");
 
 Object.keys(Bundeswahlleiter).forEach((wahlkreisId) => {
 	try {

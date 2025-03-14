@@ -1,4 +1,4 @@
-import { Bundeswahlleiter } from "../bundeswahlleiter/read";
+import { getBundeswahlleiterDaten } from "../bundeswahlleiter/read";
 import _Wahlkreise from "./data/out.json";
 import type { defaultResult } from "./scrape";
 import { wahlkreiseNamen, wahlkreiseQuellen } from "./wahlkreise";
@@ -6,8 +6,7 @@ import fs from "fs";
 
 const Wahlkreise = _Wahlkreise as any as Record<string, ReturnType<typeof defaultResult>>;
 
-Bundeswahlleiter;
-Wahlkreise;
+const Bundeswahlleiter = getBundeswahlleiterDaten("gesamtergebnis_01.xml");
 
 let result = [] as {
 	wahlkreis_id: string;

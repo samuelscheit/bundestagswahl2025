@@ -294,10 +294,10 @@ export const wahlkreiseQuellen = {
 	"293": "https://wahlergebnisse.komm.one/lb/produktion/wahltermin-20250223/08435000/praesentation/ergebnis.html?wahl_id=8310&stimmentyp=0&id=ebene_-21758_id_32863", // Bodensee
 	"294": "https://wahlergebnisse.komm.one/lb/produktion/wahltermin-20250223/08436000/praesentation/ergebnis.html?wahl_id=8310&stimmentyp=0&id=ebene_-21758_id_32864", // Ravensburg
 	"295": "https://wahlergebnisse.komm.one/lb/produktion/wahltermin-20250223/08417000/praesentation/ergebnis.html?wahl_id=8310&stimmentyp=0&id=ebene_-21758_id_32865", // Zollernalb – Sigmaringen
-	"296": "https://wahlergebnis.saarland.de/BTW/ergebnisse_wahlkreis_296.html", // Saarbrücken
-	"297": "https://wahlergebnis.saarland.de/BTW/ergebnisse_wahlkreis_297.html", // Saarlouis
-	"298": "https://wahlergebnis.saarland.de/BTW/ergebnisse_wahlkreis_298.html", // St. Wendel
-	"299": "https://wahlergebnis.saarland.de/BTW/ergebnisse_wahlkreis_299.html", // Homburg
+	"296": "https://wahlen.ego-saar.de/vm_prod/prod/BTW20250223/10041000/praesentation/ergebnis.html?wahl_id=693&stimmentyp=0&id=ebene_-1835_id_4100", // Saarbrücken
+	"297": "https://wahlen.ego-saar.de/vm_prod/prod/BTW20250223/10044000/praesentation/ergebnis.html?wahl_id=693&stimmentyp=0&id=ebene_-1835_id_4101", // Saarlouis
+	"298": "https://wahlen.ego-saar.de/vm_prod/prod/BTW20250223/10046000/praesentation/ergebnis.html?wahl_id=693&stimmentyp=0&id=ebene_-1835_id_4102", // St. Wendel
+	"299": "https://wahlen.ego-saar.de/vm_prod/prod/BTW20250223/10045000/praesentation/ergebnis.html?wahl_id=693&stimmentyp=0&id=ebene_-1835_id_4103", // Homburg
 };
 
 export const wahlkreiseNamen = {
