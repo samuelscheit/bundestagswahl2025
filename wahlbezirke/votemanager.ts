@@ -5,6 +5,8 @@ import { defaultResult, getIdFromName, type Options, type ResultType } from "../
 import { behoerden_queue, concurrency, wahlbezirke_queue, wahleintrage_queue } from "./wahlbezirke";
 import { cleanGemeindeName, gemeinden, getGemeinde } from "./gemeinden";
 import PQueue from "p-queue";
+import { wahlkreiseQuellen } from "../wahlkreise/wahlkreise";
+import axios from "axios";
 
 export async function votemanager(options: Options & { text: string }) {
 	const { searchParams, origin, pathname } = new URL(options.url);
@@ -93,13 +95,13 @@ export async function votemanagerWithOptions({
 
 		x.data.Komponente.info.tabelle.zeilen.forEach((row: any) => {
 			const zahl = Number(row.zahl.replace(/\./g, "")) || 0;
-			if (row.label.labelKurz === "Wahlberechtigte") {
+			if (row.label.labelKurz.includes("berechtigt")) {
 				result.anzahl_berechtigte = zahl;
-			} else if (row.label.labelKurz === "Wähler") {
+			} else if (row.label.labelKurz.includes("Wähler")) {
 				result.anzahl_wähler = zahl;
-			} else if (row.label.labelKurz === "ungültige Stimmen") {
+			} else if (row.label.labelKurz.includes("ungültig")) {
 				ungültig = zahl;
-			} else if (row.label.labelKurz === "gültige Stimmen") {
+			} else if (row.label.labelKurz.includes("gültig")) {
 				gültig = zahl;
 			}
 		});
@@ -110,33 +112,40 @@ export async function votemanagerWithOptions({
 	const { gebietsverlinkung } = results[0].data.Komponente;
 
 	if (gebietsverlinkung && name) {
+		var gemeinde = null as ReturnType<typeof getGemeinde> | null;
+
+		gebietsverlinkung
+			.find((x) => x.titel.includes("Mitgliedsgemeinden"))
+			?.gebietslinks?.forEach((x) => {
+				if (x.type !== "ergebnis") return;
+
+				gemeinde ||= getGemeinde(x.title, name);
+			});
+
 		gebietsverlinkung
 			.find((x) => x.titel.includes("Wahlkreis"))
 			?.gebietslinks?.forEach((x) => {
 				if (x.type !== "ergebnis") return;
 
-				if (x.title.includes("115")) {
-				}
-
-				const gemeinde = getGemeinde(name, x.title);
-
-				if (!gemeinde) return;
-
-				result.gemeinde_name ||= gemeinde.gemeinde_name;
-				result.gemeinde_id ||= gemeinde.gemeinde_id;
-
-				result.kreis_id ||= gemeinde.kreis_id!;
-				result.kreis_name ||= gemeinde.kreis_name!;
-
-				result.wahlkreis_id ||= gemeinde.wahlkreis_id!;
-				result.wahlkreis_name ||= gemeinde.wahlkreis_name!;
-
-				result.bundesland_id ||= gemeinde.bundesland_id!;
-				result.bundesland_name ||= gemeinde.bundesland_name!;
-
-				result.ortsteil_id ||= gemeinde.ortsteil_id!;
-				result.ortsteil_name ||= gemeinde.ortsteil_name!;
+				gemeinde ||= getGemeinde(name, x.title);
 			});
+
+		if (gemeinde) {
+			result.gemeinde_name ||= gemeinde.gemeinde_name;
+			result.gemeinde_id ||= gemeinde.gemeinde_id;
+
+			result.kreis_id ||= gemeinde.kreis_id!;
+			result.kreis_name ||= gemeinde.kreis_name!;
+
+			result.wahlkreis_id ||= gemeinde.wahlkreis_id!;
+			result.wahlkreis_name ||= gemeinde.wahlkreis_name!;
+
+			result.bundesland_id ||= gemeinde.bundesland_id!;
+			result.bundesland_name ||= gemeinde.bundesland_name!;
+
+			result.ortsteil_id ||= gemeinde.ortsteil_id!;
+			result.ortsteil_name ||= gemeinde.ortsteil_name!;
+		}
 	}
 
 	result.erststimmen = stimme1;
@@ -151,7 +160,14 @@ export async function votemanagerWithOptions({
 let results = [] as ResultType[];
 const scraped = new Set<string>();
 
-export async function getWahlbezirkVotemanager(opts: { url: string; name: string; html?: string; bundesland: string; tries?: number }) {
+export async function getWahlbezirkVotemanager(opts: {
+	url: string;
+	name: string;
+	html?: string;
+	bundesland: string;
+	tries?: number;
+	onlySubgemeinden?: boolean;
+}) {
 	if (scraped.has(opts.url)) return [];
 	scraped.add(opts.url);
 
@@ -171,7 +187,13 @@ export async function getWahlbezirkVotemanager(opts: { url: string; name: string
 
 	if (!html.includes("termine.json")) {
 		// all irrelevant because the used votemanager version is older than BTW2025
-		throw new Error("Keine BTW25 Ergebnisse (alte version)");
+		// throw new Error("Keine BTW25 Ergebnisse (alte version)");
+		const configUrl = new URL("../daten/api/config.json", url).href;
+		const { data: config } = await axiosWithRedirect<VotemanagerConfig>(configUrl);
+
+		if (!config.alle_wahltermine_link) throw new Error("Keine BTW25 Ergebnisse (alte version)");
+
+		url = new URL(config.alle_wahltermine_link, url).href;
 	}
 
 	let base = url.replace("/index.html", "");
@@ -204,28 +226,21 @@ export async function getWahlbezirkVotemanager(opts: { url: string; name: string
 	// https://votemanager.kdo.de/2025022302/15084590/daten/api/termin.json
 
 	// console.log(name, terminUrl);
-	// console.log(name, base + "/" + btw25.url);
 
 	const { data: config } = await axiosWithRedirect<VotemanagerConfig>(`${apiEndpoint}/config.json`, { responseType: "json" });
 
 	if (!opts.name) opts.name = config.behoerde;
 
+	console.log(opts.name, base + "/" + btw25.url);
+	const präsentationUrl = base + "/" + btw25.url;
+
 	behoerden_queue.addAll(
 		(config.behoerden_links?.links || [])
 			.map((x) => {
 				if (!x.url) return;
-				if (!x.url.startsWith("../")) return;
+				if (!x.url.startsWith("../")) return { text: x.text, url: x.url };
 
-				const id = x.url.match(/\d+/g)?.[0];
-				if (!id) {
-					throw new Error("No id: " + x.url + " " + url);
-				}
-				const newUrl = new URL(url);
-				if (!newUrl.pathname.match(/\/\d+\//)) {
-					throw new Error("No id2: " + x.url + " " + url);
-				}
-
-				newUrl.pathname = newUrl.pathname.replace(/\/(\d+)(?!.*\/\d+)/, `/${id}`);
+				const newUrl = new URL(x.url, präsentationUrl);
 
 				return { text: x.text, url: newUrl.href };
 			})
@@ -258,12 +273,17 @@ export async function getWahlbezirkVotemanager(opts: { url: string; name: string
 		return results;
 	}
 
-	if (!gemeinde.gemeinde_name && !opts.name.includes("Verbandsgemeinde")) {
+	if (
+		!gemeinde.gemeinde_name &&
+		!opts.name.includes("Verbandsgemeinde") &&
+		!opts.name.includes("Samtgemeinde") &&
+		!opts.onlySubgemeinden
+	) {
 		console.log("NO GEMEINDE name", gemeinde, opts.name, config.behoerden_links?.header.text, url);
-		// gemeinde = getGemeinde(opts.name, config.behoerden_links?.header.text);
+		// throw new Error("NO GEMEINDE name: " + gemeinde);
 	}
 
-	console.log(gemeinde.gemeinde_name, opts.name);
+	// console.log(gemeinde.gemeinde_name, opts.name);
 
 	const queue = new PQueue({ concurrency: 1 });
 
@@ -279,7 +299,8 @@ export async function getWahlbezirkVotemanager(opts: { url: string; name: string
 
 			if (!ebene) {
 				// ist ergebnisseite vom wahlkreis, nicht von einzelnen gemeinden
-				throw new Error("Keine BTW25 Ergebnisse (Keine Wahlbezirke)");
+				console.log("Keine BTW25 Ergebnisse (Keine Wahlbezirke)");
+				return;
 			}
 
 			const { data: wahlbezirke } = await axiosWithRedirect<EbenenÜbersicht>(
@@ -336,6 +357,8 @@ export async function getWahlbezirkVotemanager(opts: { url: string; name: string
 		})
 	);
 
+	await queue.onIdle();
+
 	return results;
 }
 
@@ -373,6 +396,45 @@ export async function getWahlbezirkeVotemanager() {
 	);
 
 	await behoerden_queue.onIdle();
+	return results;
+}
+
+export async function getWahlbezirkeVotemanagerFromWahlkreise() {
+	await behoerden_queue.addAll(
+		Object.values(wahlkreiseQuellen).map((x) => async () => {
+			try {
+				if (!x.includes("praesentation/ergebnis.html?wahl_id")) return;
+
+				const uri = new URL(x);
+				uri.search = "";
+
+				const base = uri.href.replace("/praesentation/ergebnis.html", "");
+
+				const { data: config } = await axiosWithRedirect<VotemanagerConfig>(base + "/daten/api/config.json", {
+					responseType: "json",
+				});
+
+				const alleWahltermine = new URL(config.alle_wahltermine_link, x);
+
+				const result = await getWahlbezirkVotemanager({
+					url: alleWahltermine.href,
+					name: "",
+					bundesland: "",
+					onlySubgemeinden: true,
+				});
+				if (!result) return;
+			} catch (error) {
+				if ((error as Error).message.includes("Keine BTW25")) return;
+				if ((error as Error).message.includes("Not votemanager")) return;
+
+				debugger;
+				throw error;
+			}
+		})
+	);
+
+	await behoerden_queue.onIdle();
+
 	return results;
 }
 

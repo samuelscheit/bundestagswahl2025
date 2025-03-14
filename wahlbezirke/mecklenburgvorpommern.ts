@@ -2,7 +2,7 @@ import axios from "axios";
 import fs from "fs";
 import iconv from "iconv-lite";
 import csv from "csv-parser";
-import { defaultResult, type ResultType } from "../wahlkreise/scrape";
+import { defaultResult, getIdFromName, type ResultType } from "../wahlkreise/scrape";
 import { saveResults } from "./wahlbezirke";
 
 const arraybuffer = await axios<ArrayBuffer>("https://wahlen.mvnet.de/dateien/ergebnisse.2025/bundestagswahl/csv/b_wahlbezirke.csv", {
@@ -67,16 +67,16 @@ parser.on("data", (data) => {
 	result.bundesland_id = "13";
 	result.bundesland_name = "Mecklenburg-Vorpommern";
 
-	result.wahlkreis_id = WahlkreisID;
+	result.wahlkreis_id = getIdFromName(WahlkreisID);
 	result.wahlkreis_name = Wahlkreisname;
 
-	result.kreis_id = KreisID;
+	result.kreis_id = getIdFromName(KreisID);
 	result.kreis_name = Kreisname;
 
 	result.gemeinde_name = gemeinde;
-	result.gemeinde_id = GemeindeID;
+	result.gemeinde_id = getIdFromName(GemeindeID);
 
-	result.wahlbezirk_id = WahlbezirksID;
+	result.wahlbezirk_id = getIdFromName(WahlbezirksID);
 	result.wahlbezirk_name = Wahlbezirksname;
 
 	const berechtigte = parseInt(Wahlberechtigte) || 0;
@@ -100,7 +100,7 @@ parser.on("data", (data) => {
 	});
 });
 parser.on("end", () => {
-	saveResults(results);
+	saveResults(results, "13");
 });
 
 parser.write(data);

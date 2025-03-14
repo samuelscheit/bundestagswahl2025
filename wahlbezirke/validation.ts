@@ -1,5 +1,7 @@
 import { Bundeswahlleiter } from "../bundeswahlleiter/read";
-import type { ResultType } from "../wahlkreise/scrape";
+import { defaultResult, type ResultType } from "../wahlkreise/scrape";
+import { wahlkreiseBundesland } from "../wahlkreise/wahlkreise";
+import { cleanGemeindeName } from "./gemeinden";
 import { getIdFromResult } from "./wahlbezirke";
 import fs from "fs";
 
@@ -34,16 +36,113 @@ wahlbezirke.forEach((x, i) => {
 		console.error(x);
 		throw new Error("Missing Stimmen: " + stimmen + " " + x.zweitstimmen.gültig);
 	}
+
+	if (stimmen >= 5000 && x.anzahl_berechtigte !== 0 && x.bundesland_id !== "14") {
+		// not briefwahlbezirke and not sachsen (missing data)
+		console.error("Many Stimmen for one urnen Wahlbezirk", stimmen, x.gemeinde_name);
+		// throw new Error("Too many Stimmen for one urnen Wahlbezirk: " + stimmen);
+	}
 });
 
+const bezirke = wahlkreisBezirke["24"];
+const gemeinden = new Set(bezirke.map((x) => x.gemeinde_name));
+
+gemeinden.forEach((gemeinde) => {
+	let wähler = 0;
+
+	bezirke.forEach((bezirk) => {
+		if (bezirk.gemeinde_name !== gemeinde) return;
+
+		wähler += bezirk.anzahl_wähler;
+	});
+
+	console.log(gemeinde, wähler);
+});
+
+const toDelete = new Set<string>();
+
+// done in second pass because wahlkreisBezirke is needed
+wahlbezirke.forEach((x) => {
+	if (!x.gemeinde_name) return;
+
+	if (x.wahlbezirk_name === x.gemeinde_name && x.anzahl_berechtigte !== 0) {
+		// only one wahlbezirk per gemeinde
+		// anzahl_berechtigte needs to be not 0	=> otherwise briefwahlbezirke might falsely match
+		// either missing wahlbezirke data => do nothing
+		// or both gemeinde and wahlbezirk data exist => delete gemeinde data
+
+		const wahlkreisBezirkeArr = wahlkreisBezirke[x.wahlkreis_id as any];
+		if (!wahlkreisBezirkeArr) return;
+
+		const b = cleanGemeindeName(x.gemeinde_name);
+
+		let match = null as null | ResultType;
+		let wählerSum = 0;
+		let countMatches = 0;
+
+		for (const wahlbezirk of wahlkreisBezirkeArr) {
+			if (!wahlbezirk.gemeinde_name) continue;
+			if (wahlbezirk === x) continue;
+
+			const a = cleanGemeindeName(wahlbezirk.gemeinde_name);
+
+			if (a === b || a.includes(b) || b.includes(a)) {
+				wählerSum += wahlbezirk.anzahl_wähler;
+				match = wahlbezirk;
+				countMatches++;
+			}
+		}
+
+		const diff = Math.abs(x.anzahl_wähler - wählerSum);
+		const avg = wählerSum / countMatches;
+		const percentage = x.anzahl_wähler / avg;
+
+		if (x.gemeinde_name.includes("Saarbrücken")) {
+			debugger;
+		}
+
+		if (match && ((diff < 50 && percentage >= 3.9) || percentage > 10)) {
+			toDelete.add(getIdFromResult(x));
+			console.log("delete", x.gemeinde_name, match.gemeinde_name, x.wahlkreis_name, {
+				wählerSum,
+				countMatches,
+				avg,
+				anzahl_wähler: x.anzahl_wähler,
+				percentage,
+				diff,
+			});
+		}
+	}
+});
+
+console.log(toDelete.size, " double gemeinde and wahlbezirk data");
+
 Object.keys(Bundeswahlleiter).forEach((wahlkreisId) => {
-	const bund = Bundeswahlleiter[wahlkreisId];
-	const wahlkreisBezirkeArr = wahlkreisBezirke[wahlkreisId];
+	try {
+		const bund = Bundeswahlleiter[wahlkreisId];
+		const wahlkreisBezirkeArr = wahlkreisBezirke[wahlkreisId];
 
-	// console.log(Object.keys(wahlkreisBezirke), wahlkreisId);
+		if (!bund) throw new Error("Missing bund: " + wahlkreisId);
+		if (!wahlkreisBezirkeArr && wahlkreiseBundesland[wahlkreisId] === "14") return; // sachsen has no wahlbezirk data
+		if (wahlkreisId === "258") return; // stuttgart has no wahlbezirk data
+		if (!wahlkreisBezirkeArr) throw new Error("Missing wahlkreis: " + wahlkreisId);
 
-	if (!bund) throw new Error("Missing bund: " + wahlkreisId);
-	// if (!wahlkreisBezirkeArr) throw new Error("Missing wahlkreis: " + wahlkreisId);
+		const accumulated = defaultResult();
+
+		wahlkreisBezirkeArr.forEach((wahlbezirk) => {
+			accumulated.anzahl_berechtigte += wahlbezirk.anzahl_berechtigte;
+			accumulated.anzahl_wähler += wahlbezirk.anzahl_wähler;
+		});
+
+		const diffWähler = Math.abs(accumulated.anzahl_wähler - bund.anzahl_wähler);
+
+		if (diffWähler > 1000) {
+			console.error("wrong wähler", wahlkreisId, accumulated.anzahl_wähler, bund.anzahl_wähler, diffWähler);
+			throw new Error("Wrong wähler: " + wahlkreisId + " " + accumulated.anzahl_wähler + " " + bund.anzahl_wähler);
+		}
+	} catch (error) {
+		// throw error;
+	}
 });
 
 Object.entries(indexes).forEach(([id, indices]) => {
@@ -62,12 +161,12 @@ Object.entries(indexes).forEach(([id, indices]) => {
 	}
 });
 
-const filtered = wahlbezirke.filter((x) => x !== undefined && x.wahlkreis_id !== "041");
+const filtered = wahlbezirke.filter((x) => x !== undefined && x.wahlkreis_id !== "00" && !toDelete.has(getIdFromResult(x)));
 
 console.log(wahlbezirke.length - filtered.length, "duplicates");
 console.log(filtered.length, "wahlbezirke");
 
-// fs.writeFileSync(__dirname + "/data/wahlbezirkeList.json", JSON.stringify(filtered, null, "\t"));
+fs.writeFileSync(__dirname + "/data/wahlbezirkeList.json", JSON.stringify(filtered, null, "\t"));
 
 // Object.entries(bundesland).forEach(([bundesland_id, bund]) => {
 // 	Object.entries(bund).forEach(([wahlkreis_id, wahlkreis]) => {

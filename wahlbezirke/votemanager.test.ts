@@ -1,10 +1,14 @@
-import { getWahlbezirkeVotemanager, getWahlbezirkVotemanager } from "./votemanager";
-import { saveResults } from "./wahlbezirke";
+import { getWahlbezirkeVotemanager, getWahlbezirkeVotemanagerFromWahlkreise, getWahlbezirkVotemanager } from "./votemanager";
+import { behoerden_queue, saveResults } from "./wahlbezirke";
 
 const results = await getWahlbezirkVotemanager({
 	bundesland: "",
 	name: "",
-	url: "https://wahlen.kdvz.nrw/production/05978028/index.html",
+	url: "https://votemanager.kdo.de/03452000/index.html",
 });
 
-saveResults([results[0], results[0]]);
+await behoerden_queue.onIdle();
+
+// const results = await getWahlbezirkeVotemanagerFromWahlkreise();
+
+saveResults(results);

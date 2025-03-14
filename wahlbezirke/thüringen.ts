@@ -1,6 +1,6 @@
 import fs from "fs";
 import csv from "csv-parser";
-import { defaultResult, type ResultType } from "../wahlkreise/scrape";
+import { defaultResult, getIdFromName, type ResultType } from "../wahlkreise/scrape";
 import { getIdFromResult, saveResults } from "./wahlbezirke";
 
 const data = fs.readFileSync(__dirname + "/data/Thüringen.csv");
@@ -131,16 +131,16 @@ parser.on("data", (data) => {
 	result.bundesland_id = "16";
 	result.bundesland_name = "Thüringen";
 
-	result.wahlkreis_id = wahlkreisNr;
+	result.wahlkreis_id = getIdFromName(wahlkreisNr);
 	result.wahlkreis_name ||= wahlkreisName;
 
-	result.kreis_id = kreisNr;
+	result.kreis_id = getIdFromName(kreisNr);
 	// kreis name is not in data source
 
-	result.gemeinde_id = gemeindeNr;
+	result.gemeinde_id = getIdFromName(gemeindeNr);
 	result.gemeinde_name ||= gemeindeName;
 
-	result.wahlbezirk_id = wahlbezirkNr;
+	result.wahlbezirk_id = getIdFromName(wahlbezirkNr);
 	result.wahlbezirk_name = name;
 
 	result.anzahl_berechtigte = Number(data.wahlberechtigte) || 0;
@@ -161,7 +161,7 @@ parser.on("data", (data) => {
 });
 
 parser.on("end", () => {
-	saveResults(results);
+	saveResults(results, "16");
 });
 
 parser.write(data);

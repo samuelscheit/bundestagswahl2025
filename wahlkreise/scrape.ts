@@ -40,7 +40,7 @@ function handleData(options: Options & { text: string }) {
 	if (url.includes("wahlen.sachsen.de")) return sachsen(options);
 	if (url.includes("sachsen-anhalt.de")) return sachsenAnhalt(options);
 	if (url.includes("wahlen.mvnet.de")) return mecklenburgVorpommern(options);
-	if (options.url.includes("wahl.krzn.de")) return krzn(options);
+	if (options.url.includes("wahl.krzn.de")) return krznWahlkreis(options);
 	if (options.url.includes("23degrees.eu")) return degreesEU(options);
 
 	return;
@@ -82,7 +82,13 @@ export function getIdFromName(name: string) {
 	const id = name.match(/[\d\s-]+/)?.[0];
 	if (!id) return null;
 
-	return id.replace(/[\s-]/g, "");
+	const str = id.replace(/[\s-]/g, "");
+	if (!str) return null;
+
+	const number = Number(str);
+	if (isNaN(number)) return null;
+
+	return String(number);
 }
 
 async function degreesEU(options: Options & { text: string }) {
@@ -165,7 +171,7 @@ async function thueringen(options: Options & { text: string }) {
 	// console.log(stimmen.toArray());
 }
 
-async function krzn(options: Options & { text: string }) {
+export async function krznGetWahlkreiseUrl(options: Options & { text: string }) {
 	const root = parse(options.text);
 
 	const download = root.querySelector(`[title="Download CSV-Datei - Ergebnisse Wahlkreise"]`);
@@ -174,60 +180,95 @@ async function krzn(options: Options & { text: string }) {
 	const baseUrl = options.url.slice(0, options.url.lastIndexOf("/"));
 	const downloadUrl = baseUrl + "/" + download.getAttribute("href");
 
-	const { data } = await axiosWithRedirect(downloadUrl, { responseType: "text" });
+	return downloadUrl;
+}
 
-	const file = csv({
+export async function krznGetWahlbezirkeUrl(options: Options & { text: string }) {
+	const root = parse(options.text);
+
+	const download = root.querySelector(`[title="Download CSV-Datei - Ergebnisse Wahlbezirke"]`);
+	if (!download) throw new Error("Download not found:" + options.url);
+
+	const baseUrl = options.url.slice(0, options.url.lastIndexOf("/"));
+	const downloadUrl = baseUrl + "/" + download.getAttribute("href");
+
+	return downloadUrl;
+}
+
+export async function krznParseCSV(file: string) {
+	const parser = csv({
 		skipLines: 1,
 		separator: ";",
+		quote: "\uF000",
 	});
 
-	const results = [] as any[];
+	const raw = [] as any[];
 
 	await new Promise((resolve) => {
-		file.write(data);
-		file.on("data", (data) => {
-			results.push(data);
+		parser.write(file);
+		parser.on("data", (x) => {
+			raw.push(x);
 		});
-		file.on("end", () => {
-			resolve(results);
+		parser.on("end", () => {
+			resolve(raw);
 		});
-		file.end();
+		parser.end();
 	});
 
-	const [namen] = results;
-	const bezirksErgebnis = results.find((x) => x.NR === options.id);
+	const [namen, ...data] = raw;
 
-	const { WAHLDATUM, WAHLART, GEBIET, EBENE, NR, BEZEICHNUNG, ANZAHL_GESAMT, ANZAHL_FERTIG } = bezirksErgebnis as Record<string, string>;
+	const erststimmen = Object.keys(namen).filter((x) => x.startsWith("D") && x.length > 1);
+	const zweitstimmen = Object.keys(namen).filter((x) => x.startsWith("F") && x.length > 1);
 
-	const result = defaultResult();
+	return data.map((x) => {
+		const { WAHLDATUM, WAHLART, GEBIET, EBENE, NR, BEZEICHNUNG, ANZAHL_GESAMT, ANZAHL_FERTIG } = x as Record<string, string>;
 
-	result.anzahl_berechtigte = Number(bezirksErgebnis.A);
-	result.anzahl_wähler = Number(bezirksErgebnis.B);
+		const result = defaultResult();
 
-	result.erststimmen.gültig = Number(bezirksErgebnis.D);
-	result.erststimmen.ungültig = Number(bezirksErgebnis.C);
+		result.anzahl_berechtigte = Number(x.A);
+		result.anzahl_wähler = Number(x.B);
 
-	result.zweitstimmen.gültig = Number(bezirksErgebnis.F);
-	result.zweitstimmen.ungültig = Number(bezirksErgebnis.E);
+		result.erststimmen.gültig = Number(x.D);
+		result.erststimmen.ungültig = Number(x.C);
 
-	const erststimmen = Object.keys(bezirksErgebnis).filter((x) => x.startsWith("D") && x.length > 1);
-	const zweitstimmen = Object.keys(bezirksErgebnis).filter((x) => x.startsWith("F") && x.length > 1);
+		result.zweitstimmen.gültig = Number(x.F);
+		result.zweitstimmen.ungültig = Number(x.E);
 
-	erststimmen.forEach((key) => {
-		const partei = namen[key];
-		const anzahl = Number(bezirksErgebnis[key]) || 0;
+		if (EBENE === "Wahlbezirk") {
+			result.wahlbezirk_name = BEZEICHNUNG;
+			result.wahlbezirk_id = NR;
+			result.gemeinde_name = GEBIET;
+		} else if (EBENE === "Wahlkreis") {
+			result.wahlkreis_id = NR;
+			result.wahlkreis_name = BEZEICHNUNG;
+		}
 
-		result.erststimmen.parteien[partei] = anzahl;
+		erststimmen.forEach((key) => {
+			const partei = namen[key];
+			const anzahl = Number(x[key]) || 0;
+
+			result.erststimmen.parteien[partei] = anzahl;
+		});
+
+		zweitstimmen.forEach((key) => {
+			const partei = namen[key];
+			const anzahl = Number(x[key]) || 0;
+
+			result.zweitstimmen.parteien[partei] = anzahl;
+		});
+
+		return result;
 	});
+}
 
-	zweitstimmen.forEach((key) => {
-		const partei = namen[key];
-		const anzahl = Number(bezirksErgebnis[key]) || 0;
+export async function krznWahlkreis(options: Options & { text: string }) {
+	const downloadUrl = await krznGetWahlkreiseUrl(options);
 
-		result.zweitstimmen.parteien[partei] = anzahl;
-	});
+	const { data } = await axiosWithRedirect(downloadUrl, { responseType: "text" });
 
-	return result;
+	const results = await krznParseCSV(data);
+
+	return results.find((x) => x.wahlkreis_id === options.id);
 }
 
 async function sachsen(options: Options & { text: string }) {

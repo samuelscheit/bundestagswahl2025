@@ -32,7 +32,7 @@ await new Promise((resolve) => {
 			})
 		)
 		.on("data", (data) => {
-			const {
+			var {
 				"Wahlkreis-Nr": WahlkreisNr,
 				"Wahlkreis-Bez": WahlkreisName,
 				RGS_Land: LandNr,
@@ -52,20 +52,28 @@ await new Promise((resolve) => {
 				"PLZ-mehrere": PLZMehrere,
 			} = data as Record<string, string>;
 
+			const suffixes = GemeindeName?.split(", ").slice(1);
+
+			for (const suffix of suffixes || []) {
+				gemeindeSuffixes.add(suffix);
+			}
+
+			GemeindeName = fixCommaName(GemeindeName);
+
 			duplicates.set(GemeindeName, (duplicates.get(GemeindeName) || 0) + 1);
 
 			const value = {
-				bundesland_id: LandNr || null,
+				bundesland_id: getIdFromName(LandNr) || null,
 				bundesland_name: LandName || null,
-				gemeinde_id: GemeindeNr || null,
+				gemeinde_id: getIdFromName(GemeindeNr) || null,
 				gemeinde_name: GemeindeName || null,
-				kreis_id: KreisNr || null,
+				kreis_id: getIdFromName(KreisNr) || null,
 				kreis_name: KreisName || null,
-				ortsteil_id: Gemeindeteil || null,
+				ortsteil_id: getIdFromName(Gemeindeteil) || null,
 				ortsteil_name: Gemeindeteil || null,
-				wahlkreis_id: WahlkreisNr || null,
+				wahlkreis_id: getIdFromName(WahlkreisNr) || null,
 				wahlkreis_name: WahlkreisName || null,
-				verbands_id: GemeindeverbandNr || null,
+				verbands_id: getIdFromName(GemeindeverbandNr) || null,
 				verbands_name: GemeindeverbandName || null,
 				region_name: RegionName || null,
 				gemeinde_clean: undefined,
@@ -73,10 +81,6 @@ await new Promise((resolve) => {
 				kreis_clean: undefined,
 				wahlkreis_clean: undefined,
 			};
-
-			for (const suffix of GemeindeName?.split(", ")[1]?.split(" ") || []) {
-				if (suffix) gemeindeSuffixes.add(suffix);
-			}
 
 			gemeinden.push(value);
 		})
@@ -91,7 +95,6 @@ gemeindeSuffixes.add("der gemeindevorstand der");
 gemeindeSuffixes.add("reformationsstadt");
 gemeindeSuffixes.add("Universitäts- und Hansestadt");
 gemeindeSuffixes.add("stadtverwaltung");
-gemeindeSuffixes.add("odw.");
 gemeindeSuffixes.add("(westf.)");
 gemeindeSuffixes.add("alte hansestadt");
 gemeindeSuffixes.add("kreis- und hansestadt");
@@ -100,6 +103,7 @@ gemeindeSuffixes.add("verbandsgemeinde");
 gemeindeSuffixes.add("samtgemeinde");
 gemeindeSuffixes.add("gemeinde");
 gemeindeSuffixes.add("große kreisstadt");
+gemeindeSuffixes.add("kreisstadt");
 gemeindeSuffixes.add("kreis- und kurstadt");
 gemeindeSuffixes.add("vvg der stadt");
 gemeindeSuffixes.add("kreis");
@@ -115,13 +119,18 @@ gemeindeSuffixes.add("(Ems)");
 gemeindeSuffixes.add("Verwaltungsgemeinschaft");
 gemeindeSuffixes.add("Einheitsgemeinde");
 gemeindeSuffixes.add("Magistrat der Stadt");
-gemeindeSuffixes.add("/Ostfriesland");
 gemeindeSuffixes.add("Gartenstadt");
 gemeindeSuffixes.add("Gemeindewahlbehörde");
+gemeindeSuffixes.add("v. d. höhe");
+gemeindeSuffixes.add("Landgemeinde");
+gemeindeSuffixes.add("Seebad");
+gemeindeSuffixes.add("Landeshauptstadt");
+gemeindeSuffixes.add("-");
 
-for (const suffix of [...gemeindeSuffixes.values()]) {
-	gemeindeSuffixes.delete(suffix);
-	gemeindeSuffixes.add(suffix.toLowerCase());
+for (const suffix of gemeindeSuffixes) {
+	if (suffix.includes("  ")) {
+		gemeindeSuffixes.add(suffix.replaceAll(/\s+/g, " "));
+	}
 }
 
 export const gemeindeCleanRegex = new RegExp(
@@ -129,7 +138,7 @@ export const gemeindeCleanRegex = new RegExp(
 		.filter((x) => x)
 		.sort((a, b) => b.length - a.length)
 		.map((x) => "(\\s" + x.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&") + "\\s)")
-		.join("|") + "|\\d{5}",
+		.join("|") + "|\\d{5,}",
 	"gi"
 );
 
@@ -140,23 +149,36 @@ gemeinden.forEach((v) => {
 	v.wahlkreis_clean = cleanKreisName(v.wahlkreis_name);
 });
 
+function fixCommaName(name: string) {
+	if (name.includes(",")) {
+		const [a, b] = name.split(",");
+		name = " " + (b || "") + " " + (a || "") + " ";
+	}
+
+	return name.trim();
+}
+
 export function cleanGemeindeName(name?: string | null) {
 	if (!name) return "";
 
 	name = ` ${name} `
 		.toLowerCase()
+		.replaceAll("/ ", "/")
+		.replaceAll("/ostfriesland", "")
+		.replaceAll("/odw.", "")
 		.replaceAll("rhld.", "rheinland")
 		.replaceAll("(oldb)", "(oldenburg)")
 		.replaceAll("a.d.str.", "an der straße")
-		.replaceAll("a.t.w.", "am teutoburger wald")
-		.replaceAll(gemeindeCleanRegex, "");
+		.replaceAll("a.t.w.", "am teutoburger wald");
 
-	if (name.includes(",")) {
-		const [a, b] = name.split(",");
-		name = (b || "") + " " + (a || "");
+	let previousName = "";
+
+	while (previousName !== name) {
+		previousName = name;
+		name = name.replaceAll(gemeindeCleanRegex, " ");
 	}
 
-	return name.trim();
+	return name.replace(/\s+/g, " ").trim();
 }
 
 export function cleanKreisName(name?: string | null) {
@@ -220,7 +242,6 @@ export function getGemeinde(name: string, kreis?: string) {
 
 	if (duplicates.length > 1 && kreis) {
 		let min_distance = Infinity;
-		let min_value = null;
 
 		for (const v of duplicates) {
 			const dist = Math.min(
@@ -232,7 +253,7 @@ export function getGemeinde(name: string, kreis?: string) {
 
 			if (dist < min_distance) {
 				min_distance = dist;
-				min_value = v;
+				value = v;
 			}
 		}
 	} else if (duplicates.length === 1) {
@@ -251,5 +272,3 @@ export function getGemeinde(name: string, kreis?: string) {
 
 	return newValue;
 }
-
-// console.log(getGemeinde("Kreis- und Kurstadt Bad Schwalbach", "Rheingau-Taunus-Kreis"));

@@ -1,6 +1,6 @@
 import fs from "fs";
 import csv from "csv-parser";
-import { defaultResult, type ResultType } from "../wahlkreise/scrape";
+import { defaultResult, getIdFromName, type ResultType } from "../wahlkreise/scrape";
 import { axios } from "./axios";
 import { getIdFromResult, saveResults } from "./wahlbezirke";
 
@@ -127,17 +127,17 @@ parser.on("data", (data) => {
 	result.bundesland_id = "7";
 	result.bundesland_name = "Rheinland-Pfalz";
 
-	result.wahlbezirk_id = wahlbezirkNr;
+	result.wahlbezirk_id = getIdFromName(wahlbezirkNr);
 	result.wahlbezirk_name = name;
 
 	result.kreis_name ||= kreisName;
-	result.kreis_id = kreisNr;
+	result.kreis_id = getIdFromName(kreisNr);
 
 	result.gemeinde_name ||= gemeindeName;
-	result.gemeinde_id = gemeindeNr;
+	result.gemeinde_id = getIdFromName(gemeindeNr);
 
 	result.wahlkreis_name ||= wahlkreisName;
-	result.wahlkreis_id = wahlkreisNr;
+	result.wahlkreis_id = getIdFromName(wahlkreisNr);
 
 	result.anzahl_berechtigte = Number(wahlberechtigte) || 0;
 	result.anzahl_wähler = Number(wähler) || 0;
@@ -157,7 +157,7 @@ parser.on("data", (data) => {
 });
 
 parser.on("end", () => {
-	saveResults(results);
+	saveResults(results, "7");
 });
 
 parser.write(data);

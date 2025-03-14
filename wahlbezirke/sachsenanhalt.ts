@@ -4,7 +4,7 @@
 
 import fs from "fs";
 import csv from "csv-parser";
-import { defaultResult, type ResultType } from "../wahlkreise/scrape";
+import { defaultResult, getIdFromName, type ResultType } from "../wahlkreise/scrape";
 import { saveResults } from "./wahlbezirke";
 
 const parser = csv({
@@ -60,16 +60,16 @@ parser.on("data", (data) => {
 	result.bundesland_id = "15";
 	result.bundesland_name = "Sachsen-Anhalt";
 
-	result.wahlkreis_id = WahlkreisID;
+	result.wahlkreis_id = getIdFromName(WahlkreisID);
 	result.wahlkreis_name = Wahlkreisname;
 
-	result.kreis_id = KreisID;
+	result.kreis_id = getIdFromName(KreisID);
 	result.kreis_name = Kreisname;
 
 	result.gemeinde_name = gemeinde;
-	result.gemeinde_id = GemeindeID;
+	result.gemeinde_id = getIdFromName(GemeindeID);
 
-	result.wahlbezirk_id = WahlbezirksID;
+	result.wahlbezirk_id = getIdFromName(WahlbezirksID);
 	result.wahlbezirk_name = Wahlbezirksname;
 
 	result.erststimmen.gültig = Number(erststimmen_gültig) || 0;
@@ -90,12 +90,12 @@ parser.on("data", (data) => {
 		result.zweitstimmen.parteien[partei] = zweitstimmen;
 	});
 
-	result.zweitstimmen.parteien["KWV1"] = Number(data["D13 - Andere KWV"]) || 0;
-	result.zweitstimmen.parteien["KWV2"] = Number(data["D14 - Andere KWV"]) || 0;
+	result.erststimmen.parteien["KWV1"] = Number(data["D13 - Andere KWV"]) || 0;
+	result.erststimmen.parteien["KWV2"] = Number(data["D14 - Andere KWV"]) || 0;
 });
 
 parser.on("end", () => {
-	saveResults(results);
+	saveResults(results, "15");
 });
 
 fs.createReadStream(__dirname + "/data/SachsenAnhalt.csv").pipe(parser);
