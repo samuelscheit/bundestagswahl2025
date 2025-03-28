@@ -44,32 +44,46 @@ wahlbezirke.forEach((x, i) => {
 	}
 });
 
-const wahlkreis = "67";
+const Bundeswahlleiter = getBundeswahlleiterDaten("gesamtergebnis_01.xml");
+
+const wahlkreis = "35";
 const bezirke = wahlkreisBezirke[wahlkreis] || [];
 
-const gemeinden = new Set(bezirke.map((x) => x.gemeinde_name));
+const gemeinden = new Set(bezirke.map((x) => x.gemeinde_name || x.verband_name));
 let total = 0;
 
 gemeinden.forEach((gemeinde) => {
 	let wähler = 0;
 
 	bezirke.forEach((bezirk) => {
-		if (bezirk.gemeinde_name !== gemeinde) return;
+		if (bezirk.gemeinde_name !== gemeinde && bezirk.verband_name !== gemeinde) return;
 
 		wähler += bezirk.anzahl_wähler;
-		total += bezirk.anzahl_wähler;
 	});
 
 	console.log(gemeinde, wähler);
 });
 
-console.log(bezirke.filter((x) => x.gemeinde_name === null));
+bezirke.forEach((bezirk) => {
+	total += bezirk.anzahl_wähler;
+});
+
+if (gemeinden.size === 1) {
+	for (const bezirk of bezirke) {
+		console.log(bezirk.wahlbezirk_name, bezirk.anzahl_wähler);
+	}
+}
+
+console.log(bezirke.filter((x) => x.gemeinde_name === null && x.verband_name === null));
+
+const bundTotal = Bundeswahlleiter[wahlkreis]?.anzahl_wähler || 0;
 
 console.log("____________________");
-console.log("total", wahlkreiseNamen[wahlkreis], total);
+console.log("total", wahlkreis, wahlkreiseNamen[wahlkreis], total, "should be", bundTotal, "diff", total - bundTotal);
 
 const toDelete = new Set<string>();
 
+// duplicate check
 // done in second pass because wahlkreisBezirke is needed
 wahlbezirke.forEach((x) => {
 	if (!x.gemeinde_name) return;
@@ -106,10 +120,6 @@ wahlbezirke.forEach((x) => {
 		const avg = wählerSum / countMatches;
 		const percentage = x.anzahl_wähler / avg;
 
-		// if (x.gemeinde_name.includes("Saarbrücken")) {
-		// 	debugger;
-		// }
-
 		if (match && ((diff < 50 && percentage >= 3.9) || percentage > 10)) {
 			toDelete.add(getIdFromResult(x));
 			console.log("delete", x.gemeinde_name, match.gemeinde_name, x.wahlkreis_name, {
@@ -125,7 +135,8 @@ wahlbezirke.forEach((x) => {
 });
 
 console.log(toDelete.size, " double gemeinde and wahlbezirk data");
-const Bundeswahlleiter = getBundeswahlleiterDaten("gesamtergebnis_01.xml");
+
+let totalDiffWähler = 0;
 
 Object.keys(Bundeswahlleiter).forEach((wahlkreisId) => {
 	try {
@@ -133,8 +144,8 @@ Object.keys(Bundeswahlleiter).forEach((wahlkreisId) => {
 		const wahlkreisBezirkeArr = wahlkreisBezirke[wahlkreisId];
 
 		if (!bund) throw new Error("Missing bund: " + wahlkreisId);
-		if (!wahlkreisBezirkeArr && wahlkreiseBundesland[wahlkreisId] === "14") return; // sachsen has no wahlbezirk data
-		if (wahlkreisId === "258") return; // stuttgart has no wahlbezirk data
+		// if (!wahlkreisBezirkeArr && wahlkreiseBundesland[wahlkreisId] === "14") return; // sachsen has no wahlbezirk data
+		// if (wahlkreisId === "258") return; // stuttgart has no wahlbezirk data
 		if (!wahlkreisBezirkeArr) throw new Error("Missing wahlkreis: " + wahlkreisId);
 
 		const accumulated = defaultResult();
@@ -145,6 +156,7 @@ Object.keys(Bundeswahlleiter).forEach((wahlkreisId) => {
 		});
 
 		const diffWähler = Math.abs(accumulated.anzahl_wähler - bund.anzahl_wähler);
+		totalDiffWähler += diffWähler;
 
 		if (diffWähler > 1000) {
 			console.error("wrong wähler", wahlkreisId, accumulated.anzahl_wähler, bund.anzahl_wähler, diffWähler);
@@ -154,6 +166,8 @@ Object.keys(Bundeswahlleiter).forEach((wahlkreisId) => {
 		// throw error;
 	}
 });
+
+console.error("total diff wähler", totalDiffWähler);
 
 Object.entries(indexes).forEach(([id, indices]) => {
 	if (indices.length !== 1) {
@@ -172,7 +186,13 @@ Object.entries(indexes).forEach(([id, indices]) => {
 });
 
 const filtered = wahlbezirke.filter(
-	(x) => x !== undefined && x.wahlkreis_id !== "00" && !toDelete.has(getIdFromResult(x)) && x.gemeinde_name !== null
+	(x) =>
+		x !== undefined &&
+		x.wahlkreis_id !== "00" &&
+		!toDelete.has(getIdFromResult(x)) &&
+		(x.gemeinde_name !== null || x.verband_name !== null)
+	// && x.wahlkreis_id !== "139" &&
+	// x.wahlkreis_id !== "140"
 );
 
 console.log(wahlbezirke.length - filtered.length, "duplicates");

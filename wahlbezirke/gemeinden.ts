@@ -8,16 +8,18 @@ type Gemeinde = Omit<
 	ResultType,
 	"erststimmen" | "zweitstimmen" | "anzahl_wähler" | "anzahl_berechtigte" | "wahlbezirk_name" | "wahlbezirk_id"
 > & {
-	verbands_id: string | null;
-	verbands_name: string | null;
+	verband_id: string | null;
+	verband_name: string | null;
 	region_name: string | null;
 	gemeinde_clean?: string;
-	verbands_clean?: string;
+	verband_clean?: string;
 	kreis_clean?: string;
 	wahlkreis_clean?: string;
 };
 
 export const gemeinden = [] as Gemeinde[];
+// land > region > kreis > verband|gemeinde
+const gemeindenHierarchy = {} as Record<string, Record<string, Record<string, Record<string, Gemeinde[]>>>>;
 
 const duplicates = new Map<string, number>();
 
@@ -73,14 +75,28 @@ await new Promise((resolve) => {
 				ortsteil_name: Gemeindeteil || null,
 				wahlkreis_id: getIdFromName(WahlkreisNr) || null,
 				wahlkreis_name: WahlkreisName || null,
-				verbands_id: getIdFromName(GemeindeverbandNr) || null,
-				verbands_name: GemeindeverbandName || null,
+				verband_id: getIdFromName(GemeindeverbandNr) || null,
+				verband_name: GemeindeverbandName || null,
 				region_name: RegionName || null,
 				gemeinde_clean: undefined,
-				verbands_clean: undefined,
+				verband_clean: undefined,
 				kreis_clean: undefined,
 				wahlkreis_clean: undefined,
 			};
+
+			LandNr = Number(LandNr).toString();
+			RegionNr = Number(RegionNr).toString();
+			KreisNr = Number(KreisNr).toString();
+			GemeindeverbandNr = Number(GemeindeverbandNr).toString();
+			GemeindeNr = Number(GemeindeNr).toString();
+
+			gemeindenHierarchy[LandNr] ||= {};
+			gemeindenHierarchy[LandNr][RegionNr] ||= {};
+			gemeindenHierarchy[LandNr][RegionNr][KreisNr] ||= {};
+			gemeindenHierarchy[LandNr][RegionNr][KreisNr][GemeindeverbandNr] ||= [];
+			gemeindenHierarchy[LandNr][RegionNr][KreisNr][GemeindeverbandNr].push(value);
+			gemeindenHierarchy[LandNr][RegionNr][KreisNr][GemeindeNr] ||= [];
+			gemeindenHierarchy[LandNr][RegionNr][KreisNr][GemeindeNr].push(value);
 
 			gemeinden.push(value);
 		})
@@ -144,7 +160,7 @@ export const gemeindeCleanRegex = new RegExp(
 
 gemeinden.forEach((v) => {
 	v.gemeinde_clean = cleanGemeindeName(v.gemeinde_name);
-	v.verbands_clean = cleanGemeindeName(v.verbands_name);
+	v.verband_clean = cleanGemeindeName(v.verband_name);
 	v.kreis_clean = cleanKreisName(v.kreis_name);
 	v.wahlkreis_clean = cleanKreisName(v.wahlkreis_name);
 });
@@ -194,8 +210,84 @@ export function cleanKreisName(name?: string | null) {
 		.trim();
 }
 
+const AGS = /(?<land>\d{2})(?<region>\d{1})(?<kreis>\d{2})((?<verband>\d{4})|(?<gemeinde>\d{3}))/;
+
+function getGemeindeByIDInternal(url: string) {
+	const id = url.match(/^.+\/(\d+)\//)?.[1];
+	if (!id) throw new Error("Invalid ID: " + url);
+
+	const ags = id.match(AGS);
+	if (!ags) throw new Error("Invalid AGS: " + url);
+
+	var { land, region, kreis, verband, gemeinde: gemeindeId } = (ags.groups || {}) as Record<string, string | undefined>;
+
+	if (!land) throw new Error("Invalid AGS land: " + url);
+	if (!region) throw new Error("Invalid AGS region: " + url);
+	if (!kreis) throw new Error("Invalid AGS kreis: " + url);
+
+	land = Number(land).toString();
+	region = Number(region).toString();
+	kreis = Number(kreis).toString();
+	verband = verband ? Number(verband).toString() : undefined;
+
+	const kreisGemeinde = gemeindenHierarchy[land]?.[region]?.[kreis];
+	var gemeinden: Gemeinde[] | undefined;
+
+	if (verband) {
+		verband = Number(verband).toString();
+		gemeinden = kreisGemeinde?.[verband];
+	} else if (gemeindeId) {
+		gemeindeId = Number(gemeindeId).toString();
+		gemeinden = kreisGemeinde?.[gemeindeId];
+	}
+
+	const gemeinde = gemeinden?.find((x) => x.gemeinde_id === gemeindeId || x.verband_id === verband);
+
+	if (!gemeinde && gemeindeId === "0") {
+		const anyKreisGemeinde = Object.values(kreisGemeinde).flat();
+		if (!anyKreisGemeinde.length) throw new Error("Invalid AGS kreis not found: " + url);
+
+		const gemeinde = anyKreisGemeinde[0]!;
+
+		return { ...gemeinde, gemeinde_id: null, gemeinde_name: null, verband_id: null, verband_name: null };
+	}
+
+	if (!gemeinden) {
+		throw new Error("Invalid AGS gemeinden not found: " + url);
+	}
+
+	if (!gemeinde) {
+		throw new Error("Invalid AGS gemeinde not found: " + url);
+	}
+
+	if (verband) {
+		return { ...gemeinde, gemeinde_id: null, gemeinde_name: null };
+	} else {
+		return { ...gemeinde };
+	}
+}
+
+export function getGemeindeByID(url: string) {
+	const result = getGemeindeByIDInternal(url);
+	delete result.gemeinde_clean;
+	delete result.verband_clean;
+	delete result.kreis_clean;
+	delete result.wahlkreis_clean;
+
+	return result as Gemeinde;
+}
+
+export function getGemeindeByIDorNull(url: string) {
+	try {
+		return getGemeindeByIDInternal(url);
+	} catch (error) {
+		return null;
+	}
+}
+
 export function getGemeinde(name: string, kreis?: string) {
 	name = cleanGemeindeName(name);
+	const kreisGemeinde = kreis ? cleanGemeindeName(kreis || "") : undefined;
 	kreis = kreis ? cleanKreisName(kreis) : undefined;
 
 	let min_distance = Infinity;
@@ -220,11 +312,20 @@ export function getGemeinde(name: string, kreis?: string) {
 			}
 		});
 
-		const distVerband = distance(v.verbands_clean || "", name);
+		let distVerband = distance(v.verband_clean || "", name);
 
-		if (distVerband <= verband_distance) {
+		if (distVerband <= verband_distance && distVerband < 3) {
 			verband_distance = distVerband;
 			verband_value = v;
+		}
+
+		if (kreisGemeinde) {
+			distVerband = distance(v.verband_name || "", kreisGemeinde);
+
+			if (distVerband < verband_distance) {
+				verband_distance = distVerband;
+				verband_value = v;
+			}
 		}
 
 		if (distGemeinde <= min_distance) {
@@ -240,11 +341,13 @@ export function getGemeinde(name: string, kreis?: string) {
 		}
 	}
 
-	if (duplicates.length > 1 && kreis) {
+	if (duplicates.length > 1 && kreis && kreisGemeinde) {
 		let min_distance = Infinity;
 
 		for (const v of duplicates) {
 			const dist = Math.min(
+				distance(v.verband_clean || "", kreisGemeinde),
+				distance(v.gemeinde_clean || "", kreisGemeinde),
 				distance(v.kreis_clean || "", kreis),
 				distance(v.wahlkreis_clean || "", kreis),
 				distance(v.kreis_clean + " " + v.kreis_id, kreis),
@@ -260,15 +363,15 @@ export function getGemeinde(name: string, kreis?: string) {
 		value = duplicates[0];
 	}
 
-	if (!value) {
+	if (verband_distance < min_distance) {
 		value = { ...verband_value, gemeinde_name: null, gemeinde_id: null };
 	}
 
 	const newValue = { ...value };
 	delete newValue.gemeinde_clean;
-	delete newValue.verbands_clean;
+	delete newValue.verband_clean;
 	delete newValue.kreis_clean;
 	delete newValue.wahlkreis_clean;
 
-	return newValue;
+	return newValue as Gemeinde;
 }

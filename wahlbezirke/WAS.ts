@@ -43,7 +43,6 @@ export function WAS(options: Options & { text: string; root?: HTMLElement }) {
 			result.bundesland_name ||= name;
 			result.bundesland_id ||= id;
 		} else if (
-			href?.includes("_kreis_") ||
 			href?.includes("_verwaltungsgemeinschaft_") ||
 			href?.includes("_verbandsgemeinde_") ||
 			href?.includes("_amt_") ||
@@ -52,7 +51,11 @@ export function WAS(options: Options & { text: string; root?: HTMLElement }) {
 			if (result.kreis_name && href.includes("_amt_")) {
 				result.gemeinde_name ||= name;
 				result.gemeinde_id ||= id;
+			} else {
+				result.verband_name ||= name;
+				result.verband_id ||= id;
 			}
+		} else if (href?.includes("_kreis_")) {
 			result.kreis_name ||= name;
 			result.kreis_id ||= id;
 		} else if (href?.includes("_wahlkreis_")) {

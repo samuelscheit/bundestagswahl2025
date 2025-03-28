@@ -3,12 +3,14 @@ import { wahlkreiseQuellen } from "../wahlkreise/wahlkreise";
 import { axiosWithRedirect } from "./axios";
 import { behoerden_queue, gemeinde_queue, saveResults } from "./wahlbezirke";
 import { krznGetWahlbezirkeUrl, krznParseCSV, krznWahlkreis, type ResultType } from "../wahlkreise/scrape";
-import fs from "fs";
+import { getGemeinde } from "./gemeinden";
+const krefeldMapping = require("./krefeld/mapping.json") as Record<string, string>;
 
 const results: ResultType[] = [];
 
 Object.entries(wahlkreiseQuellen).forEach(([wahlkreisId, quelle]) => {
 	if (!quelle.includes("wahl.krzn.de")) return;
+	if (quelle !== "https://wahl.krzn.de/bw2025/wep200/erg/200-305-BW-BW-d110-1.html") return;
 
 	behoerden_queue.add(async () => {
 		var { data: html } = await axiosWithRedirect(quelle);
@@ -48,8 +50,18 @@ async function fetchGemeinde(wahlkreisId: string, url: string) {
 
 	const res = await krznParseCSV(data);
 
+	const gemeindeName = res[0].gemeinde_name;
+	if (gemeindeName) {
+		const gemeinde = getGemeinde(gemeindeName);
+		// wahlkreisId = gemeinde.wahlkreis_id!;
+	}
+
 	res.forEach((wahlbezirk) => {
-		wahlbezirk.wahlkreis_id = wahlkreisId;
+		if (wahlbezirk.gemeinde_name === "Stadt Krefeld") {
+			wahlbezirk.wahlkreis_id = krefeldMapping[wahlbezirk.wahlbezirk_id!];
+		} else {
+			wahlbezirk.wahlkreis_id = wahlkreisId;
+		}
 
 		results.push(wahlbezirk);
 	});

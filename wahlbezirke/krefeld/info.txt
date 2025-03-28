@@ -1,0 +1,12 @@
+https://geoservices.krzn.de/security-proxy/services/wfs_skre_wahlbezirke?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A25832&typeNames=skre_stimmbezirke&bbox=317036.25,5681923.875,338435.75,5699926.125,EPSG:25832
+
+https://geoservices.krzn.de/security-proxy/services/wfs_skre_wahlbezirke?service=WFS&version=2.0.0&request=GetFeature&srsName=EPSG%3A25832&typeNames=skre_bundestagswahlbezirke&bbox=317036.25,5681923.875,338435.75,5699926.125,EPSG:25832
+
+https://geoportal-niederrhein.de/krefeld/geoportal/
+https://geoportal-niederrhein.de/krefeld/geoportal/?Map/layerIds=20035,20009,20023,40511,40506&visibility=true,true,true,true,true,true&transparency=0,0,0,0,0,0&Map/center=[329488.5,5691092.402517656]&Map/zoomLevel=3&uiStyle=simple
+
+Krefeld I:
+die Stadtbezirke 1 West, 5 Süd, 6 Fischeln, 7 Oppum-Linn, 9 Uerdingen
+
+Krefeld II:
+die Stadtbezirke 2 Nord, 3 Hüls, 4 Mitte, 8 Ost

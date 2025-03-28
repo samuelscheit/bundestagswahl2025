@@ -36,7 +36,7 @@ parser.on("data", (data) => {
 		Kreisschlüssel: KreisID,
 		"Kreisfreie Stadt/Landkreis": Kreisname,
 		Gemeindeschlüssel: GemeindeID,
-		Gemeindename: gemeinde,
+		Gemeindename: gemeindeName,
 		Verbandgemeindeschlüssel: VerbandsgemeindeID,
 		Verbandsgemeindename,
 		Wahlbezirk: WahlbezirksID,
@@ -66,7 +66,7 @@ parser.on("data", (data) => {
 	result.kreis_id = getIdFromName(KreisID);
 	result.kreis_name = Kreisname;
 
-	result.gemeinde_name = gemeinde;
+	result.gemeinde_name = gemeindeName;
 	result.gemeinde_id = getIdFromName(GemeindeID);
 
 	result.wahlbezirk_id = getIdFromName(WahlbezirksID);

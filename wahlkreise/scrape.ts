@@ -69,6 +69,8 @@ export function defaultResult() {
 		kreis_name: null as null | string,
 		gemeinde_name: null as null | string,
 		gemeinde_id: null as null | string,
+		verband_id: null as null | string,
+		verband_name: null as null | string,
 		ortsteil_id: null as null | string,
 		ortsteil_name: null as null | string,
 		wahlbezirk_name: null as null | string,

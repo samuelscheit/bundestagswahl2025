@@ -642,7 +642,7 @@ export const notVotemanager = new Set(
 	Object.entries(wahlkreiseQuellen)
 		.filter(([wahlkreis, quelle]) => !quelle.includes("ergebnis.html"))
 		.map(([wahlkreis]) => Number(wahlkreis))
-);
+).union(customWahlkreise);
 
 export const bundeslandNamen = {
 	1: "Schleswig-Holstein",

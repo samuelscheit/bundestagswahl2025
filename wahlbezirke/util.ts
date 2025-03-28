@@ -4,6 +4,7 @@ import type { Options } from "csv-parser";
 export async function csvParse({ data, ...opts }: Options & { data: string }) {
 	const stream = parse({
 		separator: ";",
+		...opts,
 	});
 
 	const result = [] as any[];
@@ -16,9 +17,17 @@ export async function csvParse({ data, ...opts }: Options & { data: string }) {
 
 	await new Promise((resolve) => {
 		stream.on("end", () => {
-			resolve();
+			resolve(null);
 		});
 	});
 
 	return result;
+}
+
+export function assignOptional(obj: Record<string, any>, patch: Record<string, any>) {
+	for (const key in patch) {
+		if (obj[key] == undefined) {
+			obj[key] = patch[key];
+		}
+	}
 }
