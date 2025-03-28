@@ -15,6 +15,7 @@ const kreiseToWahlkreise = {} as Record<string, string>;
 const verbandsgemeinden = {} as Record<string, string>;
 const verbandsgemeindenToKreise = {} as Record<string, string>;
 const gemeinden = {} as Record<string, string>;
+const wahlbezirke = {} as Record<string, number>;
 const gemeindenToVerbandsgemeinden = {} as Record<string, string>;
 
 type NameNode = {
@@ -115,26 +116,33 @@ parser.on("data", (data) => {
 	const kreisName = kreise[kreisNr];
 	const verbandsgemeindeName = verbandsgemeinden[verbandsgemeindeNr];
 	const obergruppeName = gemeindeName || verbandsgemeindeName || kreisName || wahlkreisName;
+	const obergruppeNr = gemeindeNr !== "000" ? gemeindeNr : verbandsgemeindeNr !== "00" ? verbandsgemeindeNr : kreisNr;
 
-	let result = results.find(
-		(x) => x.wahlbezirk_id === wahlbezirkNr && x.gemeinde_id === gemeindeNr && x.kreis_id === kreisNr && x.wahlkreis_id === wahlkreisNr
-	);
-	if (!result) {
-		result = defaultResult();
-		results.push(result);
+	const idResult = wahlkreisNr + kreisNr + verbandsgemeindeNr + gemeindeNr + wahlbezirkNr + name;
+
+	var wahlbezirk_name = name;
+
+	if (wahlbezirke[idResult]) {
+		wahlbezirke[idResult]++;
+		wahlbezirk_name = wahlbezirk_name + " " + wahlbezirke[idResult];
+	} else {
+		wahlbezirke[idResult] = 1;
 	}
+
+	const result = defaultResult();
+	results.push(result);
 
 	result.bundesland_id = "7";
 	result.bundesland_name = "Rheinland-Pfalz";
 
 	result.wahlbezirk_id = getIdFromName(wahlbezirkNr);
-	result.wahlbezirk_name = name;
+	result.wahlbezirk_name = wahlbezirk_name;
 
 	result.kreis_name ||= kreisName;
 	result.kreis_id = getIdFromName(kreisNr);
 
-	result.gemeinde_name ||= gemeindeName;
-	result.gemeinde_id = getIdFromName(gemeindeNr);
+	result.gemeinde_name ||= obergruppeName;
+	result.gemeinde_id = getIdFromName(obergruppeNr);
 
 	result.wahlkreis_name ||= wahlkreisName;
 	result.wahlkreis_id = getIdFromName(wahlkreisNr);

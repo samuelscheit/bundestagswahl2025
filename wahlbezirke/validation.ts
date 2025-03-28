@@ -34,7 +34,7 @@ wahlbezirke.forEach((x, i) => {
 
 	if (stimmen !== x.zweitstimmen.gültig) {
 		console.error(x);
-		throw new Error("Missing Stimmen: " + stimmen + " " + x.zweitstimmen.gültig);
+		throw new Error("Missing Stimmen: " + stimmen + " " + x.zweitstimmen.gültig + " " + x.gemeinde_name + " " + x.kreis_name);
 	}
 
 	if (stimmen >= 5000 && x.anzahl_berechtigte !== 0 && x.bundesland_id !== "14") {
@@ -44,8 +44,8 @@ wahlbezirke.forEach((x, i) => {
 	}
 });
 
-const wahlkreis = "2";
-const bezirke = wahlkreisBezirke[wahlkreis];
+const wahlkreis = "67";
+const bezirke = wahlkreisBezirke[wahlkreis] || [];
 
 const gemeinden = new Set(bezirke.map((x) => x.gemeinde_name));
 let total = 0;
@@ -62,6 +62,8 @@ gemeinden.forEach((gemeinde) => {
 
 	console.log(gemeinde, wähler);
 });
+
+console.log(bezirke.filter((x) => x.gemeinde_name === null));
 
 console.log("____________________");
 console.log("total", wahlkreiseNamen[wahlkreis], total);
@@ -169,7 +171,9 @@ Object.entries(indexes).forEach(([id, indices]) => {
 	}
 });
 
-const filtered = wahlbezirke.filter((x) => x !== undefined && x.wahlkreis_id !== "00" && !toDelete.has(getIdFromResult(x)));
+const filtered = wahlbezirke.filter(
+	(x) => x !== undefined && x.wahlkreis_id !== "00" && !toDelete.has(getIdFromResult(x)) && x.gemeinde_name !== null
+);
 
 console.log(wahlbezirke.length - filtered.length, "duplicates");
 console.log(filtered.length, "wahlbezirke");

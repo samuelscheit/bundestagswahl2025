@@ -7,6 +7,8 @@ import { cleanGemeindeName, gemeinden, getGemeinde } from "./gemeinden";
 import PQueue from "p-queue";
 import { wahlkreiseQuellen } from "../wahlkreise/wahlkreise";
 import axios from "axios";
+import parse from "csv-parser";
+import { csvParse } from "./util";
 
 export async function votemanager(options: Options & { text: string }) {
 	const { searchParams, origin, pathname } = new URL(options.url);
@@ -233,6 +235,14 @@ export async function getWahlbezirkVotemanager(opts: {
 
 		if (!opts.name) opts.name = config.behoerde;
 
+		try {
+			if (config.zeige_uebersicht_wahlraeume_link) {
+				const {
+					data: { wahlraeume },
+				} = await axiosWithRedirect<Wahlraeume>(`${apiEndpoint}/wahlraeume_uebersicht.json`, {});
+			}
+		} catch (error) {}
+
 		// console.log(opts.name, base + "/" + btw25.url);
 		const präsentationUrl = base + "/" + btw25.url;
 
@@ -260,6 +270,9 @@ export async function getWahlbezirkVotemanager(opts: {
 		);
 
 		let gemeinde = getGemeinde(opts.name, config.behoerden_links?.header.text);
+		if (opts.bundesland && gemeinde.bundesland_name !== opts.bundesland) {
+			throw new Error("Invalid gemeinde: " + opts.name + " " + url + " " + gemeinde.gemeinde_name + " " + gemeinde.bundesland_name);
+		}
 		if (!gemeinde) {
 			console.log(config.behoerde, "NOT FOUND", cleanGemeindeName);
 			return results;
@@ -287,27 +300,94 @@ export async function getWahlbezirkVotemanager(opts: {
 
 				const { data: wahl } = await axiosWithRedirect<WahlDetails>(wahlUrl);
 
-				const gemeindenEbene = wahl.menu_links.find((x) => x.title.includes("Gemeinden") || x.id.includes("ebene_3_"));
+				const gemeindenEbene = wahl.menu_links.find((x) => x.title.includes("Gemeinden"));
 
 				if (gemeindenEbene) {
-					const { data: gemeinden } = await axiosWithRedirect<EbenenÜbersicht>(
-						`${apiEndpoint}/wahl_${wahleintrag.wahl.id}/uebersicht_${gemeindenEbene.id}_1.json`
-					);
+					try {
+						var { data: gemeindenZweitstimmen } = await axiosWithRedirect<EbenenÜbersicht>(
+							`${apiEndpoint}/wahl_${wahleintrag.wahl.id}/uebersicht_${gemeindenEbene.id}_1.json`
+						);
 
-					behoerden_queue.addAll(
-						gemeinden.tabelle?.zeilen.map((x) => async () => {
-							if (x.externeUrl) throw new Error("Externe URL: " + x.link.url + " " + präsentationUrl);
-							if (!x.link.url) return;
+						behoerden_queue.addAll(
+							gemeindenZweitstimmen.tabelle?.zeilen.map((x) => async () => {
+								if (!x.link) return;
+								if (x.externeUrl) throw new Error("Externe URL: " + x.link.url + " " + präsentationUrl);
+								if (!x.link.url) return;
 
-							var url = new URL(x.link.url, präsentationUrl).href.replace("/index.html", "/");
+								var url = new URL(x.link.url, präsentationUrl).href.replace("/index.html", "/");
 
-							await getWahlbezirkVotemanager({
-								url: url,
-								name: x.label,
-								bundesland: opts.bundesland,
+								await getWahlbezirkVotemanager({
+									url: url,
+									name: x.label,
+									bundesland: opts.bundesland,
+								});
+							})
+						);
+
+						const gemeindenWithNoWahlbezirk = gemeindenZweitstimmen.tabelle?.zeilen.filter(
+							(x) => !x.link && x.error === undefined && x.statusProzent === 100
+						);
+
+						if (gemeindenWithNoWahlbezirk.length) {
+							// gemeinde with no link
+							var { data: gemeindenErststimmen } = await axiosWithRedirect<EbenenÜbersicht>(
+								`${apiEndpoint}/wahl_${wahleintrag.wahl.id}/uebersicht_${gemeindenEbene.id}_0.json`
+							);
+
+							const mapErststimmen = new Map(gemeindenErststimmen.tabelle.zeilen.map((x) => [x.label, x]));
+
+							gemeindenWithNoWahlbezirk.forEach((zweitstimmen) => {
+								const { label } = zweitstimmen;
+
+								const erststimmen = mapErststimmen.get(label);
+								if (!erststimmen) throw new Error("Cant find erstimmen for: " + label + " " + apiEndpoint);
+
+								const kreis = gemeinde.kreis_name || gemeinde.wahlkreis_name!;
+								const subgemeinde = getGemeinde(label, kreis);
+								if (!subgemeinde) throw new Error("Cant identify gemeinde: " + label + " " + kreis);
+
+								const subResults = defaultResult();
+
+								Object.assign(subResults, subgemeinde);
+
+								// skip gemeinde + stand
+								gemeindenErststimmen.tabelle.headerAbs.slice(2).forEach((header, index) => {
+									const label = header.labelKurz.toLowerCase();
+									const val = Number(erststimmen.felder[index].absolut.replaceAll(".", "")) || 0;
+
+									if (label === "wahlberechtigte") {
+										subResults.anzahl_berechtigte = val;
+									} else if (label === "wähler" || label === "wähler*innen" || label === "wähler/-innen") {
+										subResults.anzahl_wähler = val;
+									} else if (label === "gültig") {
+										subResults.erststimmen.gültig = val;
+									} else {
+										subResults.erststimmen.parteien[header.labelKurz] = val;
+									}
+								});
+
+								gemeindenZweitstimmen.tabelle.headerAbs.slice(2).forEach((header, index) => {
+									const label = header.labelKurz.toLowerCase();
+									const val = Number(zweitstimmen.felder[index].absolut.replaceAll(".", "")) || 0;
+
+									if (label === "wahlberechtigte") {
+										subResults.anzahl_berechtigte = val;
+									} else if (label === "wähler" || label === "wähler*innen" || label === "wähler/-innen") {
+										subResults.anzahl_wähler = val;
+									} else if (label === "gültig") {
+										subResults.zweitstimmen.gültig = val;
+									} else {
+										subResults.zweitstimmen.parteien[header.labelKurz] = val;
+									}
+								});
+
+								subResults.wahlbezirk_id = subResults.gemeinde_id;
+								subResults.wahlbezirk_name = subResults.gemeinde_name;
+
+								results.push(subResults);
 							});
-						})
-					);
+						}
+					} catch (error) {}
 				}
 
 				const ebene = wahl.menu_links.find((x) => x.id === "ebene_6");
@@ -383,6 +463,89 @@ export async function getWahlbezirkVotemanager(opts: {
 
 		throw new Error("Error " + opts!.name + " " + opts!.url + " " + (error as Error).message);
 	}
+}
+
+const ParteienNamen = {
+	"Christlich Demokratische Union Deutschlands": "CDU",
+	"Sozialdemokratische Partei Deutschlands": "SPD",
+	"BÜNDNIS 90/DIE GRÜNEN": "GRÜNE",
+	"Freie Demokratische Partei": "FDP",
+	"Alternative für Deutschland": "AfD",
+	"Basisdemokratische Partei Deutschland": "dieBasis",
+	"PARTEI MENSCH UMWELT TIERSCHUTZ": "Tierschutzpartei",
+	"Partei für Arbeit, Rechtsstaat, Tierschutz, Elitenförderung und basisdemokratische Initiative": "Die PARTEI",
+	"Volt Deutschland": "Volt",
+	"Ökologisch-Demokratische Partei / Familie und Umwelt": "ÖDP",
+	"Bündnis C - Christen für Deutschland": "Bündnis C",
+	"Marxistisch-Leninistische Partei Deutschlands": "MLPD",
+	"BÜNDNIS DEUTSCHLAND": "BÜNDNIS DEUTSCHLAND",
+	"Bündnis Sahra Wagenknecht - Vernunft und Gerechtigkeit": "BSW",
+} as Record<string, string>;
+
+// not used because ags + gebietnr is not enough to uniquely identify a comune
+async function getVotemanagerOpenData(
+	url: string,
+	oberGemeinde: ReturnType<typeof getGemeinde>,
+	gemeindenWithNoWahlbezirk: EbenenÜbersicht["tabelle"]["zeilen"]
+) {
+	if (!url.endsWith("/")) url += "/";
+
+	const base = new URL("opendata/", url).href;
+
+	const { data: openData } = await axiosWithRedirect<OpenData>(`${base}/open_data.json`);
+
+	const bezirke = openData.csvs.find((x) => x.ebene.toLowerCase().includes("bezirke"));
+	if (!bezirke) throw new Error("Keine Wahlbezirke in OpenData");
+
+	const csvUrl = new URL(bezirke.url, base).href;
+
+	const csvText = await axiosWithRedirect(csvUrl, { responseType: "text" });
+	const csv = await csvParse({ data: csvText.data, separator: ";" });
+
+	const results = [] as ResultType[];
+
+	csv.forEach((x) => {
+		const { datum, wahl, ags, "gebiet-nr": GebietNr, "gebiet-name": GebietName } = x as Record<string, string>;
+
+		const wahlberechtigte = Number(x.A);
+		const wähler = Number(x.B);
+		const ungültigeErststimmen = Number(x.C);
+		const gültigeErststimmen = Number(x.D);
+		const ungültigeZweitstimmen = Number(x.E);
+		const gültigeZweitstimmen = Number(x.F);
+
+		const result = defaultResult();
+
+		result.anzahl_berechtigte = wahlberechtigte;
+		result.anzahl_wähler = wähler;
+		result.erststimmen.gültig = gültigeErststimmen;
+		result.erststimmen.ungültig = ungültigeErststimmen;
+		result.zweitstimmen.gültig = gültigeZweitstimmen;
+		result.zweitstimmen.ungültig = ungültigeZweitstimmen;
+
+		const gemeinde = getGemeinde(GebietName, oberGemeinde.gemeinde_name || oberGemeinde.kreis_name || oberGemeinde.wahlkreis_name!);
+
+		if (gemeinde) Object.assign(result, gemeinde);
+
+		const { parteien } = openData.dateifelder.find((x) => x.parteien) || {};
+		if (!parteien) return;
+
+		parteien.forEach((partei) => {
+			const [erststimmeFeld, zweitstimmeFeld] = partei.feld.split(" / ");
+
+			const erststimmen = Number(x[erststimmeFeld]);
+			const zweitstimmen = Number(x[zweitstimmeFeld]);
+
+			const parteiName = ParteienNamen[partei.wert] || partei.wert;
+
+			result.erststimmen.parteien[parteiName] = erststimmen;
+			result.zweitstimmen.parteien[parteiName] = zweitstimmen;
+		});
+
+		results.push(result);
+	});
+
+	return results;
 }
 
 export async function getWahlbezirkeVotemanager() {
@@ -516,6 +679,7 @@ export interface EbenenÜbersicht {
 		zeilen: {
 			order_value: number;
 			label: string;
+			error?: any;
 			link: {
 				id: string;
 				type: string;
@@ -626,6 +790,45 @@ export interface WahlErgebnis {
 			}[];
 		}[];
 	};
+	file_version: string;
+	file_timestamp: string;
+	server_hash: string;
+}
+
+export interface OpenData {
+	wahllokal_felder: any[];
+	strassen_felder: any[];
+	csvs: {
+		wahl: string;
+		ebene: string;
+		url: string;
+	}[];
+	ergebnisgrafiken: any[];
+	dateifelder: {
+		name: string;
+		felder: {
+			feld: string;
+			wert: string;
+		}[];
+		parteien: {
+			feld: string;
+			wert: string;
+		}[];
+	}[];
+	file_version: string;
+	file_timestamp: string;
+	server_hash: string;
+}
+
+export interface Wahlraeume {
+	headers: string[];
+	wahlraeume: {
+		titel: string;
+		id: number;
+		barrierefrei?: string;
+		barrierefrei_ergaenzung?: string;
+		bezirke: string[];
+	}[];
 	file_version: string;
 	file_timestamp: string;
 	server_hash: string;

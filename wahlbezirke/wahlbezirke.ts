@@ -52,6 +52,12 @@ export function saveResults(results: ResultType[], filter_bundesland?: string) {
 			wahlbezirke.push(x);
 			indexes.set(id, wahlbezirke.length - 1);
 		} else {
+			const exists = wahlbezirke[index];
+			if (exists.anzahl_wähler !== x.anzahl_wähler) {
+				console.error("Different wähler", x, exists);
+				// throw new Error("Different wähler");
+			}
+
 			wahlbezirke[index] = x;
 		}
 	});

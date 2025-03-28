@@ -625,6 +625,25 @@ export const bundeslandWahlkreise = {
 	16: createArray(188, 195), // thüringen
 };
 
+export const customWahlkreise = new Set(
+	(
+		[
+			13, // mecklenburg-vorpommern
+			7, // rheinland-pfalz
+			15, // sachsen-anhalt
+			16, // thüringen
+		] as const
+	)
+		.map((x) => bundeslandWahlkreise[x])
+		.flat()
+);
+
+export const notVotemanager = new Set(
+	Object.entries(wahlkreiseQuellen)
+		.filter(([wahlkreis, quelle]) => !quelle.includes("ergebnis.html"))
+		.map(([wahlkreis]) => Number(wahlkreis))
+);
+
 export const bundeslandNamen = {
 	1: "Schleswig-Holstein",
 	2: "Hamburg",

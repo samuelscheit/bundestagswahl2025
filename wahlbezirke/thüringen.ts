@@ -112,7 +112,7 @@ const wahlkreise = {} as Record<string, string>;
 const gemeinden = {} as Record<string, string>;
 
 parser.on("data", (data) => {
-	const { wahlkreisNr, kreisNr, gemeindeNr, wahlbezirkNr, name } = data as Record<string, string>;
+	const { wahlkreisNr, kreisNr, gemeindeNr, wahlbezirkNr, name, satzart } = data as Record<string, string>;
 
 	if (wahlkreisNr !== "000" && kreisNr === "00" && gemeindeNr === "000" && wahlbezirkNr === "0000") {
 		wahlkreise[wahlkreisNr] = name;
@@ -123,7 +123,7 @@ parser.on("data", (data) => {
 	const wahlkreisName = wahlkreise[wahlkreisNr];
 	const gemeindeName = gemeinden[gemeindeNr];
 
-	if (wahlbezirkNr === "0000" || gemeindeNr === "000") return;
+	if (satzart !== "") return;
 
 	const result = defaultResult();
 	results.push(result);

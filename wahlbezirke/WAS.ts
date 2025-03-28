@@ -49,6 +49,10 @@ export function WAS(options: Options & { text: string; root?: HTMLElement }) {
 			href?.includes("_amt_") ||
 			href.includes("_samtgemeinde_")
 		) {
+			if (result.kreis_name && href.includes("_amt_")) {
+				result.gemeinde_name ||= name;
+				result.gemeinde_id ||= id;
+			}
 			result.kreis_name ||= name;
 			result.kreis_id ||= id;
 		} else if (href?.includes("_wahlkreis_")) {
@@ -122,10 +126,28 @@ export function WAS(options: Options & { text: string; root?: HTMLElement }) {
 		}
 	});
 
+	if (result.anzahl_wähler === 0) {
+		root.querySelectorAll(
+			`[data-tablejigsaw-downloadable-filename="Kennzahlen"] tbody tr, table:has([data-sort*="insgesamt"]) tbody tr`
+		)?.forEach((row) => {
+			const cells = row.querySelectorAll("td");
+			if (cells.length !== 2) return;
+
+			const [name, value] = cells.map((x) => x.structuredText.trim());
+			const val = Number(value.replace(/\./g, "")) || 0;
+
+			if (name.includes("Wahlberechtigte insgesamt")) {
+				result.anzahl_berechtigte = val;
+			} else if (name.includes("Wählende insgesamt") || name.includes("Wähler insgesamt")) {
+				result.anzahl_wähler = val;
+			}
+		});
+	}
+
 	return result;
 }
 
-export async function getUntergebieteWAS(url: string, depth = 0) {
+export async function getUntergebieteWAS(url: string, depth = 0, cache = {} as Record<string, number>) {
 	var { data: html, status, url } = await axiosWithRedirect(url, { responseType: "text" });
 
 	if (status >= 400) throw new Error(`Request failed with status code ${status} ${url}`);
@@ -160,7 +182,7 @@ export async function getUntergebieteWAS(url: string, depth = 0) {
 				try {
 					unterurl = base + x.getAttribute("href");
 
-					const sub_results = await getUntergebieteWAS(unterurl, depth + 1);
+					const sub_results = await getUntergebieteWAS(unterurl, depth + 1, cache);
 
 					results = results.concat(sub_results);
 				} catch (error) {
@@ -173,14 +195,23 @@ export async function getUntergebieteWAS(url: string, depth = 0) {
 	}
 	// unterste ebene => Wahlbezirke
 
-	return [
-		WAS({
-			id: "",
-			text: "",
-			root,
-			url,
-		}),
-	];
+	const result = WAS({
+		id: "",
+		text: "",
+		root,
+		url,
+	});
+
+	const id = "" + result.wahlkreis_id + result.kreis_id + result.gemeinde_id + result.wahlbezirk_id + result.wahlbezirk_name;
+
+	if (cache[id]) {
+		cache[id]++;
+		result.wahlbezirk_name = result.wahlbezirk_name + " " + cache[id];
+	} else {
+		cache[id] = 1;
+	}
+
+	return [result];
 }
 
 export async function getWahlbezirkeWAS(sources?: string[]) {

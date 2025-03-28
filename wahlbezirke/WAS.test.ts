@@ -1,5 +1,8 @@
+import { saveResults } from "./wahlbezirke";
 import { getUntergebieteWAS, WAS } from "./WAS";
 
-const result = await getUntergebieteWAS("https://wahlergebnis.saarland.de/GRW/ergebnisse_gemeinde_41519.html");
+const results = await getUntergebieteWAS("https://wahlergebnisse.halle.de/BTW2025/");
 
-console.log(result);
+console.log(results);
+
+saveResults(results);

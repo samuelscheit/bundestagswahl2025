@@ -4,7 +4,7 @@ import { behoerden_queue, saveResults } from "./wahlbezirke";
 const results = await getWahlbezirkVotemanager({
 	bundesland: "",
 	name: "",
-	url: "https://votemanager.kdo.de/03452000/index.html",
+	url: "https://wahlergebnisse.komm.one/lb/produktion/08235000/",
 });
 
 await behoerden_queue.onIdle();

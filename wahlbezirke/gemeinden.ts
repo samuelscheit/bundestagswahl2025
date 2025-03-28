@@ -203,7 +203,7 @@ export function getGemeinde(name: string, kreis?: string) {
 	let value = null;
 	let verband_value = null;
 
-	const duplicates = [] as Gemeinde[];
+	let duplicates = [] as Gemeinde[];
 
 	for (const v of gemeinden) {
 		let distGemeinde = distance(v.gemeinde_clean || "", name);

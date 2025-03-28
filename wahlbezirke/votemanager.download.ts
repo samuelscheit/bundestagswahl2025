@@ -1,8 +1,10 @@
 import type { ResultType } from "../wahlkreise/scrape";
-import { getWahlbezirkeVotemanager, getWahlbezirkeVotemanagerFromWahlkreise, getWahlbezirkVotemanager } from "./votemanager";
+import { notVotemanager } from "../wahlkreise/wahlkreise";
+import { getWahlbezirkeVotemanagerFromWahlkreise, getWahlbezirkVotemanager } from "./votemanager";
 import { behoerden_queue, saveResults } from "./wahlbezirke";
 
-const results1 = getWahlbezirkeVotemanager();
+// const results1 = getWahlbezirkeVotemanager();
+const results1 = [] as any[];
 const results2 = getWahlbezirkeVotemanagerFromWahlkreise();
 
 const additional = [
@@ -21,4 +23,4 @@ const additional = [
 const results = await Promise.all([results1, results2, ...additional]);
 await behoerden_queue.onIdle();
 
-saveResults(results.flat().filter((x) => x) as ResultType[]);
+saveResults(results.flat().filter((x) => x && !notVotemanager.has(Number(x.wahlkreis_id))) as ResultType[]);
