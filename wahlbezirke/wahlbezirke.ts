@@ -17,8 +17,7 @@ export const queues = [behoerden_queue, bundesland_queue, wahleintrage_queue, ge
 export function getIdFromResult(x: ResultType) {
 	if (!x.wahlkreis_id) throw new Error("Missing wahlkreis_id: " + JSON.stringify(x));
 	x.wahlkreis_id = String(parseInt(x.wahlkreis_id));
-
-	if (!x.wahlkreis_name) x.wahlkreis_name = wahlkreiseNamen[x.wahlkreis_id];
+	x.wahlkreis_name = wahlkreiseNamen[x.wahlkreis_id];
 
 	x.bundesland_id = wahlkreiseBundesland[x.wahlkreis_id as any as keyof typeof wahlkreiseBundesland];
 	if (!x.bundesland_id) throw new Error("Missing bundesland_id: " + JSON.stringify(x));

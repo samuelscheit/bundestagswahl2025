@@ -14,6 +14,8 @@ const additional = [
 	"https://wahlen.neunkirchen.de/",
 	"https://www.quierschied.de/fileadmin/vote-iT/Produktiv/10041516/index.html",
 	"https://wahlen.heidekreis.de/03358000/",
+	"https://wahlen.gkd-re.net/05562012/",
+	"https://wahlen.regioit.de/3/05911000/",
 ].map((x) =>
 	getWahlbezirkVotemanager({
 		bundesland: "",

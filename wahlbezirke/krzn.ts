@@ -10,7 +10,6 @@ const results: ResultType[] = [];
 
 Object.entries(wahlkreiseQuellen).forEach(([wahlkreisId, quelle]) => {
 	if (!quelle.includes("wahl.krzn.de")) return;
-	if (quelle !== "https://wahl.krzn.de/bw2025/wep200/erg/200-305-BW-BW-d110-1.html") return;
 
 	behoerden_queue.add(async () => {
 		var { data: html } = await axiosWithRedirect(quelle);
@@ -29,18 +28,22 @@ Object.entries(wahlkreiseQuellen).forEach(([wahlkreisId, quelle]) => {
 
 		const navigation = parse(html);
 
+		const kreis = navigation.querySelector(`main article .ym-article-head-inner h3`);
+		kreis?.getElementsByTagName("time").forEach((x) => x.remove());
+		const kreisName = (kreis?.textContent || "").replace("Kreiswahlleiter", "").replace("Bundestagswahl", "").trim();
+
 		navigation.querySelectorAll(`.ym-content-section-content table tbody tr td a`).map((link) => {
 			const href = link.getAttribute("href");
 			if (!href) return;
 
 			const gemeindeUrl = new URL(href, url.href).href;
 
-			gemeinde_queue.add(fetchGemeinde.bind(null, wahlkreisId, gemeindeUrl));
+			gemeinde_queue.add(fetchGemeinde.bind(null, wahlkreisId, gemeindeUrl, kreisName));
 		});
 	});
 });
 
-async function fetchGemeinde(wahlkreisId: string, url: string) {
+async function fetchGemeinde(wahlkreisId: string, url: string, kreis: string) {
 	console.log("fetchGemeinde", wahlkreisId, url);
 
 	const { data: html } = await axiosWithRedirect<string>(url);
@@ -52,8 +55,9 @@ async function fetchGemeinde(wahlkreisId: string, url: string) {
 
 	const gemeindeName = res[0].gemeinde_name;
 	if (gemeindeName) {
-		const gemeinde = getGemeinde(gemeindeName);
-		// wahlkreisId = gemeinde.wahlkreis_id!;
+		const gemeinde = getGemeinde(gemeindeName, kreis);
+
+		wahlkreisId = gemeinde.wahlkreis_id!;
 	}
 
 	res.forEach((wahlbezirk) => {

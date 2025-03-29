@@ -46,7 +46,7 @@ wahlbezirke.forEach((x, i) => {
 
 const Bundeswahlleiter = getBundeswahlleiterDaten("gesamtergebnis_01.xml");
 
-const wahlkreis = "35";
+const wahlkreis = "110";
 const bezirke = wahlkreisBezirke[wahlkreis] || [];
 
 const gemeinden = new Set(bezirke.map((x) => x.gemeinde_name || x.verband_name));
@@ -191,9 +191,17 @@ const filtered = wahlbezirke.filter(
 		x.wahlkreis_id !== "00" &&
 		!toDelete.has(getIdFromResult(x)) &&
 		(x.gemeinde_name !== null || x.verband_name !== null)
-	// && x.wahlkreis_id !== "139" &&
-	// x.wahlkreis_id !== "140"
+	// && x.wahlkreis_id !== "139"
+	// && x.wahlkreis_id !== "140"
 );
+
+console.log(Object.keys(wahlkreisBezirke).length, "wahlkreise");
+
+Object.entries(wahlkreiseNamen).forEach(([wahlkreis_id, name]) => {
+	if (wahlkreisBezirke[wahlkreis_id]) return;
+
+	console.error("Missing wahlkreis", wahlkreis_id, name);
+});
 
 console.log(wahlbezirke.length - filtered.length, "duplicates");
 console.log(filtered.length, "wahlbezirke");

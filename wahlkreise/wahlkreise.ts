@@ -256,8 +256,8 @@ export const wahlkreiseQuellen = {
 	"255": "https://www.unterallgaeu.de/fileadmin/eigene_dateien/wahlen/2025/btw/ergebnisse.html", // Memmingen – Unterallgäu
 	"256": "https://wahlen.landkreis-lindau.de/bundestagswahl2025/ergebnisse_wahlkreis_256.html", // Oberallgäu
 	"257": "https://wahlen.osrz-akdb.de/sw-p/777000/257/20250223/bundestagswahl_kwl_1_wk/ergebnisse_wahlkreis_257.html", // Ostallgäu
-	"258": "https://statistik.stuttgart.de/wahlen/html/bundestagswahl/2025/ergebnis-wk1_erststimmen.html", // Stuttgart I
-	"259": "https://statistik.stuttgart.de/wahlen/html/bundestagswahl/2025/ergebnis-wk2_erststimmen.html", // Stuttgart II
+	"258": "https://wahlergebnisse.komm.one/lb/produktion/wahltermin-20250223/08111000/praesentation/ergebnis.html?wahl_id=8310&stimmentyp=0&id=ebene_-21758_id_34828", // Stuttgart I
+	"259": "https://wahlergebnisse.komm.one/lb/produktion/wahltermin-20250223/08111000/praesentation/ergebnis.html?wahl_id=8310&stimmentyp=0&id=ebene_-21758_id_34829", // Stuttgart II
 	"260": "https://wahlergebnisse.komm.one/lb/produktion/wahltermin-20250223/08115000/praesentation/ergebnis.html?wahl_id=8310&stimmentyp=0&id=ebene_-21758_id_32830", // Böblingen
 	"261": "https://wahlergebnisse.komm.one/lb/produktion/wahltermin-20250223/08116000/praesentation/ergebnis.html?wahl_id=8310&stimmentyp=0&id=ebene_-21758_id_32831", // Esslingen
 	"262": "https://wahlergebnisse.komm.one/lb/produktion/wahltermin-20250223/08116000/praesentation/ergebnis.html?wahl_id=8310&stimmentyp=0&id=ebene_-21758_id_32832", // Nürtingen

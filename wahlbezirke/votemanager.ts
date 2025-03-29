@@ -176,7 +176,8 @@ const wahlkreiseStadt = new Set([
 	// bochum doesn't have individual wahlbezirke csv files
 	// "139", // Bochum I
 	// "140", // Bochum II
-	//
+	"258", // Stuttgart I
+	"259", // Stuttgart II
 ]);
 
 export async function getWahlbezirkVotemanager(opts: {
@@ -549,7 +550,7 @@ async function getVotemanagerOpenData(url: string, oberGemeinde: ReturnType<type
 
 	const { data: openData } = await axiosWithRedirect<OpenData>(`${base}/open_data.json`);
 
-	const bezirke = openData.csvs.filter((x) => x.ebene.toLowerCase().includes("bezirke"));
+	const bezirke = openData.csvs.filter((x) => x.ebene.toLowerCase().includes("bezirke") && x.ebene !== "Stadtbezirke");
 	if (!bezirke) throw new Error("Keine Wahlbezirke in OpenData");
 
 	return Promise.all(
@@ -585,7 +586,6 @@ async function getVotemanagerOpenData(url: string, oberGemeinde: ReturnType<type
 				assignOptional(result, oberGemeinde);
 				if (wahlkreis_id) {
 					result.wahlkreis_id = wahlkreis_id;
-					result.wahlkreis_name = wahlkreiseNamen[wahlkreis_id] || null;
 				}
 
 				result.wahlbezirk_id = getIdFromName(GebietName) || null;
@@ -655,11 +655,6 @@ export async function getWahlbezirkeVotemanagerFromWahlkreise() {
 	await behoerden_queue.addAll(
 		Object.values(wahlkreiseQuellen).map((x) => async () => {
 			try {
-				if (
-					x !==
-					"https://wep.itk-rheinland.de/vm/prod/bw_2025/05162000/praesentation/ergebnis.html?wahl_id=83&stimmentyp=0&id=ebene_2_id_83"
-				)
-					return;
 				if (!x.includes("praesentation/ergebnis.html?wahl_id")) return;
 
 				const uri = new URL(x);
