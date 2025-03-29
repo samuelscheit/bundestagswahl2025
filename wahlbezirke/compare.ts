@@ -532,8 +532,8 @@ function showConstituencySummary(
 }
 
 // Example usage
-compareWithCSVResults(__dirname + "/results.csv", "gebiet-name", "B", "291");
-showConstituencySummary("291");
+compareWithCSVResults(__dirname + "/results.csv", "gebiet-name", "B", "285");
+showConstituencySummary("285");
 
 // Export for use in other scripts
 export { compareWithCSVResults, showConstituencySummary };

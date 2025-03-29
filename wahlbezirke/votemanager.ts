@@ -122,7 +122,7 @@ export async function votemanagerWithOptions({
 			?.gebietslinks?.forEach((x) => {
 				if (x.type !== "ergebnis") return;
 
-				gemeinde ||= getGemeinde(x.title, name);
+				// gemeinde ||= getGemeinde(x.title, name);
 			});
 
 		const Wahlkreis = gebietsverlinkung.find((x) => x.titel.includes("Wahlkreis"));
@@ -169,6 +169,7 @@ export async function votemanagerWithOptions({
 
 let results = [] as ResultType[];
 const scraped = new Set<string>();
+const promiseScraped = new Map<string, Promise<any>>();
 
 const wahlkreiseStadt = new Set([
 	"151", // Leipzig I
@@ -188,340 +189,364 @@ export async function getWahlbezirkVotemanager(opts: {
 	tries?: number;
 	onlySubgemeinden?: boolean;
 }) {
-	try {
-		opts.url = opts.url.replace("/index.html", "/");
+	opts.url = opts.url.replace("/index.html", "/");
 
-		if (scraped.has(opts.url)) return [];
-		console.log("getWahlbezirkVotemanager", opts.url);
-		scraped.add(opts.url);
+	if (promiseScraped.has(opts.url)) return promiseScraped.get(opts.url);
+	if (scraped.has(opts.url)) return [];
+	scraped.add(opts.url);
 
-		if (opts.html) {
-			var { html, url } = opts;
-		} else {
-			var { data: html, status, url } = await axiosWithRedirect<string>(opts.url, { responseType: "text" });
-			if (status >= 400) throw new Error(`Request failed with status code ${status}`);
-		}
-
-		const isVoteManager = html.includes("votemanager.de") || html.includes("termine.json") || html.includes("vue_index_container");
-		if (!isVoteManager) {
-			throw new Error("Not votemanager: " + opts.url);
-		}
-
-		// termine https://votemanager-da.ekom21cdn.de/06431001/index.html
-		// termin übersicht https://wahl.gelsenkirchen.de/votemanager/20250223/05513000/praesentation/index.html
-		// ergebnis https://votemanager-da.ekom21cdn.de/2025-02-23/06431001/praesentation/ergebnis.html?wahl_id=728&stimmentyp=0&id=ebene_-575_id_638
-
-		if (!html.includes("termine.json")) {
-			// all irrelevant because the used votemanager version is older than BTW2025
-			// throw new Error("Keine BTW25 Ergebnisse (alte version)");
-			const configUrl = new URL("../daten/api/config.json", url).href;
-			const { data: config } = await axiosWithRedirect<VotemanagerConfig>(configUrl);
-
-			if (!config.alle_wahltermine_link) throw new Error("Keine BTW25 Ergebnisse (alte version)");
-
-			url = new URL(config.alle_wahltermine_link, url).href;
-		}
-
-		let base = url.replace("/index.html", "");
-		if (base.endsWith("/")) base = base.slice(0, -1);
-
-		const termineUrl = base + "/api/termine.json";
-
-		const { data } = await axiosWithRedirect(termineUrl);
-		const { termine } = data;
-
-		if (!termine) throw new Error("INVALID RESPONSE: " + termineUrl + " " + opts.url);
-
-		const btw25 = termine.find((x: any) => x.date === "23.02.2025");
-		if (!btw25) throw new Error("Keine BTW25 Ergebnisse (Kein Termin)");
-
-		// https://votemanager.kdo.de/15084590/../2025022302/15084590/praesentation/
-		// https://votemanager.kdo.de/15084590/../2025022302/15084590/daten/api/termin.json
-		const apiType = html.includes("../api") ? `/api/praesentation` : `/daten/api`;
-		const apiEndpoint = base + "/" + btw25.url.replace("/praesentation/", apiType);
-		const terminUrl = apiEndpoint + "/termin.json";
-
-		const { data: termin } = await axiosWithRedirect<{ wahleintraege: Wahleintrag[] }>(terminUrl);
-		let { wahleintraege } = termin;
-
-		if (!wahleintraege) throw new Error("INVALID RESPONSE: " + opts.url + " " + terminUrl);
-
-		wahleintraege = wahleintraege.filter((x) => x.stimmentyp.id === 1 && x.wahl.titel.toLowerCase().includes("bundestag"));
-		if (wahleintraege.length <= 0) throw new Error("Keine BTW25 Ergebnisse (Kein Wahleintrag)");
-
-		// https://votemanager.kdo.de/2025022302/15084590/daten/api/termin.json
-
-		// console.log(name, terminUrl);
-
-		const { data: config } = await axiosWithRedirect<VotemanagerConfig>(`${apiEndpoint}/config.json`, { responseType: "json" });
-
-		if (!opts.name) opts.name = config.behoerde;
-
+	const promise = (async () => {
 		try {
-			if (config.zeige_uebersicht_wahlraeume_link) {
-				const {
-					data: { wahlraeume },
-				} = await axiosWithRedirect<Wahlraeume>(`${apiEndpoint}/wahlraeume_uebersicht.json`, {});
+			console.log("getWahlbezirkVotemanager", opts.url);
+
+			if (opts.html) {
+				var { html, url } = opts;
+			} else {
+				var { data: html, status, url } = await axiosWithRedirect<string>(opts.url, { responseType: "text" });
+				if (status >= 400) throw new Error(`Request failed with status code ${status}`);
 			}
-		} catch (error) {}
 
-		// console.log(opts.name, base + "/" + btw25.url);
-		const präsentationUrl = base + "/" + btw25.url;
-
-		behoerden_queue.addAll(
-			(config.behoerden_links?.links || [])
-				.map((x) => {
-					if (!x.url) return;
-					if (!x.url.startsWith("../")) return { text: x.text, url: x.url };
-
-					const newUrl = new URL(x.url, präsentationUrl);
-
-					return { text: x.text, url: newUrl.href };
-				})
-				.filter((x) => x)
-				.map((x) => async () => {
-					await getWahlbezirkVotemanager({
-						url: x!.url,
-						name: x!.text,
-						bundesland: opts.bundesland,
-					});
-				}),
-			{
-				priority: 1,
+			const isVoteManager = html.includes("votemanager.de") || html.includes("termine.json") || html.includes("vue_index_container");
+			if (!isVoteManager) {
+				throw new Error("Not votemanager: " + opts.url);
 			}
-		);
 
-		let gemeinde = getGemeindeByID(präsentationUrl);
-		if (opts.bundesland && gemeinde.bundesland_name !== opts.bundesland) {
-			throw new Error("Invalid gemeinde: " + opts.name + " " + url + " " + gemeinde.gemeinde_name + " " + gemeinde.bundesland_name);
-		}
-		if (!gemeinde) {
-			console.log(config.behoerde, "NOT FOUND", cleanGemeindeName);
-			return results;
-		}
+			// termine https://votemanager-da.ekom21cdn.de/06431001/index.html
+			// termin übersicht https://wahl.gelsenkirchen.de/votemanager/20250223/05513000/praesentation/index.html
+			// ergebnis https://votemanager-da.ekom21cdn.de/2025-02-23/06431001/praesentation/ergebnis.html?wahl_id=728&stimmentyp=0&id=ebene_-575_id_638
 
-		if (!gemeinde.gemeinde_name && !gemeinde.verband_name && !opts.onlySubgemeinden) {
-			console.log("NO GEMEINDE name", gemeinde, opts.name, config.behoerden_links?.header.text, url);
-			// throw new Error("NO GEMEINDE name: " + gemeinde);
-			getGemeindeByID(präsentationUrl);
-		}
+			if (!html.includes("termine.json")) {
+				// all irrelevant because the used votemanager version is older than BTW2025
+				// throw new Error("Keine BTW25 Ergebnisse (alte version)");
+				const configUrl = new URL("../daten/api/config.json", url).href;
+				const { data: config } = await axiosWithRedirect<VotemanagerConfig>(configUrl);
 
-		// console.log(gemeinde.gemeinde_name, opts.name);
+				if (!config.alle_wahltermine_link) throw new Error("Keine BTW25 Ergebnisse (alte version)");
 
-		const queue = new PQueue({ concurrency: 1 });
+				url = new URL(config.alle_wahltermine_link, url).href;
+			}
 
-		await Promise.all(
-			wahleintraege.map(async (wahleintrag) => {
-				// https://wahlen.digistadtdo.de/wahlergebnisse/Bundestagswahl2025/05913000/daten/api/wahl_35/wahl.json?ts=1741130017532
+			let base = url.replace("/index.html", "");
+			if (base.endsWith("/")) base = base.slice(0, -1);
 
-				const wahlUrl = `${apiEndpoint}/wahl_${wahleintrag.wahl.id}/wahl.json`;
+			const termineUrl = base + "/api/termine.json";
 
-				const { data: wahl } = await axiosWithRedirect<WahlDetails>(wahlUrl);
+			const { data } = await axiosWithRedirect(termineUrl);
+			const { termine } = data;
 
-				const gemeindenEbene = wahl.menu_links.find((x) => x.title.toLowerCase().includes("gemeinden"));
+			if (!termine) throw new Error("INVALID RESPONSE: " + termineUrl + " " + opts.url);
 
-				if (gemeindenEbene) {
-					try {
-						var { data: gemeindenZweitstimmen } = await axiosWithRedirect<EbenenÜbersicht>(
-							`${apiEndpoint}/wahl_${wahleintrag.wahl.id}/uebersicht_${gemeindenEbene.id}_1.json`
-						);
+			const btw25 = termine.find((x: any) => x.date === "23.02.2025");
+			if (!btw25) throw new Error("Keine BTW25 Ergebnisse (Kein Termin)");
 
-						const gemeindenWithNoWahlbezirk = gemeindenZweitstimmen.tabelle?.zeilen.filter(
-							(x) => !x.link && x.error === undefined && x.statusProzent === 100
-						);
+			// https://votemanager.kdo.de/15084590/../2025022302/15084590/praesentation/
+			// https://votemanager.kdo.de/15084590/../2025022302/15084590/daten/api/termin.json
+			const apiType = html.includes("../api") ? `/api/praesentation` : `/daten/api`;
+			const apiEndpoint = base + "/" + btw25.url.replace("/praesentation/", apiType);
+			const terminUrl = apiEndpoint + "/termin.json";
 
-						await queue.addAll(
-							gemeindenZweitstimmen.tabelle?.zeilen.map((x) => async () => {
+			const { data: termin } = await axiosWithRedirect<{ wahleintraege: Wahleintrag[] }>(terminUrl);
+			let { wahleintraege } = termin;
+
+			if (!wahleintraege) throw new Error("INVALID RESPONSE: " + opts.url + " " + terminUrl);
+
+			wahleintraege = wahleintraege.filter((x) => x.stimmentyp.id === 1 && x.wahl.titel.toLowerCase().includes("bundestag"));
+			if (wahleintraege.length <= 0) throw new Error("Keine BTW25 Ergebnisse (Kein Wahleintrag)");
+
+			// https://votemanager.kdo.de/2025022302/15084590/daten/api/termin.json
+
+			// console.log(name, terminUrl);
+
+			const { data: config } = await axiosWithRedirect<VotemanagerConfig>(`${apiEndpoint}/config.json`, { responseType: "json" });
+
+			if (!opts.name) opts.name = config.behoerde;
+
+			try {
+				if (config.zeige_uebersicht_wahlraeume_link) {
+					const {
+						data: { wahlraeume },
+					} = await axiosWithRedirect<Wahlraeume>(`${apiEndpoint}/wahlraeume_uebersicht.json`, {});
+				}
+			} catch (error) {}
+
+			// console.log(opts.name, base + "/" + btw25.url);
+			const präsentationUrl = base + "/" + btw25.url;
+
+			behoerden_queue.addAll(
+				(config.behoerden_links?.links || [])
+					.map((x) => {
+						if (!x.url) return;
+						if (!x.url.startsWith("../")) return { text: x.text, url: x.url };
+
+						const newUrl = new URL(x.url, präsentationUrl);
+
+						return { text: x.text, url: newUrl.href };
+					})
+					.filter((x) => x)
+					.map((x) => async () => {
+						try {
+							await getWahlbezirkVotemanager({
+								url: x!.url,
+								name: x!.text,
+								bundesland: opts.bundesland,
+							});
+						} catch (error) {
+							console.error("Error", error);
+						}
+					}),
+				{
+					priority: 1,
+				}
+			);
+
+			let gemeinde = getGemeindeByID(präsentationUrl);
+			if (opts.bundesland && gemeinde.bundesland_name !== opts.bundesland) {
+				throw new Error(
+					"Invalid gemeinde: " + opts.name + " " + url + " " + gemeinde.gemeinde_name + " " + gemeinde.bundesland_name
+				);
+			}
+			if (!gemeinde) {
+				console.log(config.behoerde, "NOT FOUND", cleanGemeindeName);
+				return results;
+			}
+
+			if (!gemeinde.gemeinde_name && !gemeinde.verband_name && !opts.onlySubgemeinden) {
+				console.log("NO GEMEINDE name", gemeinde, opts.name, config.behoerden_links?.header.text, url);
+				// throw new Error("NO GEMEINDE name: " + gemeinde);
+				getGemeindeByID(präsentationUrl);
+			}
+
+			// console.log(gemeinde.gemeinde_name, opts.name);
+
+			const queue = new PQueue({ concurrency: 1 });
+
+			await Promise.all(
+				wahleintraege.map(async (wahleintrag) => {
+					// https://wahlen.digistadtdo.de/wahlergebnisse/Bundestagswahl2025/05913000/daten/api/wahl_35/wahl.json?ts=1741130017532
+
+					const wahlUrl = `${apiEndpoint}/wahl_${wahleintrag.wahl.id}/wahl.json`;
+
+					const { data: wahl } = await axiosWithRedirect<WahlDetails>(wahlUrl);
+
+					const gemeindenEbenen = wahl.menu_links.filter((x) => x.title.toLowerCase().includes("gemeinden"));
+
+					await Promise.allSettled(
+						gemeindenEbenen.map(async (gemeindenEbene) => {
+							try {
+								var { data: gemeindenZweitstimmen } = await axiosWithRedirect<EbenenÜbersicht>(
+									`${apiEndpoint}/wahl_${wahleintrag.wahl.id}/uebersicht_${gemeindenEbene.id}_1.json`
+								);
+
+								const gemeindenWithNoWahlbezirk = (gemeindenZweitstimmen.tabelle || []).zeilen.filter(
+									(x) => !x.link && x.error === undefined && x.statusProzent === 100
+								);
+
 								try {
-									if (!x.link) return;
-									if (!x.link.url) return;
+									await queue.addAll(
+										gemeindenZweitstimmen.tabelle?.zeilen.map((x) => async () => {
+											try {
+												if (!x.link) return;
+												if (!x.link.url) return;
 
-									if (x.externeUrl) {
-										var url = x.link.url;
-									} else {
-										var url = new URL(x.link.url, präsentationUrl).href.replace("/index.html", "/");
-									}
+												if (x.externeUrl) {
+													var url = x.link.url;
+												} else {
+													var url = new URL(x.link.url, präsentationUrl).href.replace("/index.html", "/");
+												}
 
-									await getWahlbezirkVotemanager({
-										url: url,
-										name: x.label,
-										bundesland: opts.bundesland,
-									});
+												console.log("fetch", url, x.label);
+
+												await getWahlbezirkVotemanager({
+													url: url,
+													name: x.label,
+													bundesland: opts.bundesland,
+												});
+											} catch (error) {
+												console.error(x.label, "" + error);
+												gemeindenWithNoWahlbezirk.push(x);
+												return;
+
+												// throw error;
+											}
+										})
+									);
 								} catch (error) {
-									if (x.externeUrl) {
-										gemeindenWithNoWahlbezirk?.push(x);
+									console.error("queue error", error);
+								}
+
+								if (gemeindenWithNoWahlbezirk.length) {
+									console.error(
+										"gemeindenWithNoWahlbezirk",
+										gemeindenWithNoWahlbezirk.map((x) => x.label)
+									);
+									// gemeinde with no link
+									var { data: gemeindenErststimmen } = await axiosWithRedirect<EbenenÜbersicht>(
+										`${apiEndpoint}/wahl_${wahleintrag.wahl.id}/uebersicht_${gemeindenEbene.id}_0.json`
+									);
+
+									const mapErststimmen = new Map(gemeindenErststimmen.tabelle.zeilen.map((x) => [x.label, x]));
+
+									gemeindenWithNoWahlbezirk.forEach((zweitstimmen) => {
+										const { label } = zweitstimmen;
+
+										const erststimmen = mapErststimmen.get(label);
+										if (!erststimmen) throw new Error("Cant find erstimmen for: " + label + " " + apiEndpoint);
+
+										const kreis = gemeinde.kreis_name || gemeinde.wahlkreis_name!;
+
+										const subgemeinde =
+											(zweitstimmen.link?.url ? getGemeindeByIDorNull(zweitstimmen.link.url) : undefined) ||
+											getGemeinde(label, kreis);
+										if (!subgemeinde) throw new Error("Cant identify gemeinde: " + label + " " + kreis);
+
+										const subResults = defaultResult();
+
+										Object.assign(subResults, subgemeinde);
+
+										// skip gemeinde + stand
+										gemeindenErststimmen.tabelle.headerAbs.slice(2).forEach((header, index) => {
+											const label = header.labelKurz.toLowerCase();
+											const val = Number(erststimmen.felder[index].absolut.replaceAll(".", "")) || 0;
+
+											if (label === "wahlberechtigte") {
+												subResults.anzahl_berechtigte = val;
+											} else if (
+												label === "wähler" ||
+												label === "wähler*innen" ||
+												label === "wähler/-innen" ||
+												label === "wählende"
+											) {
+												subResults.anzahl_wähler = val;
+											} else if (label === "gültig") {
+												subResults.erststimmen.gültig = val;
+											} else {
+												subResults.erststimmen.parteien[header.labelKurz] = val;
+											}
+										});
+
+										gemeindenZweitstimmen.tabelle.headerAbs.slice(2).forEach((header, index) => {
+											const label = header.labelKurz.toLowerCase();
+											const val = Number(zweitstimmen.felder[index].absolut.replaceAll(".", "")) || 0;
+
+											if (label === "wahlberechtigte") {
+												subResults.anzahl_berechtigte = val;
+											} else if (
+												label === "wähler" ||
+												label === "wähler*innen" ||
+												label === "wähler/-innen" ||
+												label === "wählende"
+											) {
+												subResults.anzahl_wähler = val;
+											} else if (label === "gültig") {
+												subResults.zweitstimmen.gültig = val;
+											} else {
+												subResults.zweitstimmen.parteien[header.labelKurz] = val;
+											}
+										});
+
+										subResults.wahlbezirk_id = subResults.gemeinde_id;
+										subResults.wahlbezirk_name = subResults.gemeinde_name;
+
+										results.push(subResults);
+									});
+								}
+							} catch (error) {}
+						})
+					);
+
+					if (wahlkreiseStadt.has(gemeinde.wahlkreis_id!)) {
+						// stadtwahlbezirke können nicht immer eindeutig einem Stadtteil zugeordnet werden => OpenDataCSV
+
+						const csv = await getVotemanagerOpenData(apiEndpoint, gemeinde);
+
+						for (const csvResult of csv) {
+							results.push(...csvResult);
+						}
+
+						return;
+					}
+
+					try {
+						var { data: wahlbezirke } = await axiosWithRedirect<EbenenÜbersicht>(
+							`${apiEndpoint}/wahl_${wahleintrag.wahl.id}/uebersicht_ebene_6_1.json`
+						);
+						if (!wahlbezirke.tabelle) throw new Error("Keine Wahlbezirke");
+					} catch (error) {
+						throw new Error("Keine BTW25 Ergebnisse (Keine Wahlbezirke) ");
+					}
+
+					var url = base + "/" + btw25.url;
+
+					const openData = await getVotemanagerOpenData(url, gemeinde);
+
+					await queue.addAll(
+						wahlbezirke.tabelle.zeilen
+							.filter((x) => !x.externeUrl && x.link?.id?.includes("ebene_6"))
+							.map((x) => async () => {
+								try {
+									url =
+										base +
+										"/" +
+										btw25.url +
+										`ergebnis.html?wahl_id=${wahleintrag.wahl.id}&stimmentyp=${wahleintrag.stimmentyp.id}&id=${
+											x.link!.id
+										}`;
+
+									const wahlbezirk_result = await votemanagerWithOptions({
+										ebene_id: x.link!.id,
+										wahl_id: `${wahleintrag.wahl.id}`,
+										url: apiEndpoint,
+										name: opts.name,
+									});
+
+									assignOptional(wahlbezirk_result, gemeinde);
+
+									wahlbezirk_result.wahlbezirk_name = x.label;
+									wahlbezirk_result.wahlbezirk_id = getIdFromName(x.label) || null;
+
+									results.push(wahlbezirk_result);
+								} catch (error) {
+									if ((error as Error).message.includes("Keine Daten")) {
+										openData.find((data) => {
+											const entry = data.find((y) => y.wahlbezirk_name === x.label);
+											if (!entry) return;
+
+											results.push(entry);
+
+											return true;
+										});
+
 										return;
 									}
 
-									// throw error;
+									throw new Error(
+										"Error " + x.label + " " + url + " " + JSON.stringify(x) + " " + (error as Error).message
+									);
 								}
 							})
-						);
+					);
 
-						if (gemeindenWithNoWahlbezirk.length) {
-							// gemeinde with no link
-							var { data: gemeindenErststimmen } = await axiosWithRedirect<EbenenÜbersicht>(
-								`${apiEndpoint}/wahl_${wahleintrag.wahl.id}/uebersicht_${gemeindenEbene.id}_0.json`
-							);
+					let title = wahleintrag.gebiet_link.title;
+					if (title === "Gesamtergebnis") title = data.title;
+				})
+			);
 
-							const mapErststimmen = new Map(gemeindenErststimmen.tabelle.zeilen.map((x) => [x.label, x]));
+			await queue.onIdle();
 
-							gemeindenWithNoWahlbezirk.forEach((zweitstimmen) => {
-								const { label } = zweitstimmen;
+			return results;
+		} catch (error) {
+			if ((error as Error).message.includes("Keine BTW25")) return results;
 
-								const erststimmen = mapErststimmen.get(label);
-								if (!erststimmen) throw new Error("Cant find erstimmen for: " + label + " " + apiEndpoint);
+			var e = error;
+			e;
 
-								const kreis = gemeinde.kreis_name || gemeinde.wahlkreis_name!;
+			throw new Error("Error " + opts!.name + " " + opts!.url + " " + (error as Error).message);
+		}
+	})();
 
-								const subgemeinde =
-									(zweitstimmen.link?.url ? getGemeindeByIDorNull(zweitstimmen.link.url) : undefined) ||
-									getGemeinde(label, kreis);
-								if (!subgemeinde) throw new Error("Cant identify gemeinde: " + label + " " + kreis);
+	promiseScraped.set(opts.url, promise);
 
-								const subResults = defaultResult();
-
-								Object.assign(subResults, subgemeinde);
-
-								// skip gemeinde + stand
-								gemeindenErststimmen.tabelle.headerAbs.slice(2).forEach((header, index) => {
-									const label = header.labelKurz.toLowerCase();
-									const val = Number(erststimmen.felder[index].absolut.replaceAll(".", "")) || 0;
-
-									if (label === "wahlberechtigte") {
-										subResults.anzahl_berechtigte = val;
-									} else if (
-										label === "wähler" ||
-										label === "wähler*innen" ||
-										label === "wähler/-innen" ||
-										label === "wählende"
-									) {
-										subResults.anzahl_wähler = val;
-									} else if (label === "gültig") {
-										subResults.erststimmen.gültig = val;
-									} else {
-										subResults.erststimmen.parteien[header.labelKurz] = val;
-									}
-								});
-
-								gemeindenZweitstimmen.tabelle.headerAbs.slice(2).forEach((header, index) => {
-									const label = header.labelKurz.toLowerCase();
-									const val = Number(zweitstimmen.felder[index].absolut.replaceAll(".", "")) || 0;
-
-									if (label === "wahlberechtigte") {
-										subResults.anzahl_berechtigte = val;
-									} else if (
-										label === "wähler" ||
-										label === "wähler*innen" ||
-										label === "wähler/-innen" ||
-										label === "wählende"
-									) {
-										subResults.anzahl_wähler = val;
-									} else if (label === "gültig") {
-										subResults.zweitstimmen.gültig = val;
-									} else {
-										subResults.zweitstimmen.parteien[header.labelKurz] = val;
-									}
-								});
-
-								subResults.wahlbezirk_id = subResults.gemeinde_id;
-								subResults.wahlbezirk_name = subResults.gemeinde_name;
-
-								results.push(subResults);
-							});
-						}
-					} catch (error) {}
-				}
-
-				const ebene = wahl.menu_links.find((x) => x.id === "ebene_6");
-
-				if (!ebene) {
-					// ist ergebnisseite vom wahlkreis, nicht von einzelnen gemeinden
-					console.log("Keine BTW25 Ergebnisse (Keine Wahlbezirke)");
-					return;
-				}
-
-				if (wahlkreiseStadt.has(gemeinde.wahlkreis_id!)) {
-					// stadtwahlbezirke können nicht immer eindeutig einem Stadtteil zugeordnet werden => OpenDataCSV
-
-					const csv = await getVotemanagerOpenData(apiEndpoint, gemeinde);
-
-					for (const csvResult of csv) {
-						results.push(...csvResult);
-					}
-
-					return;
-				}
-
-				const { data: wahlbezirke } = await axiosWithRedirect<EbenenÜbersicht>(
-					`${apiEndpoint}/wahl_${wahleintrag.wahl.id}/uebersicht_${ebene.id}_1.json`
-				);
-
-				if (!wahlbezirke.tabelle) throw new Error("Keine BTW25 Ergebnisse (Keine Wahlbezirke)");
-
-				var url = base + "/" + btw25.url;
-
-				const openData = await getVotemanagerOpenData(url, gemeinde);
-
-				await queue.addAll(
-					wahlbezirke.tabelle.zeilen
-						.filter((x) => !x.externeUrl && x.link?.id?.includes("ebene_6"))
-						.map((x) => async () => {
-							try {
-								url =
-									base +
-									"/" +
-									btw25.url +
-									`ergebnis.html?wahl_id=${wahleintrag.wahl.id}&stimmentyp=${wahleintrag.stimmentyp.id}&id=${x.link!.id}`;
-
-								const wahlbezirk_result = await votemanagerWithOptions({
-									ebene_id: x.link!.id,
-									wahl_id: `${wahleintrag.wahl.id}`,
-									url: apiEndpoint,
-									name: opts.name,
-								});
-
-								assignOptional(wahlbezirk_result, gemeinde);
-
-								wahlbezirk_result.wahlbezirk_name = x.label;
-								wahlbezirk_result.wahlbezirk_id = getIdFromName(x.label) || null;
-
-								results.push(wahlbezirk_result);
-							} catch (error) {
-								if ((error as Error).message.includes("Keine Daten")) {
-									openData.find((data) => {
-										const entry = data.find((y) => y.wahlbezirk_name === x.label);
-										if (!entry) return;
-
-										results.push(entry);
-
-										return true;
-									});
-
-									return;
-								}
-
-								throw new Error("Error " + x.label + " " + url + " " + JSON.stringify(x) + " " + (error as Error).message);
-							}
-						})
-				);
-
-				let title = wahleintrag.gebiet_link.title;
-				if (title === "Gesamtergebnis") title = data.title;
-			})
-		);
-
-		await queue.onIdle();
-
-		return results;
-	} catch (error) {
-		if ((error as Error).message.includes("Keine BTW25")) return results;
-
-		var e = error;
-		e;
-
-		throw new Error("Error " + opts!.name + " " + opts!.url + " " + (error as Error).message);
-	}
+	return promise;
 }
 
 const ParteienNamen = {

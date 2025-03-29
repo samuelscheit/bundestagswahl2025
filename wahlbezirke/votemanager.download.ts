@@ -16,6 +16,8 @@ const additional = [
 	"https://wahlen.heidekreis.de/03358000/",
 	"https://wahlen.gkd-re.net/05562012/",
 	"https://wahlen.regioit.de/3/05911000/",
+	"https://wahlen.regioit.de/4/14627140/",
+	"https://wahlen.regioit.de/4/14523320/",
 ].map((x) =>
 	getWahlbezirkVotemanager({
 		bundesland: "",

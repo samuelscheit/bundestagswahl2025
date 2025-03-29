@@ -44,9 +44,9 @@ wahlbezirke.forEach((x, i) => {
 	}
 });
 
-const Bundeswahlleiter = getBundeswahlleiterDaten("gesamtergebnis_01.xml");
+const Bundeswahlleiter = getBundeswahlleiterDaten("gesamtergebnis_02.xml");
 
-const wahlkreis = "110";
+const wahlkreis = "35";
 const bezirke = wahlkreisBezirke[wahlkreis] || [];
 
 const gemeinden = new Set(bezirke.map((x) => x.gemeinde_name || x.verband_name));
@@ -144,7 +144,7 @@ Object.keys(Bundeswahlleiter).forEach((wahlkreisId) => {
 		const wahlkreisBezirkeArr = wahlkreisBezirke[wahlkreisId];
 
 		if (!bund) throw new Error("Missing bund: " + wahlkreisId);
-		// if (!wahlkreisBezirkeArr && wahlkreiseBundesland[wahlkreisId] === "14") return; // sachsen has no wahlbezirk data
+		if (wahlkreiseBundesland[wahlkreisId] === "14") return; // sachsen has no wahlbezirk data
 		// if (wahlkreisId === "258") return; // stuttgart has no wahlbezirk data
 		if (!wahlkreisBezirkeArr) throw new Error("Missing wahlkreis: " + wahlkreisId);
 
@@ -158,16 +158,16 @@ Object.keys(Bundeswahlleiter).forEach((wahlkreisId) => {
 		const diffWähler = Math.abs(accumulated.anzahl_wähler - bund.anzahl_wähler);
 		totalDiffWähler += diffWähler;
 
-		if (diffWähler > 1000) {
-			console.error("wrong wähler", wahlkreisId, accumulated.anzahl_wähler, bund.anzahl_wähler, diffWähler);
-			throw new Error("Wrong wähler: " + wahlkreisId + " " + accumulated.anzahl_wähler + " " + bund.anzahl_wähler);
+		if (diffWähler > 0) {
+			console.error("wrong voter count", wahlkreisId, accumulated.anzahl_wähler, bund.anzahl_wähler, diffWähler);
+			throw new Error("Wrong voter count: " + wahlkreisId + " " + accumulated.anzahl_wähler + " " + bund.anzahl_wähler);
 		}
 	} catch (error) {
 		// throw error;
 	}
 });
 
-console.error("total diff wähler", totalDiffWähler);
+console.error("total diff voter count", totalDiffWähler);
 
 Object.entries(indexes).forEach(([id, indices]) => {
 	if (indices.length !== 1) {
@@ -191,8 +191,6 @@ const filtered = wahlbezirke.filter(
 		x.wahlkreis_id !== "00" &&
 		!toDelete.has(getIdFromResult(x)) &&
 		(x.gemeinde_name !== null || x.verband_name !== null)
-	// && x.wahlkreis_id !== "139"
-	// && x.wahlkreis_id !== "140"
 );
 
 console.log(Object.keys(wahlkreisBezirke).length, "wahlkreise");

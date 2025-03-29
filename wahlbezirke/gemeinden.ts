@@ -344,6 +344,8 @@ export function getGemeinde(name: string, kreis?: string) {
 	if (duplicates.length > 1 && kreis && kreisGemeinde) {
 		let min_distance = Infinity;
 
+		const summedDist = [] as [number, Gemeinde][];
+
 		for (const v of duplicates) {
 			const dist = Math.min(
 				distance(v.verband_clean || "", kreisGemeinde),
@@ -358,7 +360,16 @@ export function getGemeinde(name: string, kreis?: string) {
 				min_distance = dist;
 				value = v;
 			}
+
+			const sum = distance(v.gemeinde_clean || "", name) + dist + distance(v.verband_clean || "", name);
+
+			summedDist.push([sum, v]);
 		}
+
+		const least = summedDist.sort((a, b) => a[0] - b[0]);
+
+		value = least[0][1];
+		min_distance = least[0][0];
 	} else if (duplicates.length === 1) {
 		value = duplicates[0];
 	}
