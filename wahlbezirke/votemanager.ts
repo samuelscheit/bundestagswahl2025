@@ -354,8 +354,6 @@ export async function getWahlbezirkVotemanager(opts: {
 													var url = new URL(x.link.url, präsentationUrl).href.replace("/index.html", "/");
 												}
 
-												console.log("fetch", url, x.label);
-
 												await getWahlbezirkVotemanager({
 													url: url,
 													name: x.label,
