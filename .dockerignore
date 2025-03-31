@@ -1,0 +1,14 @@
+*
+
+!*.json
+!*.lock*
+!*.ts
+!*.mjs
+!wahlkreise/*.ts
+!wahlbezirke/*.ts
+!wahlbezirke/data/wahlbezirkeList.json
+!wahlbezirke/data/gemeinden.csv
+!src/**/*
+!map/GemeindenShapefile.zip
+!map/*.ts
+!map/config.json

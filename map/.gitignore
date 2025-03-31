@@ -1,0 +1,5 @@
+*.json
+*.mbtiles
+*.mbtiles-journal
+!config.json
+!germany_place.mbtiles

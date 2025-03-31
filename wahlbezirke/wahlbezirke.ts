@@ -59,6 +59,7 @@ export function saveResults(results: ResultType[], filter_bundesland?: string) {
 			}
 
 			wahlbezirke[index] = x;
+			x.wahlbezirk_adresse ||= exists.wahlbezirk_adresse;
 		}
 	});
 

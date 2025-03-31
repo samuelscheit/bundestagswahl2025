@@ -4,6 +4,7 @@ import { axiosWithRedirect } from "./axios";
 import { behoerden_queue, gemeinde_queue, saveResults } from "./wahlbezirke";
 import { krznGetWahlbezirkeUrl, krznParseCSV, krznWahlkreis, type ResultType } from "../wahlkreise/scrape";
 import { getGemeinde } from "./gemeinden";
+import { assignOptional } from "./util";
 const krefeldMapping = require("./krefeld/mapping.json") as Record<string, string>;
 
 const results: ResultType[] = [];
@@ -54,17 +55,20 @@ async function fetchGemeinde(wahlkreisId: string, url: string, kreis: string) {
 	const res = await krznParseCSV(data);
 
 	const gemeindeName = res[0].gemeinde_name;
-	if (gemeindeName) {
-		const gemeinde = getGemeinde(gemeindeName, kreis);
+	if (!gemeindeName) throw new Error("gemeinde_name not set " + url);
 
-		wahlkreisId = gemeinde.wahlkreis_id!;
+	let gemeinde = getGemeinde(gemeindeName, kreis);
+	if (!gemeinde) throw new Error("gemeinde not found " + gemeindeName + " in " + kreis);
+
+	if (gemeinde.wahlkreis_id !== wahlkreisId && wahlkreisId !== "109" && wahlkreisId !== "113") {
+		throw new Error("gemeinde wahlkreis_id mismatch " + gemeinde.wahlkreis_id + " !== " + wahlkreisId);
 	}
 
 	res.forEach((wahlbezirk) => {
+		Object.assign(wahlbezirk, gemeinde);
+
 		if (wahlbezirk.gemeinde_name === "Stadt Krefeld") {
 			wahlbezirk.wahlkreis_id = krefeldMapping[wahlbezirk.wahlbezirk_id!];
-		} else {
-			wahlbezirk.wahlkreis_id = wahlkreisId;
 		}
 
 		results.push(wahlbezirk);

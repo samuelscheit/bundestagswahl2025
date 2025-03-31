@@ -149,7 +149,7 @@ export async function cycleFetch(url: string, opts: AxiosRequestConfig) {
 		"get"
 	);
 
-	if (response.status >= 500 || response.status < 200) throw new Error(`Request failed with status code ${response.status} `);
+	if (response.status >= 400 || response.status < 200) throw new Error(`Request failed with status code ${response.status} `);
 
 	fs.writeFileSync(
 		__dirname + "/cache/" + generateKey({ url }),

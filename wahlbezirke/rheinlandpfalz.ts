@@ -3,9 +3,10 @@ import csv from "csv-parser";
 import { defaultResult, getIdFromName, type ResultType } from "../wahlkreise/scrape";
 import { axios } from "./axios";
 import { getIdFromResult, saveResults } from "./wahlbezirke";
+import { getGemeinde, getGemeindeByID, getRegionByWahlkreis } from "./gemeinden";
 
 const ID_Regex =
-	/^(?:(?<wahlkreisNr>\d{3}))?(?:(?<kreisNr>\d{3}))?(?:(?<verbandsgemeindeNr>\d{2}))?(?:(?<gemeindeNr>\d{3}))?(?:(?<wahlbezirkNr>\d{2}))?/;
+	/^(?<wahlkreisNr>\d{3})(?<regionNr>\d{1})(?<kreisNr>\d{2})(?<verbandsgemeindeNr>\d{2})(?<gemeindeNr>\d{3})(?<wahlbezirkNr>\d{2})?/;
 
 // 210 337 07 0000000000
 
@@ -104,22 +105,54 @@ parser.on("data", (data) => {
 	} = data;
 	// console.log(data);
 
-	var { wahlkreisNr, kreisNr, verbandsgemeindeNr, gemeindeNr, wahlbezirkNr } = (id.slice(0, 100).match(ID_Regex)?.groups || {}) as Record<
-		string,
-		string
-	>;
+	var { wahlkreisNr, regionNr, kreisNr, verbandsgemeindeNr, gemeindeNr, wahlbezirkNr } = (id.slice(0, 100).match(ID_Regex)?.groups ||
+		{}) as Record<string, string>;
 	// console.log(wahlkreisNr, kreisNr, gemeindeNr, wahlbezirkNr);
 	// gemeindeNr = gemeindeNr.padStart(3, "0");
 
-	const wahlkreisName = wahlkreise[wahlkreisNr];
-	const gemeindeName = gemeinden[gemeindeNr];
-	const kreisName = kreise[kreisNr];
-	const verbandsgemeindeName = verbandsgemeinden[verbandsgemeindeNr];
-	const obergruppeName = gemeindeName || verbandsgemeindeName || kreisName || wahlkreisName;
-	const obergruppeNr = gemeindeNr !== "000" ? gemeindeNr : verbandsgemeindeNr !== "00" ? verbandsgemeindeNr : kreisNr;
+	if (wähler === "") return; // gemeinde zu klein => hat keine daten => wird in samtgemeinde zusammengefasst
+
+	var gemeindeId =
+		Number(gemeindeNr) === 0
+			? Number(verbandsgemeindeNr) === 0
+				? "000"
+				: "5" + verbandsgemeindeNr.padStart(3, "0")
+			: gemeindeNr.padStart(3, "0");
+
+	try {
+		var gemeinde = getGemeindeByID(`07${regionNr}${kreisNr}${gemeindeId}`);
+
+		if (gemeinde.wahlkreis_id !== getIdFromName(wahlkreisNr)) {
+			// @ts-ignore
+			gemeinde = gemeinde._gemeinden.find((g) => g.wahlkreis_id === getIdFromName(wahlkreisNr));
+		}
+		if (gemeinde.kreis_id !== getIdFromName(kreisNr)) {
+			console.log(gemeinde, wahlkreisNr, regionNr, kreisNr, verbandsgemeindeNr, gemeindeNr, wahlbezirkNr, name);
+			throw new Error("Gemeinde ID does not match kreis ID");
+		}
+		if (gemeinde.region_id !== getIdFromName(regionNr)) {
+			console.log(gemeinde, wahlkreisNr, regionNr, kreisNr, verbandsgemeindeNr, gemeindeNr, wahlbezirkNr, name);
+			throw new Error("Gemeinde ID does not match region ID");
+		}
+	} catch (error) {
+		throw error;
+		const wahlkreisName = wahlkreise[wahlkreisNr];
+		const gemeindeName = gemeinden[gemeindeNr];
+		const kreisName = kreise[kreisNr];
+		const verbandsgemeindeName = verbandsgemeinden[verbandsgemeindeNr];
+		const obergruppeName = gemeindeName || verbandsgemeindeName || kreisName || wahlkreisName;
+		const obergruppeNr = gemeindeNr !== "000" ? gemeindeNr : verbandsgemeindeNr !== "00" ? verbandsgemeindeNr : kreisNr;
+
+		var gemeinde = getGemeinde(name, kreisName);
+
+		console.log("Fallback", gemeinde.gemeinde_name, obergruppeName, name, `07${regionNr}${kreisNr}${gemeindeId}`);
+	}
+
+	if (Number(gemeindeNr) === 0 && Number(verbandsgemeindeNr) !== 0) {
+		// console.log(gemeinde.name)
+	}
 
 	const idResult = wahlkreisNr + kreisNr + verbandsgemeindeNr + gemeindeNr + wahlbezirkNr + name;
-
 	var wahlbezirk_name = name;
 
 	if (wahlbezirke[idResult]) {
@@ -132,20 +165,10 @@ parser.on("data", (data) => {
 	const result = defaultResult();
 	results.push(result);
 
-	result.bundesland_id = "7";
-	result.bundesland_name = "Rheinland-Pfalz";
+	Object.assign(result, gemeinde);
 
 	result.wahlbezirk_id = getIdFromName(wahlbezirkNr);
 	result.wahlbezirk_name = wahlbezirk_name;
-
-	result.kreis_name ||= kreisName;
-	result.kreis_id = getIdFromName(kreisNr);
-
-	result.gemeinde_name ||= obergruppeName;
-	result.gemeinde_id = getIdFromName(obergruppeNr);
-
-	result.wahlkreis_name ||= wahlkreisName;
-	result.wahlkreis_id = getIdFromName(wahlkreisNr);
 
 	result.anzahl_berechtigte = Number(wahlberechtigte) || 0;
 	result.anzahl_wähler = Number(wähler) || 0;

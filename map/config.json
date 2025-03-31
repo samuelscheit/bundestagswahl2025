@@ -1,0 +1,42 @@
+{
+	"options": {
+		"paths": {
+			"root": "",
+			"fonts": "",
+			"sprites": "",
+			"icons": "",
+			"styles": "",
+			"mbtiles": "",
+			"pmtiles": "",
+			"files": ""
+		},
+		"domains": ["localhost:8080", "127.0.0.1:8080"],
+		"formatOptions": {
+			"jpeg": {
+				"quality": 80
+			},
+			"webp": {
+				"quality": 90
+			}
+		},
+		"maxScaleFactor": 3,
+		"maxSize": 2048,
+		"pbfAlias": "pbf",
+		"serveAllFonts": false,
+		"serveAllStyles": false,
+		"serveStaticMaps": true,
+		"allowRemoteMarkerIcons": true,
+		"allowInlineMarkerImages": true,
+		"staticAttributionText": "© OpenMapTiles  © OpenStreetMaps",
+		"tileMargin": 0
+	},
+	"styles": {},
+	"data": {
+		"bundesland_name": {
+			"mbtiles": "bundesland_name.mbtiles"
+		},
+		"map": {
+			"mbtiles": "map.mbtiles"
+		}
+	}
+}

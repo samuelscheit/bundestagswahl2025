@@ -4,6 +4,7 @@ import iconv from "iconv-lite";
 import csv from "csv-parser";
 import { defaultResult, getIdFromName, type ResultType } from "../wahlkreise/scrape";
 import { saveResults } from "./wahlbezirke";
+import { AGS, getGemeinde, getGemeindeByID } from "./gemeinden";
 
 const arraybuffer = await axios<ArrayBuffer>("https://wahlen.mvnet.de/dateien/ergebnisse.2025/bundestagswahl/csv/b_wahlbezirke.csv", {
 	responseType: "arraybuffer",
@@ -44,7 +45,7 @@ parser.on("data", (data) => {
 		"Gültige Stimmen": gültige,
 		Wahlberechtigte,
 		Wähler,
-		Gemeindename: gemeinde,
+		Gemeindename: gemeindeName,
 		Gemeinde: GemeindeID,
 		Wahlbezirksname,
 		Wahlbezirk: WahlbezirksID,
@@ -64,18 +65,19 @@ parser.on("data", (data) => {
 		results.push(result);
 	}
 
-	result.bundesland_id = "13";
-	result.bundesland_name = "Mecklenburg-Vorpommern";
+	try {
+		var gemeinde = getGemeindeByID(GemeindeID);
+	} catch (error) {
+		var gemeinde = getGemeinde(gemeindeName, Kreisname);
 
-	result.wahlkreis_id = getIdFromName(WahlkreisID);
-	result.wahlkreis_name = Wahlkreisname;
+		if (!gemeinde.gemeinde_name) {
+			var { land, region, kreis } = (GemeindeID.match(AGS)?.groups || {}) as Record<string, string | undefined>;
+			var gemeinde = getGemeindeByID(`${land}${region}${kreis}${AmtID}`);
+		}
+	}
 
-	result.kreis_id = getIdFromName(KreisID);
-	result.kreis_name = Kreisname;
-
-	result.gemeinde_name = gemeinde;
-	result.gemeinde_id = getIdFromName(GemeindeID);
-
+	Object.assign(result, gemeinde);
+	result.briefwahl = Wahlbezirksname.includes("Briefwahl");
 	result.wahlbezirk_id = getIdFromName(WahlbezirksID);
 	result.wahlbezirk_name = Wahlbezirksname;
 

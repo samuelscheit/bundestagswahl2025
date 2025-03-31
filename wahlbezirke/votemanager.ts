@@ -3,7 +3,7 @@ import extractUrls from "extract-urls";
 import { axiosWithRedirect, isFinalError } from "./axios";
 import { defaultResult, getIdFromName, type Options, type ResultType } from "../wahlkreise/scrape";
 import { behoerden_queue, concurrency, wahlbezirke_queue, wahleintrage_queue } from "./wahlbezirke";
-import { cleanGemeindeName, gemeinden, getGemeinde, getGemeindeByID, getGemeindeByIDorNull } from "./gemeinden";
+import { cleanGemeindeName, gemeinden, getGemeinde, getGemeindeByUrl, getGemeindeByUrlOrNull } from "./gemeinden";
 import PQueue from "p-queue";
 import { wahlkreiseNamen, wahlkreiseQuellen } from "../wahlkreise/wahlkreise";
 import axios from "axios";
@@ -261,14 +261,6 @@ export async function getWahlbezirkVotemanager(opts: {
 
 			if (!opts.name) opts.name = config.behoerde;
 
-			try {
-				if (config.zeige_uebersicht_wahlraeume_link) {
-					const {
-						data: { wahlraeume },
-					} = await axiosWithRedirect<Wahlraeume>(`${apiEndpoint}/wahlraeume_uebersicht.json`, {});
-				}
-			} catch (error) {}
-
 			// console.log(opts.name, base + "/" + btw25.url);
 			const präsentationUrl = base + "/" + btw25.url;
 
@@ -299,7 +291,7 @@ export async function getWahlbezirkVotemanager(opts: {
 				}
 			);
 
-			let gemeinde = getGemeindeByID(präsentationUrl);
+			let gemeinde = getGemeindeByUrl(präsentationUrl);
 			if (opts.bundesland && gemeinde.bundesland_name !== opts.bundesland) {
 				throw new Error(
 					"Invalid gemeinde: " + opts.name + " " + url + " " + gemeinde.gemeinde_name + " " + gemeinde.bundesland_name
@@ -313,7 +305,21 @@ export async function getWahlbezirkVotemanager(opts: {
 			if (!gemeinde.gemeinde_name && !gemeinde.verband_name && !opts.onlySubgemeinden) {
 				console.log("NO GEMEINDE name", gemeinde, opts.name, config.behoerden_links?.header.text, url);
 				// throw new Error("NO GEMEINDE name: " + gemeinde);
-				getGemeindeByID(präsentationUrl);
+				getGemeindeByUrl(präsentationUrl);
+			}
+
+			var wahlräumeNachBezirkNr = {} as Record<string, Wahlraum>;
+			var wahlräumeNachBezirkName = {} as Record<string, Wahlraum>;
+
+			try {
+				if (config.zeige_uebersicht_wahlraeume_link) {
+					// const {
+					// 	data: { wahlraeume },
+					// } = await axiosWithRedirect<Wahlraeume>(`${apiEndpoint}/wahlraeume_uebersicht.json`, {});
+					var { wahlräumeNachBezirkNr, wahlräumeNachBezirkName } = await getVotemanagerWahllokale(apiEndpoint, gemeinde);
+				}
+			} catch (error) {
+				console.error("Error", error);
 			}
 
 			// console.log(gemeinde.gemeinde_name, opts.name);
@@ -393,7 +399,7 @@ export async function getWahlbezirkVotemanager(opts: {
 										const kreis = gemeinde.kreis_name || gemeinde.wahlkreis_name!;
 
 										const subgemeinde =
-											(zweitstimmen.link?.url ? getGemeindeByIDorNull(zweitstimmen.link.url) : undefined) ||
+											(zweitstimmen.link?.url ? getGemeindeByUrlOrNull(zweitstimmen.link.url) : undefined) ||
 											getGemeinde(label, kreis);
 										if (!subgemeinde) throw new Error("Cant identify gemeinde: " + label + " " + kreis);
 
@@ -499,8 +505,20 @@ export async function getWahlbezirkVotemanager(opts: {
 
 									assignOptional(wahlbezirk_result, gemeinde);
 
+									const id = x.link!.id.match(/ebene_6_id_(\d+)/)?.[1];
+									if (!id) throw new Error("Invalid wahlbezirk id: " + x.link!.id);
+
 									wahlbezirk_result.wahlbezirk_name = x.label;
-									wahlbezirk_result.wahlbezirk_id = getIdFromName(x.label) || null;
+									wahlbezirk_result.wahlbezirk_id = id;
+
+									const wahlraum =
+										wahlräumeNachBezirkName[x.label] || wahlräumeNachBezirkNr[wahlbezirk_result.wahlbezirk_id!];
+									wahlbezirk_result.wahlbezirk_adresse = wahlraum?.wahlraumAdresse;
+
+									if (wahlraum?.bezirkArt) {
+										wahlbezirk_result.briefwahl = wahlraum.bezirkArt === "B" || wahlraum.bezirkArt === "Briefwahl";
+									}
+									wahlbezirk_result.wahlbezirk_raum = wahlraum?.wahlraumBezeichnung;
 
 									results.push(wahlbezirk_result);
 								} catch (error) {
@@ -635,6 +653,62 @@ async function getVotemanagerOpenData(url: string, oberGemeinde: ReturnType<type
 			return results;
 		})
 	);
+}
+
+type Wahlraum = {
+	ags: string;
+	bezirkNr: string;
+	bezirkName: string;
+	bezirkArt: string;
+	wahlraumBezeichnung: string;
+	wahlraumAdresse: string;
+	wahlraumBarrierefrei: string;
+	wahlraumBarrierefreiErgaenzung: string;
+};
+
+async function getVotemanagerWahllokale(url: string, oberGemeinde: ReturnType<typeof getGemeinde>) {
+	url = url.replace("/api", "/").replace("/praesentation/", "/daten/");
+	if (!url.endsWith("/")) url += "/";
+
+	const base = new URL("opendata/", url).href;
+
+	const { data: csv } = await axiosWithRedirect<string>(`${base}/opendata-wahllokale.csv`, { responseType: "text" });
+	const data: {
+		datum: string;
+		ags: string;
+		"Bezirk-Nr": string;
+		"Bezirk-Name": string;
+		"Bezirk-Art": string;
+		"Wahlraum-Bezeichnung": string;
+		"Wahlraum-Adresse": string;
+		"Wahlraum-Barrierefrei": string;
+		"Wahlraum-Barrierefrei-Ergaenzung": string;
+	}[] = await csvParse({ data: csv, separator: ";" });
+
+	const wahlräume = data.map((x) => ({
+		ags: x.ags,
+		bezirkNr: x["Bezirk-Nr"],
+		bezirkName: x["Bezirk-Name"],
+		bezirkArt: x["Bezirk-Art"],
+		wahlraumBezeichnung: x["Wahlraum-Bezeichnung"],
+		wahlraumAdresse: x["Wahlraum-Adresse"],
+		wahlraumBarrierefrei: x["Wahlraum-Barrierefrei"],
+		wahlraumBarrierefreiErgaenzung: x["Wahlraum-Barrierefrei-Ergaenzung"],
+	}));
+
+	const wahlräumeNachBezirkNr = {} as Record<string, Wahlraum>;
+	const wahlräumeNachBezirkName = {} as Record<string, Wahlraum>;
+
+	wahlräume.forEach((x) => {
+		wahlräumeNachBezirkNr[x.bezirkNr] = x;
+		wahlräumeNachBezirkName[x.bezirkName] = x;
+	});
+
+	return {
+		wahlräumeNachBezirkNr,
+		wahlräumeNachBezirkName,
+		wahlräume,
+	};
 }
 
 export async function getWahlbezirkeVotemanager() {

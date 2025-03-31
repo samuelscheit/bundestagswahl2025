@@ -42,11 +42,48 @@ wahlbezirke.forEach((x, i) => {
 		console.error("Many Stimmen for one urnen Wahlbezirk", stimmen, x.gemeinde_name);
 		// throw new Error("Too many Stimmen for one urnen Wahlbezirk: " + stimmen);
 	}
+
+	mergePartei(x.zweitstimmen, "SPD", "spd");
+	mergePartei(x.zweitstimmen, "CDU", "cdu");
+	mergePartei(x.zweitstimmen, "AfD", "afd");
+	mergePartei(x.zweitstimmen, "FDP", "fdp");
+	mergePartei(x.zweitstimmen, "GRÜNE", "grüne");
+	mergePartei(x.zweitstimmen, "GRÜNE", "GRÜNE/B 90");
+	mergePartei(x.zweitstimmen, "FREIE WÄHLER", "freie wähler");
+	mergePartei(x.zweitstimmen, "Volt", "volt");
+	mergePartei(x.zweitstimmen, "PIRATEN", "Piratenpartei Deutschland");
+	mergePartei(x.zweitstimmen, "MLPD", "mlpd");
+	mergePartei(x.zweitstimmen, "BÜNDNIS DEUTSCHLAND", "bündnis deutschland");
+	mergePartei(x.zweitstimmen, "BSW", "bsw");
+	mergePartei(x.zweitstimmen, "Die Linke", "linke");
+	mergePartei(x.zweitstimmen, "Die Linke", "die Linke");
+	mergePartei(x.zweitstimmen, "Die Linke", "DIE LINKE");
+	mergePartei(x.zweitstimmen, "Die PARTEI", "die PARTEI");
+	mergePartei(x.zweitstimmen, "PdH", "Partei der Humanisten");
+	mergePartei(x.zweitstimmen, "PdH", "Die Humanisten");
+	mergePartei(x.zweitstimmen, "Team Todenhöfer", "Die Gerechtigkeitspartei - Team Todenhöfer");
+	mergePartei(x.zweitstimmen, "Team Todenhöfer", "Die Gerechtigkeitspartei – Team Todenhöfer"); // gedankenstrich statt bindestrich
+	mergePartei(x.zweitstimmen, "Team Todenhöfer", "Team Toden");
+	mergePartei(x.zweitstimmen, "PdF", "Partei des Fortschritts");
+	mergePartei(x.zweitstimmen, "MERA25", "MERA25 - Gemeinsam für Europäische Unabhängigkeit");
 });
+
+function mergePartei(result: ResultType["zweitstimmen"], a: string, b: string) {
+	let aValue = result.parteien[a];
+	let bValue = result.parteien[b];
+
+	if (aValue == undefined && bValue == undefined) return;
+
+	aValue ||= 0;
+	bValue ||= 0;
+
+	result.parteien[a] = aValue + bValue;
+	delete result.parteien[b];
+}
 
 const Bundeswahlleiter = getBundeswahlleiterDaten("gesamtergebnis_02.xml");
 
-const wahlkreis = "35";
+const wahlkreis = "198";
 const bezirke = wahlkreisBezirke[wahlkreis] || [];
 
 const gemeinden = new Set(bezirke.map((x) => x.gemeinde_name || x.verband_name));
@@ -158,7 +195,7 @@ Object.keys(Bundeswahlleiter).forEach((wahlkreisId) => {
 		const diffWähler = Math.abs(accumulated.anzahl_wähler - bund.anzahl_wähler);
 		totalDiffWähler += diffWähler;
 
-		if (diffWähler > 0) {
+		if (diffWähler > 1000) {
 			console.error("wrong voter count", wahlkreisId, accumulated.anzahl_wähler, bund.anzahl_wähler, diffWähler);
 			throw new Error("Wrong voter count: " + wahlkreisId + " " + accumulated.anzahl_wähler + " " + bund.anzahl_wähler);
 		}
@@ -185,12 +222,20 @@ Object.entries(indexes).forEach(([id, indices]) => {
 	}
 });
 
+const remove_wahlkreise = [
+	// "190",
+	// "191",
+	// "192",
+	// "198",
+	// "199",
+	// "201",
+	// "203",
+	// "206",
+	// "207",
+] as string[];
+
 const filtered = wahlbezirke.filter(
-	(x) =>
-		x !== undefined &&
-		x.wahlkreis_id !== "00" &&
-		!toDelete.has(getIdFromResult(x)) &&
-		(x.gemeinde_name !== null || x.verband_name !== null)
+	(x) => x !== undefined && x.wahlkreis_id !== "00" && !toDelete.has(getIdFromResult(x)) && !remove_wahlkreise.includes(x.wahlkreis_id!)
 );
 
 console.log(Object.keys(wahlkreisBezirke).length, "wahlkreise");

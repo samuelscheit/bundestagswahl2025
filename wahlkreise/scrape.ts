@@ -65,17 +65,36 @@ export function defaultResult() {
 		bundesland_name: null as null | string,
 		wahlkreis_id: null as null | string,
 		wahlkreis_name: null as null | string,
+		region_id: null as null | string,
 		kreis_id: null as null | string,
 		kreis_name: null as null | string,
 		gemeinde_name: null as null | string,
 		gemeinde_id: null as null | string,
-		verband_id: null as null | string,
 		verband_name: null as null | string,
+		verband_id: null as null | string,
 		ortsteil_id: null as null | string,
 		ortsteil_name: null as null | string,
 		wahlbezirk_name: null as null | string,
 		wahlbezirk_id: null as null | string,
+		wahlbezirk_adresse: null as null | string,
+		wahlbezirk_raum: null as null | string,
+		briefwahl: null as null | boolean,
 	};
+}
+
+export function calculatePercentage(result?: ResultType["zweitstimmen"]) {
+	if (!result) return null;
+
+	const totalZweitstimmen = result.gültig + result.ungültig;
+
+	const parteien = {} as Record<string, number>;
+
+	Object.entries(result.parteien).forEach(([key, value]) => {
+		const percentage = (value / totalZweitstimmen) * 100;
+		parteien[key] = percentage;
+	});
+
+	return parteien;
 }
 
 export type ResultType = ReturnType<typeof defaultResult>;
@@ -91,6 +110,29 @@ export function getIdFromName(name: string) {
 	if (isNaN(number)) return null;
 
 	return String(number);
+}
+
+export function getIdFromNameWithLeading(name: string) {
+	const id = name.match(/[\d\s-]+/)?.[0];
+	if (!id) return null;
+
+	const str = id.replace(/[\s-]/g, "");
+	if (!str) return null;
+
+	const number = Number(str);
+	if (isNaN(number)) return null;
+
+	return str;
+}
+
+export function getNameWithoutId(name: string) {
+	const id = name.match(/[\d\s-]+/)?.[0];
+	if (!id) return name;
+
+	const str = name.replace(id, "").trim();
+	if (!str) return null;
+
+	return str;
 }
 
 async function degreesEU(options: Options & { text: string }) {

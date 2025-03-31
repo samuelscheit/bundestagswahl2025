@@ -2,21 +2,22 @@ import fs from "fs";
 import csv from "csv-parser";
 import { defaultResult, getIdFromName, type ResultType } from "../wahlkreise/scrape";
 import { getIdFromResult, saveResults } from "./wahlbezirke";
+import { getGemeinde, getGemeindeByID, getRegionByWahlkreis } from "./gemeinden";
 
 const data = fs.readFileSync(__dirname + "/data/Thüringen.csv");
 
 const parteien = [
-	"afd",
-	"spd",
-	"cdu",
-	"linke",
-	"fdp",
-	"grüne",
-	"freie wähler",
-	"volt",
-	"mlpd",
-	"bündnis deutschland",
-	"bsw",
+	"AfD",
+	"SPD",
+	"CDU",
+	"Die Linke",
+	"FDP",
+	"GRÜNE",
+	"FREIE WÄHLER",
+	"VOLT",
+	"MLPD",
+	"BÜNDNIS DEUTSCHLAND",
+	"BSW",
 	// "einzelbewerber",
 ];
 
@@ -43,61 +44,61 @@ const parser = csv({
 		"erststimmen_gültig",
 		"zweitstimmen_ungültig",
 		"zweitstimmen_gültig",
-		// parteien: afd, spd, cdu, linke, fdp, grüne, freie wähler, volt, mlpd, bündnis deutschland, bsw, einzelbewerber
-		"erststimmen_afd_absolut",
-		"erststimmen_afd_prozent",
-		"zweitstimmen_afd_absolut",
-		"zweitstimmen_afd_prozent",
+		// parteien: AfD, SPD, CDU, Die Linke, FDP, GRÜNE, FREIE WÄHLER, VOLT, MLPD, BÜNDNIS DEUTSCHLAND, BSW, einzelbewerber
+		"erststimmen_AfD_absolut",
+		"erststimmen_AfD_prozent",
+		"zweitstimmen_AfD_absolut",
+		"zweitstimmen_AfD_prozent",
 
-		"erststimmen_spd_absolut",
-		"erststimmen_spd_prozent",
-		"zweitstimmen_spd_absolut",
-		"zweitstimmen_spd_prozent",
+		"erststimmen_SPD_absolut",
+		"erststimmen_SPD_prozent",
+		"zweitstimmen_SPD_absolut",
+		"zweitstimmen_SPD_prozent",
 
-		"erststimmen_cdu_absolut",
-		"erststimmen_cdu_prozent",
-		"zweitstimmen_cdu_absolut",
-		"zweitstimmen_cdu_prozent",
+		"erststimmen_CDU_absolut",
+		"erststimmen_CDU_prozent",
+		"zweitstimmen_CDU_absolut",
+		"zweitstimmen_CDU_prozent",
 
-		"erststimmen_linke_absolut",
-		"erststimmen_linke_prozent",
-		"zweitstimmen_linke_absolut",
-		"zweitstimmen_linke_prozent",
+		"erststimmen_Die Linke_absolut",
+		"erststimmen_Die Linke_prozent",
+		"zweitstimmen_Die Linke_absolut",
+		"zweitstimmen_Die Linke_prozent",
 
-		"erststimmen_fdp_absolut",
-		"erststimmen_fdp_prozent",
-		"zweitstimmen_fdp_absolut",
-		"zweitstimmen_fdp_prozent",
+		"erststimmen_FDP_absolut",
+		"erststimmen_FDP_prozent",
+		"zweitstimmen_FDP_absolut",
+		"zweitstimmen_FDP_prozent",
 
-		"erststimmen_grüne_absolut",
-		"erststimmen_grüne_prozent",
-		"zweitstimmen_grüne_absolut",
-		"zweitstimmen_grüne_prozent",
+		"erststimmen_GRÜNE_absolut",
+		"erststimmen_GRÜNE_prozent",
+		"zweitstimmen_GRÜNE_absolut",
+		"zweitstimmen_GRÜNE_prozent",
 
-		"erststimmen_freie wähler_absolut",
-		"erststimmen_freie wähler_prozent",
-		"zweitstimmen_freie wähler_absolut",
-		"zweitstimmen_freie wähler_prozent",
+		"erststimmen_FREIE WÄHLER_absolut",
+		"erststimmen_FREIE WÄHLER_prozent",
+		"zweitstimmen_FREIE WÄHLER_absolut",
+		"zweitstimmen_FREIE WÄHLER_prozent",
 
-		"erststimmen_volt_absolut",
-		"erststimmen_volt_prozent",
-		"zweitstimmen_volt_absolut",
-		"zweitstimmen_volt_prozent",
+		"erststimmen_VOLT_absolut",
+		"erststimmen_VOLT_prozent",
+		"zweitstimmen_VOLT_absolut",
+		"zweitstimmen_VOLT_prozent",
 
-		"erststimmen_mlpd_absolut",
-		"erststimmen_mlpd_prozent",
-		"zweitstimmen_mlpd_absolut",
-		"zweitstimmen_mlpd_prozent",
+		"erststimmen_MLPD_absolut",
+		"erststimmen_MLPD_prozent",
+		"zweitstimmen_MLPD_absolut",
+		"zweitstimmen_MLPD_prozent",
 
-		"erststimmen_bündnis deutschland_absolut",
-		"erststimmen_bündnis deutschland_prozent",
-		"zweitstimmen_bündnis deutschland_absolut",
-		"zweitstimmen_bündnis deutschland_prozent",
+		"erststimmen_BÜNDNIS DEUTSCHLAND_absolut",
+		"erststimmen_BÜNDNIS DEUTSCHLAND_prozent",
+		"zweitstimmen_BÜNDNIS DEUTSCHLAND_absolut",
+		"zweitstimmen_BÜNDNIS DEUTSCHLAND_prozent",
 
-		"erststimmen_bsw_absolut",
-		"erststimmen_bsw_prozent",
-		"zweitstimmen_bsw_absolut",
-		"zweitstimmen_bsw_prozent",
+		"erststimmen_BSW_absolut",
+		"erststimmen_BSW_prozent",
+		"zweitstimmen_BSW_absolut",
+		"zweitstimmen_BSW_prozent",
 
 		"erststimmen_einzelbewerber1_absolut",
 		"erststimmen_einzelbewerber1_prozent",
@@ -110,6 +111,7 @@ const results = [] as ResultType[];
 
 const wahlkreise = {} as Record<string, string>;
 const gemeinden = {} as Record<string, string>;
+const romanNumeral = / (I|II|III|IV|V|VI|VII|VIII|IX|X)/;
 
 parser.on("data", (data) => {
 	const { wahlkreisNr, kreisNr, gemeindeNr, wahlbezirkNr, name, satzart } = data as Record<string, string>;
@@ -128,23 +130,28 @@ parser.on("data", (data) => {
 	const result = defaultResult();
 	results.push(result);
 
-	result.bundesland_id = "16";
-	result.bundesland_name = "Thüringen";
+	const RegionNr = getRegionByWahlkreis(wahlkreisNr);
 
-	result.wahlkreis_id = getIdFromName(wahlkreisNr);
-	result.wahlkreis_name ||= wahlkreisName;
+	if (gemeindeNr === "000") {
+		try {
+			var gemeinde = getGemeinde(name.replaceAll("LG ", "").replaceAll("VG ", "").replace(romanNumeral, "").replace(/\d+/g, ""));
+			if (gemeinde.bundesland_id !== "16") throw new Error("Not in Thüringen");
+			if (gemeinde.kreis_id !== kreisNr) throw new Error("Kreis ID mismatch");
+		} catch (error) {
+			var gemeinde = getGemeindeByID(`16${RegionNr}${kreisNr}${gemeindeNr}`);
+		}
+	} else {
+		var gemeinde = getGemeindeByID(`16${RegionNr}${kreisNr}${gemeindeNr}`);
+	}
 
-	result.kreis_id = getIdFromName(kreisNr);
-	// kreis name is not in data source
-
-	result.gemeinde_id = getIdFromName(gemeindeNr);
-	result.gemeinde_name ||= gemeindeName;
+	Object.assign(result, gemeinde);
 
 	result.wahlbezirk_id = getIdFromName(wahlbezirkNr);
 	result.wahlbezirk_name = name;
 
 	result.anzahl_berechtigte = Number(data.wahlberechtigte) || 0;
 	result.anzahl_wähler = Number(data.wähler) || 0;
+	result.briefwahl = result.anzahl_berechtigte === 0;
 
 	parteien.forEach((partei) => {
 		const erststimmen = Number(data[`erststimmen_${partei}_absolut`]) || 0;

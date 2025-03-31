@@ -1,34 +1,61 @@
-import { getWahlbezirkVotemanager } from "./votemanager";
-import { behoerden_queue, saveResults } from "./wahlbezirke";
+import { calculatePercentage, ResultType } from "../wahlkreise/scrape";
+import { wahlergebnis } from "./accumulate";
 
-const results = await getWahlbezirkVotemanager({
-	bundesland: "",
-	name: "",
-	url: "https://wahlen.heidekreis.de/03358017/",
-});
+let max_parties: Record<
+	string,
+	{
+		party: string;
+		percentage: number;
+		entries: {
+			percentage: number;
+			gemeinde_name: string;
+		}[];
+	}
+> = {};
 
-await behoerden_queue.onIdle();
+for (const land_id in wahlergebnis) {
+	for (const region_id in wahlergebnis[land_id]) {
+		for (const kreis_id in wahlergebnis[land_id][region_id]) {
+			for (const verband_id in wahlergebnis[land_id][region_id][kreis_id]) {
+				for (const gemeinde_id in wahlergebnis[land_id][region_id][kreis_id][verband_id]) {
+					const gemeinde = wahlergebnis[land_id][region_id][kreis_id][verband_id][gemeinde_id];
+					if (!gemeinde?.result) continue;
+					const entry = gemeinde.result;
 
-console.log(results);
+					const percentages = calculatePercentage(entry.zweitstimmen)!;
 
-// @ts-ignore
+					if (!percentages) {
+						console.error("No percentages found for", entry);
+						throw new Error("No percentages found");
+					}
 
-// const results = [] as ResultType[];
-// const results = (await getWahlbezirk({ name: "", url: "https://votemanager.kdo.de/15084315/index.html", bundesland: "" }))!;
-// const bayern = landWahlkreise["9"].map((x) => (wahlkreiseQuellen as any)[x]);
-// const result = await getWahlbezirkeWAS(bayern);
-// const brandenburg = landWahlkreise["12"].map((x) => (wahlkreiseQuellen as any)[x]);
+					Object.entries(percentages).forEach(([party, percentage]) => {
+						if (!max_parties[party]) {
+							max_parties[party] = {
+								party,
+								percentage,
+								entries: [
+									{
+										percentage,
+										gemeinde_name: entry.gemeinde_name!,
+									},
+								],
+							};
+						} else if (percentage > max_parties[party].percentage) {
+							max_parties[party].percentage = percentage;
+							max_parties[party].entries.push({
+								percentage,
+								gemeinde_name: entry.gemeinde_name!,
+								wähler: entry.anzahl_wähler,
+							});
+						}
+					});
+				}
+			}
+		}
+	}
+}
 
-// München
-// const results = await getWahlbezirkeWAS([
-// wahlkreiseQuellen["216"],
-// wahlkreiseQuellen["217"],
-// wahlkreiseQuellen["218"],
-// wahlkreiseQuellen["219"],
-// ]);
+const sorted = Object.values(max_parties).sort((a, b) => b.percentage - a.percentage);
 
-// const results = await getWahlbezirkeWAS([wahlkreiseQuellen["54"]]);
-
-// const results = await getWahlbezirkeVotemanager();
-
-saveResults(results);
+console.table(sorted);

@@ -18,6 +18,7 @@ const additional = [
 	"https://wahlen.regioit.de/3/05911000/",
 	"https://wahlen.regioit.de/4/14627140/",
 	"https://wahlen.regioit.de/4/14523320/",
+	"https://wahlen.salzgitter.de/ergebnisse/03102000/",
 ].map((x) =>
 	getWahlbezirkVotemanager({
 		bundesland: "",

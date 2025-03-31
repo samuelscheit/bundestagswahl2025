@@ -6,6 +6,7 @@ import fs from "fs";
 import csv from "csv-parser";
 import { defaultResult, getIdFromName, type ResultType } from "../wahlkreise/scrape";
 import { saveResults } from "./wahlbezirke";
+import { getGemeindeByID, getRegionByWahlkreis } from "./gemeinden";
 
 const parser = csv({
 	separator: ";",
@@ -51,23 +52,12 @@ parser.on("data", (data) => {
 		//
 	} = data;
 
-	let result = results.find((x) => x.wahlbezirk_id === WahlbezirksID && x.gemeinde_id === GemeindeID);
-	if (!result) {
-		result = defaultResult();
-		results.push(result);
-	}
+	let result = defaultResult();
+	results.push(result);
 
-	result.bundesland_id = "15";
-	result.bundesland_name = "Sachsen-Anhalt";
+	const gemeinde = getGemeindeByID(GemeindeID);
 
-	result.wahlkreis_id = getIdFromName(WahlkreisID);
-	result.wahlkreis_name = Wahlkreisname;
-
-	result.kreis_id = getIdFromName(KreisID);
-	result.kreis_name = Kreisname;
-
-	result.gemeinde_name = gemeindeName;
-	result.gemeinde_id = getIdFromName(GemeindeID);
+	Object.assign(result, gemeinde);
 
 	result.wahlbezirk_id = getIdFromName(WahlbezirksID);
 	result.wahlbezirk_name = Wahlbezirksname;

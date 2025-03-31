@@ -8,8 +8,6 @@ type Gemeinde = Omit<
 	ResultType,
 	"erststimmen" | "zweitstimmen" | "anzahl_wähler" | "anzahl_berechtigte" | "wahlbezirk_name" | "wahlbezirk_id"
 > & {
-	verband_id: string | null;
-	verband_name: string | null;
 	region_name: string | null;
 	gemeinde_clean?: string;
 	verband_clean?: string;
@@ -77,12 +75,13 @@ await new Promise((resolve) => {
 				wahlkreis_name: WahlkreisName || null,
 				verband_id: getIdFromName(GemeindeverbandNr) || null,
 				verband_name: GemeindeverbandName || null,
+				region_id: getIdFromName(RegionNr) || null,
 				region_name: RegionName || null,
 				gemeinde_clean: undefined,
 				verband_clean: undefined,
 				kreis_clean: undefined,
 				wahlkreis_clean: undefined,
-			};
+			} as any;
 
 			LandNr = Number(LandNr).toString();
 			RegionNr = Number(RegionNr).toString();
@@ -97,6 +96,12 @@ await new Promise((resolve) => {
 			gemeindenHierarchy[LandNr][RegionNr][KreisNr][GemeindeverbandNr].push(value);
 			gemeindenHierarchy[LandNr][RegionNr][KreisNr][GemeindeNr] ||= [];
 			gemeindenHierarchy[LandNr][RegionNr][KreisNr][GemeindeNr].push(value);
+			gemeindenHierarchy[LandNr][RegionNr] ||= {};
+			gemeindenHierarchy[LandNr][RegionNr]["0"] ||= {};
+			gemeindenHierarchy[LandNr][RegionNr]["0"][GemeindeverbandNr] ||= [];
+			gemeindenHierarchy[LandNr][RegionNr]["0"][GemeindeverbandNr].push(value);
+			gemeindenHierarchy[LandNr][RegionNr]["0"][GemeindeNr] ||= [];
+			gemeindenHierarchy[LandNr][RegionNr]["0"][GemeindeNr].push(value);
 
 			gemeinden.push(value);
 		})
@@ -142,6 +147,10 @@ gemeindeSuffixes.add("Landgemeinde");
 gemeindeSuffixes.add("Seebad");
 gemeindeSuffixes.add("Landeshauptstadt");
 gemeindeSuffixes.add("-");
+gemeindeSuffixes.add("erfüllende");
+gemeindeSuffixes.add("VG");
+gemeindeSuffixes.add("briefwahlbezirk");
+gemeindeSuffixes.add("briefwahl");
 
 for (const suffix of gemeindeSuffixes) {
 	if (suffix.includes("  ")) {
@@ -179,6 +188,7 @@ export function cleanGemeindeName(name?: string | null) {
 
 	name = ` ${name} `
 		.toLowerCase()
+		.replaceAll("`", "")
 		.replaceAll("/ ", "/")
 		.replaceAll("/ostfriesland", "")
 		.replaceAll("/odw.", "")
@@ -210,20 +220,27 @@ export function cleanKreisName(name?: string | null) {
 		.trim();
 }
 
-const AGS = /(?<land>\d{2})(?<region>\d{1})(?<kreis>\d{2})((?<verband>\d{4})|(?<gemeinde>\d{3}))/;
+export const AGS = /(?<land>\d{2})(?<region>\d{1})(?<kreis>\d{2})((?<verband>\d{4})|(?<gemeinde>\d{3}))(?<gemeinde2>\d{3})?/;
 
-function getGemeindeByIDInternal(url: string) {
-	const id = url.match(/^.+\/(\d+)\//)?.[1];
-	if (!id) throw new Error("Invalid ID: " + url);
+export function getRegionByWahlkreis(id: string) {
+	for (const v of gemeinden) {
+		if (v.wahlkreis_id === id) {
+			return v.region_id;
+		}
+	}
+}
 
+function getGemeindeByIDInternal(id: string) {
 	const ags = id.match(AGS);
-	if (!ags) throw new Error("Invalid AGS: " + url);
+	if (!ags) throw new Error("Invalid AGS");
 
-	var { land, region, kreis, verband, gemeinde: gemeindeId } = (ags.groups || {}) as Record<string, string | undefined>;
+	var { land, region, kreis, verband, gemeinde: gemeindeId, gemeinde2 } = (ags.groups || {}) as Record<string, string | undefined>;
 
-	if (!land) throw new Error("Invalid AGS land: " + url);
-	if (!region) throw new Error("Invalid AGS region: " + url);
-	if (!kreis) throw new Error("Invalid AGS kreis: " + url);
+	if (!land) throw new Error("Invalid AGS land");
+	if (!region) throw new Error("Invalid AGS region");
+	if (!kreis) throw new Error("Invalid AGS kreis");
+
+	gemeindeId ||= gemeinde2;
 
 	land = Number(land).toString();
 	region = Number(region).toString();
@@ -236,16 +253,18 @@ function getGemeindeByIDInternal(url: string) {
 	if (verband) {
 		verband = Number(verband).toString();
 		gemeinden = kreisGemeinde?.[verband];
-	} else if (gemeindeId) {
+	}
+	if (gemeindeId) {
 		gemeindeId = Number(gemeindeId).toString();
-		gemeinden = kreisGemeinde?.[gemeindeId];
+		gemeinden ||= kreisGemeinde?.[gemeindeId];
 	}
 
-	const gemeinde = gemeinden?.find((x) => x.gemeinde_id === gemeindeId || x.verband_id === verband);
+	let gemeinde = gemeinden?.find((x) => x.gemeinde_id === gemeindeId);
+	if (!gemeinde) gemeinde = gemeinden?.find((x) => x.verband_id === verband);
 
 	if (!gemeinde && gemeindeId === "0") {
 		const anyKreisGemeinde = Object.values(kreisGemeinde).flat();
-		if (!anyKreisGemeinde.length) throw new Error("Invalid AGS kreis not found: " + url);
+		if (!anyKreisGemeinde.length) throw new Error("Invalid AGS kreis not found");
 
 		const gemeinde = anyKreisGemeinde[0]!;
 
@@ -253,35 +272,86 @@ function getGemeindeByIDInternal(url: string) {
 	}
 
 	if (!gemeinden) {
-		throw new Error("Invalid AGS gemeinden not found: " + url);
+		throw new Error("Invalid AGS gemeinden not found");
 	}
 
 	if (!gemeinde) {
-		throw new Error("Invalid AGS gemeinde not found: " + url);
+		throw new Error("Invalid AGS gemeinde not found");
 	}
 
-	if (verband) {
-		return { ...gemeinde, gemeinde_id: null, gemeinde_name: null };
+	if (verband && !gemeinde2) {
+		const result = { ...gemeinde, gemeinde_id: null, gemeinde_name: null };
+
+		Object.defineProperty(result, "_gemeinden", {
+			value: gemeinden,
+			enumerable: false,
+			configurable: false,
+			writable: false,
+		});
+
+		return result;
 	} else {
 		return { ...gemeinde };
 	}
 }
 
-export function getGemeindeByID(url: string) {
-	const result = getGemeindeByIDInternal(url);
-	delete result.gemeinde_clean;
-	delete result.verband_clean;
-	delete result.kreis_clean;
-	delete result.wahlkreis_clean;
+export function getGemeindeByWahlkreisAndGemeindeId(wahlkreisId: string, gemeindeId: string) {
+	wahlkreisId = Number(wahlkreisId).toString();
+	gemeindeId = Number(gemeindeId).toString();
 
-	return result as Gemeinde;
+	return gemeinden.find((x) => x.wahlkreis_id === wahlkreisId && x.gemeinde_id === gemeindeId) || null;
 }
 
-export function getGemeindeByIDorNull(url: string) {
+export function getGemeindeByID(id: string) {
 	try {
-		return getGemeindeByIDInternal(url);
+		const result = getGemeindeByIDInternal(id);
+		delete result.gemeinde_clean;
+		delete result.verband_clean;
+		delete result.kreis_clean;
+		delete result.wahlkreis_clean;
+		return result as Gemeinde;
+	} catch (error) {
+		throw new Error((error as Error).message + " " + id);
+	}
+}
+
+export function getGemeindeByIDOrNull(id: string) {
+	try {
+		return getGemeindeByID(id);
 	} catch (error) {
 		return null;
+	}
+}
+
+export function getGemeindeByUrl(url: string) {
+	try {
+		const id = url.match(/^.+\/(\d+)\//)?.[1];
+		if (!id) throw new Error("Invalid ID: " + url);
+
+		return getGemeindeByID(id);
+	} catch (error) {
+		throw new Error((error as Error).message + " " + url);
+	}
+}
+
+export function getGemeindeByUrlOrNull(url: string) {
+	try {
+		return getGemeindeByUrl(url);
+	} catch (error) {
+		return null;
+	}
+}
+
+export function getGemeindeWahlkreis(id: string) {
+	for (const v of gemeinden) {
+		if (v.wahlkreis_id === id) {
+			const result = { ...v };
+			delete result.gemeinde_clean;
+			delete result.verband_clean;
+			delete result.kreis_clean;
+			delete result.wahlkreis_clean;
+			return result as Gemeinde;
+		}
 	}
 }
 
@@ -361,7 +431,11 @@ export function getGemeinde(name: string, kreis?: string) {
 				value = v;
 			}
 
-			const sum = distance(v.gemeinde_clean || "", name) + dist + distance(v.verband_clean || "", name);
+			const sum =
+				distance(v.gemeinde_clean || "", name) +
+				dist +
+				distance(v.verband_clean || "", name) +
+				distance(v.kreis_clean || "", kreis);
 
 			summedDist.push([sum, v]);
 		}
@@ -378,7 +452,9 @@ export function getGemeinde(name: string, kreis?: string) {
 		value = { ...verband_value, gemeinde_name: null, gemeinde_id: null };
 	}
 
-	const newValue = { ...value };
+	if (!value) throw new Error("Gemeinde not found: " + name);
+
+	const newValue: any = { ...value };
 	delete newValue.gemeinde_clean;
 	delete newValue.verband_clean;
 	delete newValue.kreis_clean;

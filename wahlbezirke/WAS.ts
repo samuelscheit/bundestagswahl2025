@@ -1,9 +1,17 @@
 import { HTMLElement, parse } from "node-html-parser";
-import { defaultResult, getIdFromName, type Options, type ResultType } from "../wahlkreise/scrape";
+import {
+	defaultResult,
+	getIdFromName,
+	getIdFromNameWithLeading,
+	getNameWithoutId,
+	type Options,
+	type ResultType,
+} from "../wahlkreise/scrape";
 import { behoerden_queue, gemeinde_queue, queues, wahlbezirke_queue, wahleintrage_queue } from "./wahlbezirke";
-import { wahlkreiseQuellen } from "../wahlkreise/wahlkreise";
+import { wahlkreiseBundesland, wahlkreiseQuellen } from "../wahlkreise/wahlkreise";
 import { axiosWithRedirect } from "./axios";
-import { getWahlbezirkVotemanager } from "./votemanager";
+import { getGemeindeWahlkreis, getGemeindeByID, AGS, getGemeindeByIDOrNull, getGemeindeByWahlkreisAndGemeindeId } from "./gemeinden";
+import { assignOptional } from "./util";
 
 export function WAS(options: Options & { text: string; root?: HTMLElement }) {
 	const root = options.root || parse(options.text);
@@ -28,68 +36,158 @@ export function WAS(options: Options & { text: string; root?: HTMLElement }) {
 	let gebietBreadcrumb = root.querySelector(`.gebiet ul.breadcrumb`);
 	if (!gebietBreadcrumb) gebietBreadcrumb = root.querySelector(`.gebietwaehler .dropdown__content .linklist.header-gebiet__obergebiete`);
 
-	gebietBreadcrumb?.querySelectorAll("li a").forEach((x) => {
-		const href = x.getAttribute("href");
-		if (!href) return;
+	const wahlbezirksName = root.querySelector(".gebiet .header-gebiet__name")?.structuredText.trim();
+	if (!wahlbezirksName) {
+		throw new Error("WahlbezirksName not found: " + options.url);
+	}
 
-		const name = x.structuredText.trim();
-		if (!name) return;
+	const links = gebietBreadcrumb
+		?.querySelectorAll("li a")
+		.map((x) => {
+			const href = x.getAttribute("href");
+			if (!href) return;
 
-		const id = getIdFromName(name) || getIdFromName(href);
+			const name = x.structuredText.trim();
+			if (!name) return;
 
-		if (href.includes("_gesamt_")) {
+			return { name, href };
+		})
+		.filter(Boolean) as { name: string; href: string }[];
+
+	if (!links.some((x) => x.href === options.url)) {
+		links.push({
+			href: options.url.split("/").pop()!,
+			name: wahlbezirksName,
+		});
+	}
+
+	let stimmbezirk_id = undefined as undefined | string;
+
+	links.forEach(({ name, href }) => {
+		const idHref = href.split("_").at(-1)!;
+
+		const id = getIdFromName(idHref || "") || getIdFromName(name);
+		const types = [
+			...href.matchAll(
+				/_(gesamt|land|verwaltungsgemeinschaft|verbandsgemeinde|amt|samtgemeinde|kreis|wahlkreis|stadtbezirk|stadtviertel|stadtteil|ortsteil|ortschaft|statistikgebiet|gemeinde|kreisfreie_stadt|wahlbezirk|stimmbezirk|briefwahlbezirk)_/g
+			),
+		];
+		if (!types) throw new Error("Type not found: " + href + " " + options.url);
+		const type = types.at(-1)?.[1];
+
+		if (!type) throw new Error("Type not found: " + href + " " + options.url);
+
+		const cleanName = getNameWithoutId(name);
+
+		if (type === "gesamt") {
 			// multiple combined wahlkreise
-		} else if (href?.includes("_land_")) {
-			result.bundesland_name ||= name;
+		} else if (type === "land") {
+			result.bundesland_name ||= cleanName;
 			result.bundesland_id ||= id;
-		} else if (
-			href?.includes("_verwaltungsgemeinschaft_") ||
-			href?.includes("_verbandsgemeinde_") ||
-			href?.includes("_amt_") ||
-			href.includes("_samtgemeinde_")
-		) {
-			if (result.kreis_name && href.includes("_amt_")) {
-				result.gemeinde_name ||= name;
+		} else if (type === "verwaltungsgemeinschaft" || type === "verbandsgemeinde" || type === "amt" || type === "samtgemeinde") {
+			if (result.kreis_name && type === "amt") {
+				result.gemeinde_name ||= cleanName;
 				result.gemeinde_id ||= id;
 			} else {
-				result.verband_name ||= name;
+				result.verband_name ||= cleanName;
 				result.verband_id ||= id;
 			}
-		} else if (href?.includes("_kreis_")) {
-			result.kreis_name ||= name;
+		} else if (type === "kreis") {
+			result.kreis_name ||= cleanName;
 			result.kreis_id ||= id;
-		} else if (href?.includes("_wahlkreis_")) {
-			result.wahlkreis_name ||= name;
-			result.wahlkreis_id ||= id;
-		} else if (href?.includes("_stadtbezirk_") || href.includes("_stadtviertel_")) {
+		} else if (type === "wahlkreis") {
+			result.wahlkreis_name ||= cleanName;
+			result.wahlkreis_id ||= getIdFromName(name) || id;
+		} else if (type === "stadtbezirk" || type === "stadtviertel") {
 			// do not include
-		} else if (
-			href?.includes("_stadtteil_") ||
-			href?.includes("_ortsteil_") ||
-			href.includes("_ortschaft_") ||
-			href.includes("_statistikgebiet_")
-		) {
+		} else if (type === "stadtteil" || type === "ortsteil" || type === "ortschaft" || type === "statistikgebiet") {
 			result.ortsteil_id ||= id;
-			result.ortsteil_name ||= name;
-		} else if (href?.includes("_gemeinde_") || href.includes("_kreisfreie_stadt_")) {
-			result.gemeinde_id ||= id;
-			result.gemeinde_name ||= name;
+			result.ortsteil_name ||= cleanName;
+		} else if (type === "gemeinde" || type === "kreisfreie_stadt") {
+			result.gemeinde_id ||= getIdFromNameWithLeading(idHref) || getIdFromNameWithLeading(name);
+			result.gemeinde_name ||= cleanName;
+		} else if (type === "wahlbezirk" || type === "stimmbezirk" || type === "briefwahlbezirk") {
+			stimmbezirk_id = getIdFromNameWithLeading(idHref) || getIdFromNameWithLeading(name)!;
 		} else {
 			throw new Error("Unknown gebiet: " + href + " " + options.url);
 		}
 	});
 
-	const wahlbezirksName = root.querySelector(".gebiet .header-gebiet__name")?.structuredText.trim();
-	if (!wahlbezirksName) {
-		throw new Error("WahlbezirksName not found: " + options.url);
-	}
+	// if (options.url.includes("wahlen-berlin.de")) {
+	// 	result.gemeinde_id = `11000000`;
+	// } else if (options.url.includes("nuernberg.de")) {
+	// 	if (result.gemeinde_id === "565000") {
+	// 		// schwabach
+	// 		result.gemeinde_id = `09565000`;
+	// 	} else {
+	// 		result.gemeinde_id = `09564000`;
+	// 	}
+	// }
+
+	let gemeinde: ReturnType<typeof getGemeindeByID> | null = null;
+
+	do {
+		if (result.gemeinde_id) {
+			if (!result.wahlkreis_id) {
+				throw new Error("Gemeinde not found: " + result.gemeinde_id + " " + options.url);
+			}
+			if (!result.bundesland_id) result.bundesland_id = wahlkreiseBundesland[result.wahlkreis_id];
+
+			if (result.gemeinde_id === "3360021" && result.bundesland_id == "3") {
+				result.gemeinde_id = "3360030";
+			}
+
+			if (stimmbezirk_id) {
+				gemeinde = getGemeindeByIDOrNull(stimmbezirk_id.slice(0, 8));
+				if (gemeinde) break;
+			}
+
+			gemeinde = getGemeindeByIDOrNull(result.gemeinde_id);
+			if (gemeinde) break;
+
+			let gemeinde_id = result.bundesland_id!.padStart(2, "0") + result.gemeinde_id;
+			gemeinde = getGemeindeByIDOrNull(gemeinde_id);
+			if (gemeinde) break;
+
+			gemeinde_id = "0" + result.gemeinde_id;
+			gemeinde = getGemeindeByIDOrNull(gemeinde_id);
+			if (gemeinde) break;
+
+			gemeinde = getGemeindeByWahlkreisAndGemeindeId(result.wahlkreis_id, result.gemeinde_id);
+			if (gemeinde) break;
+
+			console.error("Gemeinde not found: " + result.gemeinde_id + " " + options.url);
+		}
+	} while (false);
+	if (gemeinde) Object.assign(result, gemeinde);
 
 	const id = getIdFromName(wahlbezirksName);
 
 	result.wahlbezirk_name = wahlbezirksName;
 	result.wahlbezirk_id = id;
 
-	result.gemeinde_name ||= wahlbezirksName;
+	do {
+		if (result.kreis_name) {
+			result.gemeinde_name ||= result.kreis_name;
+		} else if (result.verband_name) {
+			result.gemeinde_name ||= result.verband_name;
+		} else if (result.wahlkreis_id && result.gemeinde_id) {
+			const isStadt = links.some((x) => x.href.includes("stadt"));
+			if (!isStadt) break;
+
+			const gemeinde = getGemeindeWahlkreis(result.wahlkreis_id);
+			if (!gemeinde) break;
+			// nur städte die ganze wahlkreise füllen
+			if (gemeinde.gemeinde_id !== "0") break;
+
+			Object.assign(result, gemeinde);
+		}
+	} while (false);
+
+	if (!result.gemeinde_name) {
+		throw new Error("Gemeinde name not found: " + options.url);
+	}
+
 	result.gemeinde_id ||= id;
 
 	rows.forEach((row) => {

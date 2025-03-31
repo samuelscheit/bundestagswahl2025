@@ -312,7 +312,7 @@ export const wahlkreiseNamen = {
 	"9": "Ostholstein - Stormarn-Nord",
 	"10": "Herzogtum Lauenburg - Stormarn-Süd",
 	"11": "Lübeck",
-	"12": "schwerin",
+	"12": "Schwerin",
 	"13": "Ludwigslust-Parchim",
 	"14": "Rostock",
 	"15": "Vorpommern-Rügen – Vorpommern-Greifswald I",
@@ -640,7 +640,7 @@ export const customWahlkreise = new Set(
 
 export const notVotemanager = new Set(
 	Object.entries(wahlkreiseQuellen)
-		.filter(([wahlkreis, quelle]) => !quelle.includes("ergebnis.html"))
+		.filter(([wahlkreis, quelle]) => !quelle.includes("ergebnis.html") && !quelle.includes("krzn.de"))
 		.map(([wahlkreis]) => Number(wahlkreis))
 ).union(customWahlkreise);
 
