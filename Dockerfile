@@ -2,6 +2,9 @@ FROM node:22 AS base
 
 WORKDIR /app
 
+ARG HOST
+ENV NEXT_PUBLIC_HOST $HOST
+
 RUN git clone https://github.com/mapbox/tippecanoe.git && cd tippecanoe && make -j && make install
 
 RUN curl -fsSL https://bun.sh/install | BUN_INSTALL=/usr bash

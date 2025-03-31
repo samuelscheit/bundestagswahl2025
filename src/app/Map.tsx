@@ -182,7 +182,10 @@ export function ElectionMap() {
 	const parteiSelected = useRef<string | null>(null);
 
 	useLayoutEffect(() => {
-		const endpoint = globalThis?.location.hostname === "localhost" ? "http://localhost:8080" : `${globalThis?.location.origin}/map`;
+		const endpoint =
+			globalThis?.location.hostname === "localhost"
+				? "http://localhost:8080"
+				: `${process.env.NEXT_PUBLIC_HOST || globalThis?.location.origin}`;
 
 		var map = new Map({
 			container: "map",
