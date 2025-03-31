@@ -181,14 +181,22 @@ const wahlkreiseStadt = new Set([
 	"259", // Stuttgart II
 ]);
 
-export async function getWahlbezirkVotemanager(opts: {
+export type VotemanagerOpts = {
 	url: string;
 	name: string;
 	html?: string;
 	bundesland: string;
 	tries?: number;
 	onlySubgemeinden?: boolean;
-}) {
+};
+
+export async function getWahlbezirkVotemanager(
+	opts: {
+		filter?: (opts: VotemanagerOpts) => boolean;
+	} & VotemanagerOpts
+) {
+	if (opts.filter && !opts.filter(opts)) return results;
+
 	opts.url = opts.url.replace("/index.html", "/");
 
 	if (promiseScraped.has(opts.url)) return promiseScraped.get(opts.url);
@@ -281,6 +289,7 @@ export async function getWahlbezirkVotemanager(opts: {
 								url: x!.url,
 								name: x!.text,
 								bundesland: opts.bundesland,
+								filter: opts.filter,
 							});
 						} catch (error) {
 							console.error("Error", error);
@@ -364,6 +373,7 @@ export async function getWahlbezirkVotemanager(opts: {
 													url: url,
 													name: x.label,
 													bundesland: opts.bundesland,
+													filter: opts.filter,
 												});
 											} catch (error) {
 												console.error(x.label, "" + error);
@@ -451,6 +461,10 @@ export async function getWahlbezirkVotemanager(opts: {
 										subResults.wahlbezirk_id = subResults.gemeinde_id;
 										subResults.wahlbezirk_name = subResults.gemeinde_name;
 
+										if (subResults.wahlbezirk_name === "Altmittweida") {
+											debugger;
+										}
+
 										results.push(subResults);
 									});
 								}
@@ -464,6 +478,11 @@ export async function getWahlbezirkVotemanager(opts: {
 						const csv = await getVotemanagerOpenData(apiEndpoint, gemeinde);
 
 						for (const csvResult of csv) {
+							for (const x of csvResult) {
+								if (x.wahlbezirk_name === "Altmittweida") {
+									debugger;
+								}
+							}
 							results.push(...csvResult);
 						}
 
@@ -520,12 +539,20 @@ export async function getWahlbezirkVotemanager(opts: {
 									}
 									wahlbezirk_result.wahlbezirk_raum = wahlraum?.wahlraumBezeichnung;
 
+									if (wahlbezirk_result.wahlbezirk_name === "Altmittweida") {
+										debugger;
+									}
+
 									results.push(wahlbezirk_result);
 								} catch (error) {
 									if ((error as Error).message.includes("Keine Daten")) {
 										openData.find((data) => {
 											const entry = data.find((y) => y.wahlbezirk_name === x.label);
 											if (!entry) return;
+
+											if (entry.wahlbezirk_name === "Altmittweida") {
+												debugger;
+											}
 
 											results.push(entry);
 
@@ -603,7 +630,7 @@ async function getVotemanagerOpenData(url: string, oberGemeinde: ReturnType<type
 			const csvText = await axiosWithRedirect(csvUrl, { responseType: "text" });
 			const csv = await csvParse({ data: csvText.data, separator: ";" });
 
-			const results = [] as ResultType[];
+			const csvResults = [] as ResultType[];
 
 			csv.forEach((x) => {
 				const { datum, wahl, ags, "gebiet-nr": GebietNr, "gebiet-name": GebietName } = x as Record<string, string>;
@@ -647,10 +674,10 @@ async function getVotemanagerOpenData(url: string, oberGemeinde: ReturnType<type
 					result.zweitstimmen.parteien[parteiName] = zweitstimmen;
 				});
 
-				results.push(result);
+				csvResults.push(result);
 			});
 
-			return results;
+			return csvResults;
 		})
 	);
 }
@@ -711,7 +738,7 @@ async function getVotemanagerWahllokale(url: string, oberGemeinde: ReturnType<ty
 	};
 }
 
-export async function getWahlbezirkeVotemanager() {
+export async function getWahlbezirkeVotemanager(bundeslandFilter?: string[], filter?: (opts: VotemanagerOpts) => boolean) {
 	const {
 		data: { data },
 	} = await axiosWithRedirect("https://wahlen.votemanager.de/behoerden.json", { responseType: "json" });
@@ -719,6 +746,8 @@ export async function getWahlbezirkeVotemanager() {
 	await Promise.all(
 		data.map((x: string[]) => {
 			const [link, name, bundesland] = x;
+			if (bundeslandFilter && !bundeslandFilter.includes(bundesland)) return;
+			if (name.startsWith("Land ")) return;
 
 			let [url] = extractUrls(link) as string[];
 
@@ -730,6 +759,7 @@ export async function getWahlbezirkeVotemanager() {
 						url,
 						name,
 						bundesland,
+						filter,
 					});
 					if (!bezirk_result) return;
 				} catch (error) {

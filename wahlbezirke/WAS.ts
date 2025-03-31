@@ -10,7 +10,15 @@ import {
 import { behoerden_queue, gemeinde_queue, queues, wahlbezirke_queue, wahleintrage_queue } from "./wahlbezirke";
 import { wahlkreiseBundesland, wahlkreiseQuellen } from "../wahlkreise/wahlkreise";
 import { axiosWithRedirect } from "./axios";
-import { getGemeindeWahlkreis, getGemeindeByID, AGS, getGemeindeByIDOrNull, getGemeindeByWahlkreisAndGemeindeId } from "./gemeinden";
+import {
+	getGemeindeWahlkreis,
+	getGemeindeByID,
+	AGS,
+	getGemeindeByIDOrNull,
+	getGemeindeByWahlkreisAndGemeindeId,
+	getGemeinde,
+	getGemeindeOrNull,
+} from "./gemeinden";
 import { assignOptional } from "./util";
 
 export function WAS(options: Options & { text: string; root?: HTMLElement }) {
@@ -156,7 +164,16 @@ export function WAS(options: Options & { text: string; root?: HTMLElement }) {
 			gemeinde = getGemeindeByWahlkreisAndGemeindeId(result.wahlkreis_id, result.gemeinde_id);
 			if (gemeinde) break;
 
-			console.error("Gemeinde not found: " + result.gemeinde_id + " " + options.url);
+			if (!result.gemeinde_name) break;
+
+			gemeinde = getGemeindeOrNull(result.gemeinde_name!, result.kreis_name || undefined);
+			console.error(gemeinde?.gemeinde_name, result.gemeinde_name);
+
+			if (gemeinde) break;
+
+			console.error("Gemeinde not found: " + result.gemeinde_id + " " + options.url, gemeinde);
+			var x = 2;
+			console.log(x);
 		}
 	} while (false);
 	if (gemeinde) Object.assign(result, gemeinde);
@@ -171,7 +188,7 @@ export function WAS(options: Options & { text: string; root?: HTMLElement }) {
 			result.gemeinde_name ||= result.kreis_name;
 		} else if (result.verband_name) {
 			result.gemeinde_name ||= result.verband_name;
-		} else if (result.wahlkreis_id && result.gemeinde_id) {
+		} else if (result.wahlkreis_id) {
 			const isStadt = links.some((x) => x.href.includes("stadt"));
 			if (!isStadt) break;
 

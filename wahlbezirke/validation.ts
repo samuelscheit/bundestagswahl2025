@@ -83,7 +83,7 @@ function mergePartei(result: ResultType["zweitstimmen"], a: string, b: string) {
 
 const Bundeswahlleiter = getBundeswahlleiterDaten("gesamtergebnis_02.xml");
 
-const wahlkreis = "198";
+const wahlkreis = "159";
 const bezirke = wahlkreisBezirke[wahlkreis] || [];
 
 const gemeinden = new Set(bezirke.map((x) => x.gemeinde_name || x.verband_name));
@@ -181,7 +181,7 @@ Object.keys(Bundeswahlleiter).forEach((wahlkreisId) => {
 		const wahlkreisBezirkeArr = wahlkreisBezirke[wahlkreisId];
 
 		if (!bund) throw new Error("Missing bund: " + wahlkreisId);
-		if (wahlkreiseBundesland[wahlkreisId] === "14") return; // sachsen has no wahlbezirk data
+		// if (wahlkreiseBundesland[wahlkreisId] === "14") return; // sachsen has no wahlbezirk data
 		// if (wahlkreisId === "258") return; // stuttgart has no wahlbezirk data
 		if (!wahlkreisBezirkeArr) throw new Error("Missing wahlkreis: " + wahlkreisId);
 
@@ -232,6 +232,22 @@ const remove_wahlkreise = [
 	// "203",
 	// "206",
 	// "207",
+	// "150",
+	// "151",
+	// "152",
+	// "153",
+	// "154",
+	// "155",
+	// "156",
+	// "157",
+	// "158",
+	// "159",
+	// "160",
+	// "161",
+	// "162",
+	// "163",
+	// "164",
+	// "165",
 ] as string[];
 
 const filtered = wahlbezirke.filter(

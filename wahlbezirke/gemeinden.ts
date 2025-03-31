@@ -355,6 +355,33 @@ export function getGemeindeWahlkreis(id: string) {
 	}
 }
 
+export function getAGS(gemeinde: {
+	bundesland_id?: string | null;
+	region_id?: string | null;
+	kreis_id?: string | null;
+	gemeinde_id?: string | null;
+	verband_id?: string | null;
+}) {
+	if (!gemeinde.bundesland_id) throw new Error("Missing bundesland_id: " + JSON.stringify(gemeinde));
+	if (!gemeinde.region_id) throw new Error("Missing region_id: " + JSON.stringify(gemeinde));
+	if (!gemeinde.kreis_id) throw new Error("Missing kreis_id: " + JSON.stringify(gemeinde));
+
+	return (
+		gemeinde.bundesland_id.padStart(2, "0") +
+		gemeinde.region_id.padStart(1, "0") +
+		gemeinde.kreis_id.padStart(2, "0") +
+		(gemeinde.gemeinde_id ? gemeinde.gemeinde_id.padStart(3, "0") : gemeinde.verband_id ? gemeinde.verband_id!.padStart(4, "0") : "000")
+	);
+}
+
+export function getGemeindeOrNull(name: string, kreis?: string) {
+	try {
+		return getGemeinde(name, kreis);
+	} catch (error) {
+		return null;
+	}
+}
+
 export function getGemeinde(name: string, kreis?: string) {
 	name = cleanGemeindeName(name);
 	const kreisGemeinde = kreis ? cleanGemeindeName(kreis || "") : undefined;

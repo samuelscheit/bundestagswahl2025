@@ -27,14 +27,11 @@
 		"serveStaticMaps": true,
 		"allowRemoteMarkerIcons": true,
 		"allowInlineMarkerImages": true,
-		"staticAttributionText": "© OpenMapTiles  © OpenStreetMaps",
+		"staticAttributionText": "",
 		"tileMargin": 0
 	},
 	"styles": {},
 	"data": {
-		"bundesland_name": {
-			"mbtiles": "bundesland_name.mbtiles"
-		},
 		"map": {
 			"mbtiles": "map.mbtiles"
 		}
