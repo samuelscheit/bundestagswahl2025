@@ -10,5 +10,6 @@
 !wahlbezirke/data/gemeinden.csv
 !src/**/*
 !map/GemeindenShapefile.zip
+!map/germany_place.mbtiles
 !map/*.ts
 !map/config.json

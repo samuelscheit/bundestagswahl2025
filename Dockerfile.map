@@ -1,0 +1,40 @@
+FROM node:22 AS base
+
+WORKDIR /app
+
+RUN apt update && apt install -y libglx-dev libopengl0 libuv1-dev \
+  zlib1g zlib1g-dev \
+  libcairo2-dev \
+  libjpeg-dev \
+  libpango1.0-dev \
+  libgif-dev \
+  build-essential \
+  pkg-config \
+  python3 \
+  git \
+  curl
+
+RUN git clone https://github.com/mapbox/tippecanoe.git && cd tippecanoe && make -j && make install
+
+RUN curl -fsSL https://bun.sh/install | BUN_INSTALL=/usr bash
+
+RUN npm i -g tileserver-gl-light
+
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* bun.lock* ./
+
+RUN bun install
+
+WORKDIR /app
+COPY . .
+
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN bun map/convert.ts
+RUN bun map/match
+
+EXPOSE 8080
+
+WORKDIR /app/map
+
+CMD ["tileserver-gl-light", "--file", "map.mbtiles", "--port", "8080"]
+

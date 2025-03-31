@@ -66,7 +66,7 @@ await new Promise((resolve) => tippecanoe.once("close", resolve));
 tippecanoe --force -o gemeinde.mbtiles -zg --extend-zooms-if-still-dropping gemeinde.json
 tippecanoe --force -o bundesland.mbtiles -zg --drop-densest-as-needed bundesland.json
 tile-join --force -o map.mbtiles gemeinde.mbtiles bundesland.mbtiles
-tileserver-gl --file map.mbtiles           
+tileserver-gl-light --file map.mbtiles           
 
 tippecanoe --force -o bundesland_name.mbtiles bundesland_name.json
 

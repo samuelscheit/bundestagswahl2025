@@ -44,7 +44,6 @@
 		"shpjs": "^6.1.0",
 		"tailwind-merge": "^3.0.2",
 		"tailwind-variants": "^1.0.0",
-		"tileserver-gl": "^5.2.0",
 		"topojson-server": "^3.0.1",
 		"trie-search": "^2.2.0",
 		"tw-animate-css": "^1.2.5"

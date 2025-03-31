@@ -2,18 +2,6 @@ FROM node:22 AS base
 
 WORKDIR /app
 
-RUN apt update && apt install -y \
-  zlib1g zlib1g-dev \
-  libcairo2-dev \
-  libjpeg-dev \
-  libpango1.0-dev \
-  libgif-dev \
-  build-essential \
-  pkg-config \
-  python3 \
-  git \
-  curl
-
 RUN git clone https://github.com/mapbox/tippecanoe.git && cd tippecanoe && make -j && make install
 
 RUN curl -fsSL https://bun.sh/install | BUN_INSTALL=/usr bash
@@ -30,9 +18,6 @@ COPY --from=base /app/node_modules ./node_modules
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-
-RUN bun map/convert.ts
-RUN bun map/match.ts
 
 RUN bun run --bun build
 

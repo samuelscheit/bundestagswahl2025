@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+    web:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        ports:
+            - "8008:3000"
+        environment:
+            NODE_ENV: production
+        depends_on:
+            - map
+
+    map:
+        build:
+            context: ./
+            dockerfile: Dockerfile.map
+        ports:
+            - "8009:8080"

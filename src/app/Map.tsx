@@ -176,12 +176,14 @@ const labelStyle: any = {
 	},
 };
 
-export function ElectionMap({ ergebnis }: { ergebnis?: ResultType }) {
+export function ElectionMap() {
 	const ref = useRef<HTMLDivElement>(null);
 	const mapRef = useRef<Map | null>(null);
 	const parteiSelected = useRef<string | null>(null);
 
 	useLayoutEffect(() => {
+		const endpoint = globalThis?.location.hostname === "localhost" ? "http://localhost:8080" : globalThis?.location.origin;
+
 		var map = new Map({
 			container: "map",
 			// style: "https://demotiles.maplibre.org/style.json", // stylesheet location
@@ -205,7 +207,7 @@ export function ElectionMap({ ergebnis }: { ergebnis?: ResultType }) {
 					map: {
 						type: "vector",
 						tiles: [
-							"http://localhost:8080/data/map/{z}/{x}/{y}.pbf",
+							`${endpoint}/data/map/{z}/{x}/{y}.pbf`,
 							// "https://tiles.versatiles.org/assets/styles/neutrino/tiles/{z}/{x}/{y}.pbf",
 						],
 						minzoom: 0,
