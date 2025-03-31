@@ -4,11 +4,12 @@ services:
         build:
             context: ./
             dockerfile: Dockerfile
+            args:
+                - HOST=https://bundestagswahl_map.samuelscheit.com
         ports:
             - "8008:3000"
         environment:
             NODE_ENV: production
-            HOST: https://bundestagswahl_map.samuelscheit.com
         depends_on:
             - map
 
