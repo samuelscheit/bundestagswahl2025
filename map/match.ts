@@ -31,7 +31,7 @@ type Properties = {
 	DLM_ID: string;
 };
 
-const gemeinden = require("./gemeinde.json") as GeoJSON.FeatureCollection;
+const gemeinden = require("./data/gemeinde.json") as GeoJSON.FeatureCollection;
 
 gemeinden.features.forEach((feature) => {
 	if (!feature.properties) return;
@@ -49,6 +49,11 @@ gemeinden.features.forEach((feature) => {
 		wahlergebnis[land_id]?.[region_id]?.[kreis_id]?.[verband_id]?.[gemeinde_id] ||
 		wahlergebnis[land_id]?.[region_id]?.[kreis_id]?.["0"]?.[gemeinde_id];
 	const wahl = gemeinde || verband;
+
+	if (gemeinde_id === "0" && verband_id === "0") {
+		// big city
+		console.log(land_id, region_id, kreis_id, verband_id, gemeinde_id, wahl.result.gemeinde_name);
+	}
 
 	const ergebnis = calculatePercentage(wahl?.result.zweitstimmen);
 
@@ -72,13 +77,13 @@ gemeinden.features.forEach((feature) => {
 	};
 });
 
-fs.writeFileSync(__dirname + "/wahlergebnis.json", JSON.stringify(gemeinden, null, 2));
+fs.writeFileSync(__dirname + "/data/wahlergebnis.json", JSON.stringify(gemeinden, null, 2));
 
 var tippecanoe = spawn(
 	`tippecanoe --no-tile-size-limit --no-feature-limit --force -o wahlergebnis.mbtiles -zg --extend-zooms-if-still-dropping -l gemeinde wahlergebnis.json`,
 	{
 		shell: true,
-		cwd: __dirname,
+		cwd: __dirname + "/data/",
 	}
 );
 
@@ -89,7 +94,7 @@ await new Promise((resolve) => tippecanoe.once("close", resolve));
 
 tippecanoe = spawn(`tile-join -pk --force -o map.mbtiles wahlergebnis.mbtiles bundesland.mbtiles germany_place.mbtiles`, {
 	shell: true,
-	cwd: __dirname,
+	cwd: __dirname + "/data/",
 });
 
 // tippecanoe.stdout.pipe(process.stdout);

@@ -36,5 +36,5 @@ EXPOSE 8080
 
 WORKDIR /app/map
 
-CMD ["tileserver-gl-light", "--file", "map.mbtiles", "--port", "8080"]
+CMD ["tileserver-gl-light", "--config", "config.json", "--port", "8080"]
 

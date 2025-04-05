@@ -106,9 +106,14 @@ export function WAS(options: Options & { text: string; root?: HTMLElement }) {
 		} else if (type === "wahlkreis") {
 			result.wahlkreis_name ||= cleanName;
 			result.wahlkreis_id ||= getIdFromName(name) || id;
-		} else if (type === "stadtbezirk" || type === "stadtviertel") {
-			// do not include
-		} else if (type === "stadtteil" || type === "ortsteil" || type === "ortschaft" || type === "statistikgebiet") {
+		} else if (
+			type === "stadtteil" ||
+			type === "ortsteil" ||
+			type === "ortschaft" ||
+			type === "statistikgebiet" ||
+			type === "stadtbezirk" ||
+			type === "stadtviertel"
+		) {
 			result.ortsteil_id ||= id;
 			result.ortsteil_name ||= cleanName;
 		} else if (type === "gemeinde" || type === "kreisfreie_stadt") {
@@ -176,30 +181,38 @@ export function WAS(options: Options & { text: string; root?: HTMLElement }) {
 			console.log(x);
 		}
 	} while (false);
-	if (gemeinde) Object.assign(result, gemeinde);
+
+	try {
+		if (result.wahlkreis_id) {
+			const isStadt = links.some((x) => x.href.includes("stadt"));
+			if (!isStadt) throw new Error("Not a city: " + options.url);
+
+			gemeinde = getGemeindeWahlkreis(result.wahlkreis_id)!;
+			if (!gemeinde) throw new Error("Gemeinde not found: " + result.wahlkreis_id + " " + options.url);
+			// nur städte die ganze wahlkreise füllen
+			if (gemeinde.gemeinde_id !== "0") throw new Error("Gemeinde not found: " + result.wahlkreis_id + " " + options.url);
+		}
+	} catch (error) {}
+
+	if (gemeinde) {
+		const { ortsteil_id, ortsteil_name } = result;
+
+		Object.assign(result, gemeinde);
+
+		result.ortsteil_id = ortsteil_id;
+		result.ortsteil_name = ortsteil_name;
+	}
 
 	const id = getIdFromName(wahlbezirksName);
 
 	result.wahlbezirk_name = wahlbezirksName;
 	result.wahlbezirk_id = id;
 
-	do {
-		if (result.kreis_name) {
-			result.gemeinde_name ||= result.kreis_name;
-		} else if (result.verband_name) {
-			result.gemeinde_name ||= result.verband_name;
-		} else if (result.wahlkreis_id) {
-			const isStadt = links.some((x) => x.href.includes("stadt"));
-			if (!isStadt) break;
-
-			const gemeinde = getGemeindeWahlkreis(result.wahlkreis_id);
-			if (!gemeinde) break;
-			// nur städte die ganze wahlkreise füllen
-			if (gemeinde.gemeinde_id !== "0") break;
-
-			Object.assign(result, gemeinde);
-		}
-	} while (false);
+	if (result.kreis_name) {
+		result.gemeinde_name ||= result.kreis_name;
+	} else if (result.verband_name) {
+		result.gemeinde_name ||= result.verband_name;
+	}
 
 	if (!result.gemeinde_name) {
 		throw new Error("Gemeinde name not found: " + options.url);

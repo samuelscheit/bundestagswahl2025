@@ -161,6 +161,8 @@ parser.on("data", (data) => {
 		result.zweitstimmen.parteien[partei] = zweitstimmen;
 	});
 
+	debugger;
+
 	result.erststimmen.gültig = Number(data.erststimmen_gültig) || 0;
 	result.zweitstimmen.gültig = Number(data.zweitstimmen_gültig) || 0;
 	result.erststimmen.ungültig = Number(data.erststimmen_ungültig) || 0;

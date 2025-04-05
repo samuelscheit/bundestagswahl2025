@@ -3,6 +3,11 @@ import fs from "fs";
 import { join } from "path";
 import Axios, { type AxiosRequestConfig, type AxiosResponse } from "axios";
 import { parse } from "node-html-parser";
+import { wrapper } from "axios-cookiejar-support";
+import { CookieJar } from "tough-cookie";
+const CookieFileStore = require("tough-cookie-file-store").FileCookieStore;
+
+const jar = new CookieJar(new CookieFileStore(__dirname + "/cookies.json"));
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -20,33 +25,31 @@ export function generateKey(opts: AxiosRequestConfig) {
 }
 
 export const axios = setupCache(
-	Axios.create({
-		headers: {
-			accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-			"accept-language": "en-US,en;q=0.9,de-DE;q=0.8,de;q=0.7",
-			"cache-control": "no-cache",
-			dnt: "1",
-			priority: "u=0, i",
-			"Sec-Ch-Ua-Arch": '"arm"',
-			"Sec-Ch-Ua-Bitness": '"64"',
-			"Sec-Ch-Ua-Full-Version-List": '"Not(A:Brand";v="99.0.0.0", "Google Chrome";v="133.0.6943.142", "Chromium";v="133.0.6943.142"',
-			"Sec-Ch-Ua-Mobile": "?0",
-			"Sec-Ch-Ua-Model": '""',
-			"Sec-Ch-Ua-Platform": '"macOS"',
-			"Sec-Ch-Ua-Platform-Version": '"15.3.1"',
-			"Sec-Ch-Ua-Wow64": "?0",
-			"Sec-Fetch-Dest": "document",
-			"Sec-Fetch-Mode": "navigate",
-			"Sec-Fetch-Site": "same-origin",
-			"Sec-Fetch-User": "?1",
-			"upgrade-insecure-requests": "1",
-			"user-agent":
-				"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-		},
-		responseType: "json",
-		validateStatus: (status) => status < 400,
-		maxRedirects: 0,
-	}),
+	wrapper(
+		Axios.create({
+			jar,
+			headers: {
+				accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+				"accept-language": "en-US,en;q=0.9,de-DE;q=0.8,de;q=0.7",
+				"cache-control": "no-cache",
+				dnt: "1",
+				priority: "u=0, i",
+				"Sec-Ch-Ua-Arch": '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"',
+				"Sec-Ch-Ua-Mobile": "?0",
+				"Sec-Ch-Ua-Platform": '"macOS"',
+				"Sec-Fetch-Dest": "document",
+				"Sec-Fetch-Mode": "navigate",
+				"Sec-Fetch-Site": "same-origin",
+				"Sec-Fetch-User": "?1",
+				"upgrade-insecure-requests": "1",
+				"user-agent":
+					"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+			},
+			responseType: "json",
+			validateStatus: (status) => status < 400,
+			maxRedirects: 0,
+		})
+	),
 	{
 		headerInterpreter() {
 			return 365 * 24 * 60 * 60 * 1000;

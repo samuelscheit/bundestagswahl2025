@@ -31,7 +31,7 @@ export function getIdFromResult(x: ResultType) {
 		(x.kreis_name || x.kreis_id || "") +
 		(x.verband_name || x.verband_id || "") +
 		(x.gemeinde_name || x.gemeinde_id || "") +
-		(x.ortsteil_name || x.ortsteil_id || "") +
+		// (x.ortsteil_name || x.ortsteil_id || "") +
 		((x.wahlbezirk_id || "") + (x.wahlbezirk_name || ""))
 	);
 }

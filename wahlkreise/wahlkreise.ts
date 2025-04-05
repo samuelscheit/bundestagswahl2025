@@ -663,6 +663,8 @@ export const bundeslandNamen = {
 	16: "Thüringen",
 };
 
+export const bundeslandIds = Object.fromEntries(Object.entries(bundeslandNamen).map(([id, name]) => [name, id]));
+
 export const wahlkreiseBundesland = Object.entries(bundeslandWahlkreise).reduce((acc, [land, wahlkreise]) => {
 	wahlkreise.forEach((wahlbezirk) => {
 		acc[wahlbezirk] = land;

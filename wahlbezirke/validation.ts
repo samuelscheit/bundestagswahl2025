@@ -51,6 +51,7 @@ wahlbezirke.forEach((x, i) => {
 	mergePartei(x.zweitstimmen, "GRÜNE", "GRÜNE/B 90");
 	mergePartei(x.zweitstimmen, "FREIE WÄHLER", "freie wähler");
 	mergePartei(x.zweitstimmen, "Volt", "volt");
+	mergePartei(x.zweitstimmen, "Volt", "VOLT");
 	mergePartei(x.zweitstimmen, "PIRATEN", "Piratenpartei Deutschland");
 	mergePartei(x.zweitstimmen, "MLPD", "mlpd");
 	mergePartei(x.zweitstimmen, "BÜNDNIS DEUTSCHLAND", "bündnis deutschland");
@@ -83,7 +84,7 @@ function mergePartei(result: ResultType["zweitstimmen"], a: string, b: string) {
 
 const Bundeswahlleiter = getBundeswahlleiterDaten("gesamtergebnis_02.xml");
 
-const wahlkreis = "159";
+const wahlkreis = "253";
 const bezirke = wahlkreisBezirke[wahlkreis] || [];
 
 const gemeinden = new Set(bezirke.map((x) => x.gemeinde_name || x.verband_name));
@@ -195,7 +196,7 @@ Object.keys(Bundeswahlleiter).forEach((wahlkreisId) => {
 		const diffWähler = Math.abs(accumulated.anzahl_wähler - bund.anzahl_wähler);
 		totalDiffWähler += diffWähler;
 
-		if (diffWähler > 1000) {
+		if (diffWähler > 0) {
 			console.error("wrong voter count", wahlkreisId, accumulated.anzahl_wähler, bund.anzahl_wähler, diffWähler);
 			throw new Error("Wrong voter count: " + wahlkreisId + " " + accumulated.anzahl_wähler + " " + bund.anzahl_wähler);
 		}
@@ -223,31 +224,10 @@ Object.entries(indexes).forEach(([id, indices]) => {
 });
 
 const remove_wahlkreise = [
-	// "190",
-	// "191",
-	// "192",
-	// "198",
-	// "199",
-	// "201",
-	// "203",
-	// "206",
-	// "207",
-	// "150",
-	// "151",
-	// "152",
-	// "153",
-	// "154",
-	// "155",
-	// "156",
-	// "157",
-	// "158",
-	// "159",
-	// "160",
-	// "161",
-	// "162",
-	// "163",
-	// "164",
-	// "165",
+	// "216",
+	// "217",
+	// "218",
+	// "219",
 ] as string[];
 
 const filtered = wahlbezirke.filter(

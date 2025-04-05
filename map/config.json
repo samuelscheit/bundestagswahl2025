@@ -33,7 +33,7 @@
 	"styles": {},
 	"data": {
 		"map": {
-			"mbtiles": "map.mbtiles"
+			"mbtiles": "data/map.mbtiles"
 		}
 	}
 }

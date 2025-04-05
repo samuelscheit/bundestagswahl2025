@@ -124,6 +124,7 @@ gemeindeSuffixes.add("verbandsgemeinde");
 gemeindeSuffixes.add("samtgemeinde");
 gemeindeSuffixes.add("gemeinde");
 gemeindeSuffixes.add("große kreisstadt");
+gemeindeSuffixes.add("kreisfreie");
 gemeindeSuffixes.add("kreisstadt");
 gemeindeSuffixes.add("kreis- und kurstadt");
 gemeindeSuffixes.add("vvg der stadt");
@@ -151,6 +152,13 @@ gemeindeSuffixes.add("erfüllende");
 gemeindeSuffixes.add("VG");
 gemeindeSuffixes.add("briefwahlbezirk");
 gemeindeSuffixes.add("briefwahl");
+//
+gemeindeSuffixes.add("am Wiesensee");
+gemeindeSuffixes.add("im schwarzwald");
+gemeindeSuffixes.add("(elbe)");
+gemeindeSuffixes.add("(altmark)");
+gemeindeSuffixes.add("am klingbach");
+gemeindeSuffixes.add("a.main");
 
 for (const suffix of gemeindeSuffixes) {
 	if (suffix.includes("  ")) {
@@ -188,6 +196,7 @@ export function cleanGemeindeName(name?: string | null) {
 
 	name = ` ${name} `
 		.toLowerCase()
+		.replaceAll("/vogtl.", "")
 		.replaceAll("`", "")
 		.replaceAll("/ ", "/")
 		.replaceAll("/ostfriesland", "")
@@ -353,6 +362,15 @@ export function getGemeindeWahlkreis(id: string) {
 			return result as Gemeinde;
 		}
 	}
+
+	throw new Error("Invalid ID: " + id);
+}
+
+export function getGemeindenInKreis(bundesland_id: string, region_id: string, kreis_id: string) {
+	const gemeinden = gemeindenHierarchy[bundesland_id]?.[region_id]?.[kreis_id];
+	if (!gemeinden) throw new Error("Kreis not found: " + bundesland_id + " " + region_id + " " + kreis_id);
+
+	return Object.values(gemeinden).flat();
 }
 
 export function getAGS(gemeinde: {
@@ -382,7 +400,7 @@ export function getGemeindeOrNull(name: string, kreis?: string) {
 	}
 }
 
-export function getGemeinde(name: string, kreis?: string) {
+export function getGemeinde(name: string, kreis?: string, arr?: Gemeinde[]) {
 	name = cleanGemeindeName(name);
 	const kreisGemeinde = kreis ? cleanGemeindeName(kreis || "") : undefined;
 	kreis = kreis ? cleanKreisName(kreis) : undefined;
@@ -394,7 +412,14 @@ export function getGemeinde(name: string, kreis?: string) {
 
 	let duplicates = [] as Gemeinde[];
 
-	for (const v of gemeinden) {
+	if (!arr) arr = gemeinden;
+	if (arr.length === 1) return arr[0]!;
+
+	for (const v of arr) {
+		if (!v.gemeinde_clean) v.gemeinde_clean = cleanGemeindeName(v.gemeinde_name);
+		if (!v.verband_clean) v.verband_clean = cleanGemeindeName(v.verband_name);
+		if (!v.kreis_clean) v.kreis_clean = cleanKreisName(v.kreis_name);
+
 		let distGemeinde = distance(v.gemeinde_clean || "", name);
 		let distGemeinde2 = distance(v.gemeinde_name?.split(", ")[0] || "", name);
 
@@ -479,7 +504,9 @@ export function getGemeinde(name: string, kreis?: string) {
 		value = { ...verband_value, gemeinde_name: null, gemeinde_id: null };
 	}
 
-	if (!value) throw new Error("Gemeinde not found: " + name);
+	if (!value) {
+		throw new Error("Gemeinde not found: " + name);
+	}
 
 	const newValue: any = { ...value };
 	delete newValue.gemeinde_clean;

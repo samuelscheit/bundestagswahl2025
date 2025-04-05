@@ -180,3 +180,4 @@ results.csv
 
 # too big but can be generated with wahlbezirke/accumulate.ts
 wahlbezirke/data/wahlergebnis.json
+cookies.json

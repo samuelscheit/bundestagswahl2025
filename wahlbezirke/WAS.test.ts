@@ -1,7 +1,7 @@
 import { behoerden_queue, queues, saveResults } from "./wahlbezirke";
 import { getUntergebieteWAS, WAS } from "./WAS";
 
-const results = await getUntergebieteWAS("https://wahlen.dresden.de/2025/btw/ergebnisse_briefwahlbezirk_01000.html");
+const results = await getUntergebieteWAS("https://www.wahlen-hamburg.de/Bundestagswahl_2025/");
 
 console.log(results);
 
