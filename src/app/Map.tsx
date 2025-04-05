@@ -1,9 +1,10 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import type { ResultType } from "@/../wahlkreise/scrape";
 import { ColorSpecification, LayerSpecification, Map } from "maplibre-gl";
 import ScrollShadow from "../components/scrollshadow";
+import bbox from "@turf/bbox";
 
 const parteien = [
 	"CSU",
@@ -180,6 +181,9 @@ export function ElectionMap() {
 	const ref = useRef<HTMLDivElement>(null);
 	const mapRef = useRef<Map | null>(null);
 	const parteiSelected = useRef<string | null>(null);
+	const [suggestions, setSuggestions] = useState<any[]>([]);
+	const features = useRef<any[]>([]);
+	const searchRef = useRef<HTMLDivElement>(null);
 
 	useLayoutEffect(() => {
 		const endpoint =
@@ -361,6 +365,10 @@ export function ElectionMap() {
 		map.on("load", () => {
 			console.log(map.getLayersOrder());
 
+			features.current = map.querySourceFeatures("map", {
+				sourceLayer: "gemeinde",
+			});
+
 			map.getLayersOrder().forEach((x) => {
 				const layer = map.getLayer(x);
 				if (!layer) return;
@@ -370,11 +378,100 @@ export function ElectionMap() {
 		return () => {
 			map.remove();
 		};
-	}, [Math.random()]);
+	}, []);
+
+	console.log("suggestions", suggestions);
+	const renderSuggestions = new Set();
 
 	return (
 		<div className="">
-			<div className="absolute top-0 left-0 p-4">
+			<div className="absolute top-0 left-0 p-4 gap-2 flex flex-col">
+				<div className="bg-background rounded-xl p-2 relative">
+					<div
+						ref={searchRef}
+						// @ts-ignore
+						placeholder="Suche Gemeinde"
+						contentEditable="plaintext-only"
+						className="min-w-0 bg-accent rounded text-xs p-2"
+						onInput={(e) => {
+							const map = mapRef.current;
+							const search = searchRef.current;
+							if (!search) return;
+							if (!map) return;
+
+							const value = (e.target as HTMLDivElement).innerText.trim();
+
+							if (value.includes("\n")) {
+								(e.target as HTMLDivElement).innerText = value.replace("\n", "");
+							}
+
+							if (value.length === 0) search.innerHTML = "";
+							if (value.length < 2) {
+								setSuggestions([]);
+								return;
+							}
+
+							// const suggestions = features.current.filter((x) => {
+							// 	if (!x.properties) return false;
+							// 	const name = x.properties.name;
+							// 	if (!name) return false;
+
+							// 	if (!x.properties.lowercase_name) x.properties.lowercase_name = name.toLowerCase();
+
+							// 	return x.properties.lowercase_name.includes(value.toLowerCase());
+							// });
+							const lowercaseValue = value.toLowerCase();
+
+							const features = map.querySourceFeatures("map", {
+								sourceLayer: "gemeinde",
+								filter: [">", ["index-of", lowercaseValue, ["downcase", ["get", "name"]]], -1],
+							});
+
+							console.log(features);
+
+							setSuggestions(features);
+						}}
+					/>
+
+					<div className="drop-shadow-lg rounded-b max-sm:[mask-image:none] max-h-[35vh] md:max-h-[55vh] overflow-y-scroll no-scrollbar flex flex-col gap-1 absolute z-10 bg-background w-full left-0">
+						{suggestions.map((x) => {
+							if (!x.properties) return null;
+							const name = x.properties.name;
+							if (!name) return null;
+
+							const id = x.tile.z + "/" + x.tile.x + "/" + x.tile.y + name;
+
+							if (renderSuggestions.has(id)) return null;
+
+							renderSuggestions.add(id);
+
+							return (
+								<div
+									key={id}
+									className="px-2 py-1 text-xs rounded hover:bg-gray-100 cursor-pointer"
+									onClick={() => {
+										const map = mapRef.current;
+										if (!map) return;
+
+										const bounds = bbox(x.geometry);
+										console.log(x, bounds, [(bounds[1] + bounds[3]) / 2, (bounds[0] + bounds[2]) / 2]);
+
+										map.flyTo({
+											center: [(bounds[0] + bounds[2]) / 2, (bounds[1] + bounds[3]) / 2],
+											zoom: 11,
+										});
+
+										if (searchRef.current) searchRef.current.innerText = "";
+
+										setSuggestions([]);
+									}}
+								>
+									{name}
+								</div>
+							);
+						})}
+					</div>
+				</div>
 				<div className="bg-background rounded-xl p-2 ">
 					<div className="max-sm:hidden text-sm font-bold px-2 pb-2 text-center w-full">Parteien</div>
 					<ScrollShadow className="max-sm:[mask-image:none] sm:max-h-[30vh] md:max-h-[50vh] max-h-[10vh] overflow-y-scroll no-scrollbar flex flex-col gap-1">

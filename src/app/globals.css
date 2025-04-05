@@ -143,3 +143,14 @@
 		mask-image: none !important;
 	}
 }
+
+[placeholder]:empty::before {
+	content: attr(placeholder);
+	color: #000;
+	font-size: 12px;
+	opacity: 0.5;
+}
+
+[placeholder]:empty:focus::before {
+	content: "";
+}
