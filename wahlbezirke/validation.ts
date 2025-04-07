@@ -176,6 +176,8 @@ console.log(toDelete.size, " double gemeinde and wahlbezirk data");
 
 let totalDiffWähler = 0;
 
+const errors = {};
+
 Object.keys(Bundeswahlleiter).forEach((wahlkreisId) => {
 	try {
 		const bund = Bundeswahlleiter[wahlkreisId];
@@ -197,7 +199,19 @@ Object.keys(Bundeswahlleiter).forEach((wahlkreisId) => {
 		totalDiffWähler += diffWähler;
 
 		if (diffWähler > 0) {
-			console.error("wrong voter count", wahlkreisId, accumulated.anzahl_wähler, bund.anzahl_wähler, diffWähler);
+			// console.error(
+			// 	"Wähler Anzahl Diskrepanz",
+			// 	wahlkreisId + " " + wahlkreiseNamen[wahlkreisId],
+			// 	accumulated.anzahl_wähler,
+			// 	bund.anzahl_wähler,
+			// 	diffWähler
+			// );
+			errors[wahlkreisId] = {
+				Wahlkreis: wahlkreiseNamen[wahlkreisId],
+				"Wahlkreis Wahlbezirke addiert": accumulated.anzahl_wähler,
+				"Wahlkreis Bund": bund.anzahl_wähler,
+				"Differenz Wähler": diffWähler,
+			};
 			throw new Error("Wrong voter count: " + wahlkreisId + " " + accumulated.anzahl_wähler + " " + bund.anzahl_wähler);
 		}
 	} catch (error) {
@@ -205,7 +219,9 @@ Object.keys(Bundeswahlleiter).forEach((wahlkreisId) => {
 	}
 });
 
-console.error("total diff voter count", totalDiffWähler);
+console.table(errors);
+
+console.error("Gesamt Wähler Diskrepanz", totalDiffWähler);
 
 Object.entries(indexes).forEach(([id, indices]) => {
 	if (indices.length !== 1) {

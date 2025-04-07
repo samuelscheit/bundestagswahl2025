@@ -233,7 +233,7 @@ export const wahlkreiseQuellen = {
 	"232": "https://www.regensburg.de/wahlen/bundestagswahl/", // Regensburg
 	"233": "https://wahlen.landkreis-schwandorf.de/2025/Bundestagswahl/ergebnisse_wahlkreis_233.html", // Schwandorf
 	"234": "https://www1.wahlen.weiden.de/20250223/ergebnisse_wahlkreis_234.html", // Weiden
-	"235": "https://btw25.bamberg.de/", // Bamberg
+	"235": "https://wahlen.bamberg.de/Bundestagswahl_2025/", // Bamberg
 	"236": "https://online-dienste.bayreuth.de/wahlen/bundestagswahlen/2025/ergebnisse.html", // Bayreuth
 	"237": "https://www.coburg-waehlt.de/BTW2025/ergebnisse_wahlkreis_237.html", // Coburg
 	"238": "https://www.wahl-hof.de/bt2025/ergebnisse_wahlkreis_238.html", // Hof

@@ -154,6 +154,13 @@ export async function cycleFetch(url: string, opts: AxiosRequestConfig) {
 
 	if (response.status >= 400 || response.status < 200) throw new Error(`Request failed with status code ${response.status} `);
 
+	try {
+		if (response.body instanceof Buffer) {
+			response.body = response.body.toString("utf-8");
+		}
+		response.body = JSON.parse(response.body as string);
+	} catch (error) {}
+
 	fs.writeFileSync(
 		__dirname + "/cache/" + generateKey({ url }),
 		JSON.stringify({
@@ -187,7 +194,7 @@ export async function axiosWithRedirect<T = any, D = any>(
 	opts.tries = (opts.tries || 0) + 1;
 
 	try {
-		if (url.includes("wahlen-muenchen.de") || url.includes("wahlen-sh.de")) {
+		if (url.includes("wahlen-muenchen.de") || url.includes("wahlen-sh.de") || url.includes("wahlen-berlin.de")) {
 			return await cycleFetch(url, opts);
 		}
 		if (url.includes("saarland.de")) {
