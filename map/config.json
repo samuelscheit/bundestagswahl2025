@@ -33,7 +33,7 @@
 	"styles": {},
 	"data": {
 		"map": {
-			"mbtiles": "data/map.mbtiles"
+			"mbtiles": "data/gemeinde.mbtiles"
 		}
 	}
 }

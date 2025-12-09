@@ -5,6 +5,7 @@ import csv from "csv-parser";
 import { axiosWithRedirect } from "../wahlbezirke/axios";
 import { WAS } from "../wahlbezirke/WAS";
 import { votemanager } from "../wahlbezirke/votemanager";
+import { getGemeinde } from "../wahlbezirke/gemeinden";
 
 // @ts-ignore
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -35,12 +36,12 @@ function handleData(options: Options & { text: string }) {
 	const { text, url } = options;
 
 	if (text.includes("data-tablejigsaw")) return WAS(options);
-	if (text.includes("vue_ergebnis_container_web_init")) return votemanager(options);
+	if (text.includes("vue_ergebnis_container_web_init") || text.includes("vue_index_container")) return votemanager(options);
 	if (url.includes("wahlen.thueringen.de")) return thueringen(options);
 	if (url.includes("wahlen.sachsen.de")) return sachsen(options);
 	if (url.includes("sachsen-anhalt.de")) return sachsenAnhalt(options);
 	if (url.includes("wahlen.mvnet.de")) return mecklenburgVorpommern(options);
-	if (options.url.includes("wahl.krzn.de")) return krznWahlkreis(options);
+	if (options.url.includes("wahl.krzn.de")) return krznGetAll(options);
 	if (options.url.includes("23degrees.eu")) return degreesEU(options);
 
 	return;
@@ -66,6 +67,7 @@ export function defaultResult() {
 		wahlkreis_id: null as null | string,
 		wahlkreis_name: null as null | string,
 		region_id: null as null | string,
+		region_name: null as null | string,
 		kreis_id: null as null | string,
 		kreis_name: null as null | string,
 		gemeinde_name: null as null | string,
@@ -79,6 +81,7 @@ export function defaultResult() {
 		wahlbezirk_adresse: null as null | string,
 		wahlbezirk_raum: null as null | string,
 		briefwahl: null as null | boolean,
+		wahlart: null as null | string,
 	};
 }
 
@@ -215,6 +218,65 @@ async function thueringen(options: Options & { text: string }) {
 	// console.log(stimmen.toArray());
 }
 
+export async function krznGetAll(options: Options & { text: string }) {
+	const root = parse(options.text);
+
+	const links = root.querySelectorAll(`.ym-content-nav-list a`);
+	if (!links.length) throw new Error("Links not found:" + options.url);
+
+	const gemeindeName = root.querySelector(`.ym-vlist-title`)?.structuredText.trim() || null;
+	const gemeinde = getGemeinde(gemeindeName || "");
+
+	const result = await Promise.all(
+		links.map(async (a) => {
+			const href = a.getAttribute("href");
+			if (!href) return;
+
+			const url = new URL(href, options.url).href;
+
+			const response = await axiosWithRedirect(url, { responseType: "text" });
+			const root = parse(response.data);
+
+			const stimmbezirke = root
+				.querySelectorAll(`.ym-content-nav-list a`)
+				.map((x) => new URL(x.getAttribute("href") || "", url).href)
+				.find((x) => x.includes("STMM.csv"));
+
+			if (!stimmbezirke) return;
+
+			const file = await axiosWithRedirect(stimmbezirke, { responseType: "text" });
+			const data = await krznParseCSV(file.data);
+
+			const wahlart = url.includes("-BUW-")
+				? "Bürgermeisterwahl"
+				: url.includes("-KW-")
+					? "Gemeinderatswahl"
+					: url.includes("-KTW-")
+						? "Kreistagswahl"
+						: url.includes("-INT-")
+							? "Integrationsratswahl"
+							: url.includes("-RVR-")
+								? "RVR"
+								: url.includes("-LRW-")
+									? "Landratswahl"
+									: null;
+
+			data.forEach((x) => {
+				Object.assign(x, gemeinde)
+				x.wahlart = wahlart;
+			});
+
+			if (!wahlart) {
+				throw new Error("Unknown Wahlart: " + url);
+			}
+
+			return data;
+		})
+	);
+
+	return result.filter(Boolean).flat();
+}
+
 export async function krznGetWahlkreiseUrl(options: Options & { text: string }) {
 	const root = parse(options.text);
 
@@ -249,13 +311,13 @@ export async function krznParseCSV(file: string) {
 	const raw = [] as any[];
 
 	await new Promise((resolve) => {
-		parser.write(file);
 		parser.on("data", (x) => {
 			raw.push(x);
 		});
 		parser.on("end", () => {
 			resolve(raw);
 		});
+		parser.write(file);
 		parser.end();
 	});
 
@@ -275,10 +337,7 @@ export async function krznParseCSV(file: string) {
 		result.erststimmen.gültig = Number(x.D);
 		result.erststimmen.ungültig = Number(x.C);
 
-		result.zweitstimmen.gültig = Number(x.F);
-		result.zweitstimmen.ungültig = Number(x.E);
-
-		if (EBENE === "Wahlbezirk") {
+		if (EBENE === "Wahlbezirk" || EBENE === "Stimmbezirk") {
 			result.wahlbezirk_name = BEZEICHNUNG;
 			result.wahlbezirk_id = NR;
 			result.gemeinde_name = GEBIET;
@@ -294,12 +353,18 @@ export async function krznParseCSV(file: string) {
 			result.erststimmen.parteien[partei] = anzahl;
 		});
 
-		zweitstimmen.forEach((key) => {
-			const partei = namen[key];
-			const anzahl = Number(x[key]) || 0;
+		if (zweitstimmen.length) {
+			result.zweitstimmen.gültig = Number(x.F);
+			result.zweitstimmen.ungültig = Number(x.E);
 
-			result.zweitstimmen.parteien[partei] = anzahl;
-		});
+			zweitstimmen.forEach((key) => {
+				const partei = namen[key];
+				const anzahl = Number(x[key]) || 0;
+
+				result.zweitstimmen.parteien[partei] = anzahl;
+			});
+		} else {
+		}
 
 		return result;
 	});
@@ -311,6 +376,8 @@ export async function krznWahlkreis(options: Options & { text: string }) {
 	const { data } = await axiosWithRedirect(downloadUrl, { responseType: "text" });
 
 	const results = await krznParseCSV(data);
+
+	if (!options.id) return results;
 
 	return results.find((x) => x.wahlkreis_id === options.id);
 }

@@ -1,11 +1,15 @@
 import { buildStorage, setupCache } from "axios-cache-interceptor";
 import fs from "fs";
-import { join } from "path";
+import { dirname, join } from "path";
 import Axios, { type AxiosRequestConfig, type AxiosResponse } from "axios";
 import { parse } from "node-html-parser";
 import { wrapper } from "axios-cookiejar-support";
 import { CookieJar } from "tough-cookie";
-const CookieFileStore = require("tough-cookie-file-store").FileCookieStore;
+// @ts-ignore
+import { FileCookieStore as CookieFileStore } from "tough-cookie-file-store";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const jar = new CookieJar(new CookieFileStore(__dirname + "/cookies.json"));
 
@@ -22,6 +26,12 @@ export function generateKey(opts: AxiosRequestConfig) {
 	if (url.protocol !== "https:") key = "http_" + key;
 
 	return key;
+}
+
+let cacheOverwriteFunc: Function | null = null;
+
+export function overwriteCache(func: Function) {
+	cacheOverwriteFunc = func;
 }
 
 export const axios = setupCache(
@@ -48,6 +58,7 @@ export const axios = setupCache(
 			responseType: "json",
 			validateStatus: (status) => status < 400,
 			maxRedirects: 0,
+			timeout: 1000 * 5,
 		})
 	),
 	{
@@ -62,10 +73,17 @@ export const axios = setupCache(
 		generateKey,
 		storage: buildStorage({
 			set(key, value, currentRequest) {
+				if (cacheOverwriteFunc && !cacheOverwriteFunc(key, value, currentRequest)) {
+					return;
+				}
 				// console.log("set cache", key);
 				fs.writeFileSync(join(cacheDir, key), JSON.stringify(value));
 			},
 			find(key, currentRequest) {
+				if (cacheOverwriteFunc && !cacheOverwriteFunc(key, null, currentRequest)) {
+					return null;
+				}
+
 				if (!fs.existsSync(join(cacheDir, key))) return null;
 
 				const result = fs.readFileSync(join(cacheDir, key), "utf-8");
@@ -85,7 +103,11 @@ export const axios = setupCache(
 );
 
 import initCycleTLS, { type CycleTLSClient } from "cycletls";
-import { sleep } from "bun";
+import { fileURLToPath } from "url";
+
+function sleep(ms: number) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 let cycleTLSPromise = undefined as Promise<CycleTLSClient> | undefined;
 
@@ -190,11 +212,17 @@ export async function axiosWithRedirect<T = any, D = any>(
 	url: string,
 	opts: AxiosRequestConfig & { tries?: number; error?: string } = {}
 ): Promise<AxiosResponse<T, D> & { cached?: boolean; url: string }> {
-	if (opts.tries && opts.tries > 5) throw new Error("Too many tries: " + url + " " + opts.error);
+	if (opts.tries && opts.tries > 0) throw new Error("Too many tries: " + url + " " + opts.error);
 	opts.tries = (opts.tries || 0) + 1;
 
 	try {
-		if (url.includes("wahlen-muenchen.de") || url.includes("wahlen-sh.de") || url.includes("wahlen-berlin.de")) {
+		if (
+			url.includes("wahlen-muenchen.de") ||
+			url.includes("wahlen-sh.de") ||
+			url.includes("wahlen-berlin.de") ||
+			url.includes("https://wahlen.regioit.de/1/km2025/05334000/") ||
+			url.includes("leverkusen.de")
+		) {
 			return await cycleFetch(url, opts);
 		}
 		if (url.includes("saarland.de")) {

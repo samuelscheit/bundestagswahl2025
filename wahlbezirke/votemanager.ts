@@ -16,11 +16,16 @@ export async function votemanager(options: Options & { text: string }) {
 	const id = searchParams.get("id")!;
 
 	const baseUrl = origin + pathname.replace("/praesentation/ergebnis.html", "");
-	const apiUrl = baseUrl + (options.text.includes("../api") ? "/api/praesentation" : "/daten/api");
+	const apiUrl =
+		baseUrl.replace(/\/praesentation\/(index.html)?$/g, "") + (options.text.includes("../api") ? "/api/praesentation" : "/daten/api");
 
-	console.log({ baseUrl, apiUrl, url: options.url });
-
-	return votemanagerWithOptions({ url: apiUrl, wahl_id, ebene_id: id });
+	return fetchAllVotemanagerResults({
+		baseUrl,
+		apiUrl,
+		wahl_id,
+		ebene_id: id,
+		...options,
+	});
 }
 
 export interface VotemanagerConfig {
@@ -64,55 +69,236 @@ export interface VotemanagerConfig {
 	server_hash: string;
 }
 
-export async function votemanagerWithOptions({
+export async function fetchAllVotemanagerResults({
+	baseUrl,
+	apiUrl,
+	wahl_id,
+	ebene_id,
+	name,
+	url,
+	text,
+}: {
+	baseUrl: string;
+	apiUrl: string;
+	wahl_id: string;
+	ebene_id: string;
+	name?: string;
+	text: string;
+} & Options) {
+	const gemeinde = getGemeindeByUrl(baseUrl);
+	const termine = await axiosWithRedirect<{ wahleintraege: Wahleintrag[] }>(`${apiUrl}/termin.json`);
+
+	const results = (
+		await Promise.all(
+			termine.data.wahleintraege.map(async (wahleintrag) => {
+				const name = wahleintrag.wahl.titel;
+				let wahlart: string;
+
+				if (name.includes("Landrat")) {
+					wahlart = "Landratswahl";
+				} else if (name.includes("Kreistag")) {
+					wahlart = "Kreistagswahl";
+				} else if (name.includes("Bürgermeister") || name.includes("Oberbürgermeister")) {
+					wahlart = "Bürgermeisterwahl";
+				} else if (
+					name.includes("Ratswahl") ||
+					name.includes("Rat der Stadt") ||
+					name.includes("Wahl des Rates") ||
+					name.includes("Stadtratswahl") ||
+					name.includes("Gemeinderat") ||
+					name.includes("des Rates der Gemeinde") ||
+					name.includes("Wahl zum Rat der ") ||
+					name.includes("Kommunalwahl") ||
+					name.includes("Vertretung der Stadt")
+				) {
+					wahlart = "Gemeinderatswahl";
+				} else if (name.includes("Städteregionsrats/Städteregionsrätin") || name.includes("Städteregionstagswahl")) {
+					wahlart = "Städteregionsrat";
+				} else if (
+					name.includes("Integrationsratswahl") ||
+					name.includes("Integrationsausschusswahl") ||
+					name.includes("Integrationsgremium") ||
+					name.includes("Integrationsausschuss") ||
+					name.includes("Integrationsrat")
+				) {
+					wahlart = "Integrationsratswahl";
+				} else if (name.includes("RVR-Wahl") || name.includes("Verbandsversammlung des Regionalverband")) {
+					wahlart = "RVR";
+				} else if (name.includes("Bürgerentscheid")) {
+					wahlart = "Bürgerentscheid";
+				} else if (name.includes("Seniorenbeiratswahl") || name.includes("Seniorenratswahl")) {
+					wahlart = "Seniorenbeiratswahl";
+				} else if (name.includes("Stadtverordnetenversammlung")) {
+					wahlart = "Stadtverordnetenversammlung";
+				} else if (name.includes("Gemeindevertretung")) {
+					wahlart = "Gemeindevertretung";
+				} else if (name.includes("Bezirksvertretungswahl")||name.includes("Bezirksvertretung")) {
+					wahlart = "Bezirksvertretungswahl";
+				} else if (name.includes("Bundestagswahl") || name.includes("Wahl zum Deutschen Bundestag")) {
+					wahlart = "Bundestagswahl";
+				} else {
+					throw new Error("Unknown Wahlart: " + name);
+				}
+
+				let r = await votemanagerÜbersicht({
+					// ebene_id: wahleintrag.gebiet_link.id,
+					ebene_id: "ebene_6",
+					url: apiUrl,
+					wahl_id: wahleintrag.wahl.id.toString(),
+					name,
+					stimmentyp_id: wahleintrag.stimmentyp.id.toString(),
+				});
+
+				if (!r) {
+					r = [
+						(await votemanagerWithOptions({
+							ebene_id: wahleintrag.gebiet_link.id,
+							url: apiUrl,
+							wahl_id: wahleintrag.wahl.id.toString(),
+							name,
+							stimmentyp_id: wahleintrag.stimmentyp.id.toString(),
+						}))!,
+					];
+				}
+
+				return r.map((data) => ({ wahleintrag, ...data, wahlart }));
+			})
+		)
+	).flat();
+
+	return results
+		.filter((x) => x !== undefined)
+		.reduce(
+			(a, b) => {
+				const sameWahl = a.find(
+					(x) =>
+						x.wahleintrag.wahl.id === b.wahleintrag.wahl.id &&
+						x.wahlbezirk_id === b.wahlbezirk_id &&
+						x.wahlbezirk_name === b.wahlbezirk_name
+				);
+
+				if (sameWahl) {
+					if (b.wahleintrag.stimmentyp.id === 0) {
+						const erststimmen = sameWahl.erststimmen;
+						sameWahl.erststimmen = b.erststimmen;
+						sameWahl.zweitstimmen = erststimmen;
+					} else if (b.wahleintrag.stimmentyp.id === 1) {
+						sameWahl.zweitstimmen = b.erststimmen;
+					}
+				} else {
+					Object.assign(b, gemeinde);
+					a.push(b);
+				}
+
+				return a;
+			},
+			[] as typeof results
+		);
+}
+
+export async function votemanagerÜbersicht({
 	ebene_id,
 	url,
 	wahl_id,
 	name,
+	stimmentyp_id,
 }: {
 	url: string;
 	wahl_id: string;
 	ebene_id: string;
 	name?: string;
+	stimmentyp_id?: string;
 }) {
-	const results = await Promise.all([
-		axiosWithRedirect<WahlErgebnis>(`${url}/wahl_${wahl_id}/ergebnis_${ebene_id}_0.json`, { responseType: "json" }),
-		axiosWithRedirect<WahlErgebnis>(`${url}/wahl_${wahl_id}/ergebnis_${ebene_id}_1.json`, { responseType: "json" }),
-	]);
+	const results = await axiosWithRedirect<EbenenÜbersicht>(`${url}/wahl_${wahl_id}/uebersicht_${ebene_id}_${stimmentyp_id || 0}.json`, {
+		responseType: "json",
+	});
 
-	const result = defaultResult();
-
-	const hasError = results.find((x) => !x.data.Komponente?.tabelle);
+	const hasError = !results.data.tabelle;
 	if (hasError) {
-		throw new Error(`${url} ${wahl_id} ${ebene_id} Keine Daten ${hasError.data.Komponente?.hinweis_auszaehlung || "Keine Ergebnisse"}`);
+		// console.log(`${url} ${wahl_id} ${ebene_id} Keine Daten ${results.data.Komponente?.hinweis_auszaehlung || "Keine Ergebnisse"}`);
+		return;
 	}
 
-	const [stimme1, stimme2] = results.map((x) => {
-		const parteien = {} as Record<string, number>;
-		let gültig = 0;
-		let ungültig = 0;
+	const gemeinde = getGemeindeByUrl(url);
 
-		x.data.Komponente.tabelle.zeilen.forEach((row: any) => {
-			parteien[row.label.labelKurz] = Number(row.zahl.replace(/\./g, "")) || 0;
-		});
+	return results.data.tabelle.zeilen.map((row, index) => {
+		const result = defaultResult();
 
-		x.data.Komponente.info.tabelle.zeilen.forEach((row: any) => {
-			const zahl = Number(row.zahl.replace(/\./g, "")) || 0;
-			if (row.label.labelKurz.includes("berechtigt")) {
-				result.anzahl_berechtigte = zahl;
-			} else if (row.label.labelKurz.includes("Wähler")) {
-				result.anzahl_wähler = zahl;
-			} else if (row.label.labelKurz.includes("ungültig")) {
-				ungültig = zahl;
-			} else if (row.label.labelKurz.includes("gültig")) {
-				gültig = zahl;
+		Object.assign(result, gemeinde);
+
+		result.wahlbezirk_name = row.label;
+		result.wahlbezirk_id = result.gemeinde_id + "-" + String(index + 1).padStart(3, "0");
+
+		results.data.tabelle.headerAbs.slice(2).forEach((header, index) => {
+			const label = header.labelKurz.toLowerCase();
+			const val = Number(row.felder[index].absolut.replaceAll(".", "")) || 0;
+
+			if (label === "wahlberechtigte") {
+				result.anzahl_berechtigte = val;
+			} else if (label === "wähler" || label === "wähler*innen" || label === "wähler/-innen" || label === "wählende") {
+				result.anzahl_wähler = val;
+			} else if (label === "gültig") {
+				result.erststimmen.gültig = val;
+			} else {
+				result.erststimmen.parteien[header.labelKurz] = val;
 			}
 		});
 
-		return { parteien, gültig, ungültig };
+		return result;
+	});
+}
+
+export async function votemanagerWithOptions({
+	ebene_id,
+	url,
+	wahl_id,
+	name,
+	stimmentyp_id,
+}: {
+	url: string;
+	wahl_id: string;
+	ebene_id: string;
+	name?: string;
+	stimmentyp_id?: string;
+}) {
+	const results = await axiosWithRedirect<WahlErgebnis>(`${url}/wahl_${wahl_id}/ergebnis_${ebene_id}_${stimmentyp_id || 0}.json`, {
+		responseType: "json",
 	});
 
-	const { gebietsverlinkung } = results[0].data.Komponente;
+	const result = defaultResult();
+
+	const hasError = !results.data.Komponente?.tabelle;
+	if (hasError) {
+		// console.log(`${url} ${wahl_id} ${ebene_id} Keine Daten ${results.data.Komponente?.hinweis_auszaehlung || "Keine Ergebnisse"}`);
+		return;
+	}
+
+	const parteien = {} as Record<string, number>;
+	let gültig = 0;
+	let ungültig = 0;
+
+	results.data.Komponente.tabelle.zeilen.forEach((row: any) => {
+		parteien[row.label.labelKurz] = Number(row.zahl.replace(/\./g, "")) || 0;
+	});
+
+	results.data.Komponente.info.tabelle.zeilen.forEach((row: any) => {
+		const zahl = Number(row.zahl.replace(/\./g, "")) || 0;
+		if (row.label.labelKurz.includes("berechtigt")) {
+			result.anzahl_berechtigte = zahl;
+		} else if (row.label.labelKurz.includes("Wähler")) {
+			result.anzahl_wähler = zahl;
+		} else if (row.label.labelKurz.includes("ungültig")) {
+			ungültig = zahl;
+		} else if (row.label.labelKurz.includes("gültig")) {
+			gültig = zahl;
+		}
+	});
+
+	result.erststimmen.gültig = gültig;
+	result.erststimmen.ungültig = ungültig;
+	result.erststimmen.parteien = parteien;
+
+	const { gebietsverlinkung } = results.data.Komponente;
 
 	if (gebietsverlinkung && name) {
 		var gemeinde = null as ReturnType<typeof getGemeinde> | null;
@@ -157,9 +343,6 @@ export async function votemanagerWithOptions({
 			result.wahlkreis_id = "102";
 		}
 	}
-
-	result.erststimmen = stimme1;
-	result.zweitstimmen = stimme2;
 
 	return result;
 
@@ -521,6 +704,7 @@ export async function getWahlbezirkVotemanager(
 										url: apiEndpoint,
 										name: opts.name,
 									});
+									if (!wahlbezirk_result) return;
 
 									assignOptional(wahlbezirk_result, gemeinde);
 

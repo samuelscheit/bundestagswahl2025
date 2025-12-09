@@ -80,7 +80,7 @@ gemeinden.features.forEach((feature) => {
 fs.writeFileSync(__dirname + "/data/wahlergebnis.json", JSON.stringify(gemeinden, null, 2));
 
 var tippecanoe = spawn(
-	`tippecanoe --no-tile-size-limit --no-feature-limit --force -o wahlergebnis.mbtiles -zg --extend-zooms-if-still-dropping -l gemeinde wahlergebnis.json`,
+	`tippecanoe --no-tile-size-limit --no-feature-limit --force -o wahlergebnis.mbtiles -zg --extend-zooms-if-still-dropping -l gemeinde gemeinde.json`,
 	{
 		shell: true,
 		cwd: __dirname + "/data/",
@@ -92,7 +92,7 @@ tippecanoe.stderr.pipe(process.stderr);
 
 await new Promise((resolve) => tippecanoe.once("close", resolve));
 
-tippecanoe = spawn(`tile-join -pk --force -o map.mbtiles wahlergebnis.mbtiles bundesland.mbtiles germany_place.mbtiles`, {
+tippecanoe = spawn(`tile-join -pk --force -o map.mbtiles wahlergebnis.mbtiles germany_place.mbtiles`, {
 	shell: true,
 	cwd: __dirname + "/data/",
 });

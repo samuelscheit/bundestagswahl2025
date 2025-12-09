@@ -1,51 +1,12 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { ResultType } from "@/../wahlkreise/scrape";
 import { ColorSpecification, LayerSpecification, Map } from "maplibre-gl";
 import ScrollShadow from "../components/scrollshadow";
 import bbox from "@turf/bbox";
 
-const parteien = [
-	"CSU",
-	"CDU",
-	"SPD",
-	"GRÜNE",
-	"FDP",
-	"AfD",
-	"FREIE WÄHLER",
-	"Die Linke",
-	"dieBasis",
-	"Tierschutzpartei",
-	"Die PARTEI",
-	"ÖDP",
-	"BP",
-	"Volt",
-	"PdH",
-	"MLPD",
-	"BÜNDNIS DEUTSCHLAND",
-	"BSW",
-];
-
-const parteienSelection = [
-	"Union",
-	"SPD",
-	"GRÜNE",
-	"FDP",
-	"AfD",
-	"Die Linke",
-	"BSW",
-	"FREIE WÄHLER",
-	"Volt",
-	"dieBasis",
-	"Tierschutzpartei",
-	"Die PARTEI",
-	"ÖDP",
-	"BP",
-	"PdH",
-	"MLPD",
-	"BÜNDNIS DEUTSCHLAND",
-];
+const parteienSelection = ["CDU", "SPD", "GRÜNE", "FDP", "AfD", "LINKE"];
 
 const parteienFarben = {
 	CDU: "#000000",
@@ -56,6 +17,7 @@ const parteienFarben = {
 	AfD: "#0489DB",
 	"FREIE WÄHLER": "#f49c14",
 	"Die Linke": "#ff00ea",
+	LINKE: "#ff00ea",
 	dieBasis: "#FF7F00",
 	Tierschutzpartei: "#A80000",
 	"Die PARTEI": "#B92837",
@@ -66,13 +28,19 @@ const parteienFarben = {
 	MLPD: "#ED0008",
 	"BÜNDNIS DEUTSCHLAND": "#FF7F00",
 	BSW: "#731032",
+	"B/G/L": "#34ebd6",
+	"PETO": "#001eff",
+	"UDB": "#f59542",
+	"UWG": "#5a03fc",
+	"Zukunft Extertal": "#eb8634",
+	"BFM-UBV": "#4caf36"
 };
 
 const parteienMax = {
-	Union: 45,
-	SPD: 33,
+	CDU: 60,
+	SPD: 70,
 	GRÜNE: 23,
-	FDP: 8,
+	FDP: 70,
 	AfD: 50,
 	"Die Linke": 23,
 	BSW: 14,
@@ -89,10 +57,10 @@ const parteienMax = {
 } as Record<string, number>;
 
 const parteienFarbenSaturation = {
-	Union: 10,
+	CDU: 10,
 	SPD: 70,
 	GRÜNE: 50,
-	FDP: 40,
+	FDP: 60,
 	AfD: 100,
 	"FREIE WÄHLER": 90,
 	"Die Linke": 50,
@@ -122,13 +90,11 @@ function alleParteien() {
 		paint: {
 			"fill-color": [
 				"match",
-				["get", "leading_party"],
+				["feature-state", "leading_party"],
 				"SPD",
 				getParteiFillColor("SPD"),
 				"CDU",
-				getParteiFillColor("Union", 10),
-				"CSU",
-				getParteiFillColor("Union", 10),
+				getParteiFillColor("CDU", 10),
 				"GRÜNE",
 				getParteiFillColor("GRÜNE"),
 				"FDP",
@@ -141,6 +107,18 @@ function alleParteien() {
 				getParteiFillColor("BSW"),
 				"FREIE WÄHLER",
 				getParteiFillColor("FREIE WÄHLER"),
+				"B/G/L",
+				getParteiFillColor("B/G/L"),
+				"PETO",
+				getParteiFillColor("PETO"),
+				"UDB",
+				getParteiFillColor("UDB"),
+				"UWG",
+				getParteiFillColor("UWG"),
+				"Zukunft Extertal",
+				getParteiFillColor("Zukunft Extertal"),
+				"BFM-UBV",
+				getParteiFillColor("BFM-UBV"),
 				"#ffffff",
 			],
 			"fill-opacity": 1,
@@ -177,13 +155,46 @@ const labelStyle: any = {
 	},
 };
 
-export function ElectionMap() {
+function applyLeadingPartyStates(map: Map, data: Record<string, ResultType & { ausgezählt: number }>) {
+	const source = "map";
+	const sourceLayer = "gemeinde";
+	for (const [kn, daten] of Object.entries(data || {})) {
+		// const leading = computeLeadingParty(daten);
+		const leading = daten.leading_party as string | undefined;
+		const parteien = {} as Record<string, number>;
+		const stimmen = daten.zweitstimmen.gültig || 0;
+
+		Object.entries(daten.zweitstimmen.parteien || {}).forEach(([k, v]) => {
+			parteien[k] = ((v || 0) / stimmen) * 100;
+		});
+
+		if (leading) {
+			map.setFeatureState({ source, sourceLayer, id: kn }, { leading_party: leading, ...parteien });
+		}
+	}
+}
+
+export function ElectionMap(props: { data: Record<string, ResultType & { ausgezählt: number; stimmbezirke: number }> }) {
 	const ref = useRef<HTMLDivElement>(null);
 	const mapRef = useRef<Map | null>(null);
 	const parteiSelected = useRef<string | null>(null);
 	const [suggestions, setSuggestions] = useState<any[]>([]);
 	const features = useRef<any[]>([]);
 	const searchRef = useRef<HTMLDivElement>(null);
+	const data = useRef(props.data);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			fetch("/api/data")
+				.then((r) => r.json())
+				.then((d) => {
+					data.current = d;
+					console.log("data updated");
+				});
+		}, 1000 * 10); // every 10 seconds
+
+		return () => clearInterval(interval);
+	}, []);
 
 	useLayoutEffect(() => {
 		const endpoint =
@@ -204,8 +215,8 @@ export function ElectionMap() {
 			// },
 			// style: "https://tiles.versatiles.org/assets/styles/neutrino/style.json",
 			// style,
-			center: [10, 51.35], // Deutschland
-			zoom: 5.7,
+			center: [7.5, 51.4], // Deutschland
+			zoom: 7.5,
 			// minZoom: 11,
 			style: {
 				glyphs: "https://versatiles.org/versatiles-glyphs-rs/assets/glyphs/{fontstack}/{range}.pbf",
@@ -219,6 +230,7 @@ export function ElectionMap() {
 						],
 						minzoom: 0,
 						maxzoom: 8,
+						promoteId: "KN",
 					},
 				},
 				layers: [
@@ -231,59 +243,36 @@ export function ElectionMap() {
 					},
 					parteiSelected.current ? getParteiLayer(parteiSelected.current) : alleParteien(),
 					{
-						id: "bundesland:line",
-						type: "line",
-						source: "map",
-						"source-layer": "bundesland",
-						paint: {
-							"line-color": "#000000",
-							"line-width": {
-								type: "exponential",
-								stops: [
-									[5.8, 0],
-									[5.9, 0.5],
-									[8, 1],
-								] as const,
-							},
-						},
-						// minzoom: 6,
-					},
-					{
 						id: "gemeinde:outline",
 						type: "line",
 						source: "map",
 						"source-layer": "gemeinde",
 						paint: {
 							"line-color": "#000000",
-							"line-width": 0.001,
+							"line-width": {
+								type: "exponential",
+								stops: [
+									[7, 0.5],
+									[11, 1],
+								] as const,
+							},
 							"line-opacity": 0.2,
 						},
 					},
 					{
 						...labelStyle,
-						id: "label-boundary-state",
-						filter: ["all", ["==", "class", "state"]],
-						minzoom: 5.8,
-						layout: {
-							...labelStyle.layout,
-							"text-size": 12,
-						},
-					},
-					{
-						...labelStyle,
-						id: "label-cities",
-						filter: ["<", "rank", 9],
-						minzoom: 7,
-						maxzoom: 10,
-					},
-					{
-						...labelStyle,
 						id: "label-towns",
 						"source-layer": "gemeinde",
-						minzoom: 10,
 						layout: {
 							...labelStyle.layout,
-							"text-field": "{name}",
+							"text-field": "{GN}",
+							"text-size": {
+								type: "exponential",
+								stops: [
+									[7, 4],
+									[11, 20],
+								] as const,
+							}
 						},
 					},
 				],
@@ -302,23 +291,26 @@ export function ElectionMap() {
 			if (!feature.properties) return;
 
 			const properties = feature.properties;
+			if (!properties) return;
 
 			ref.current.style.top = e.point.y + "px";
 			ref.current.style.left = e.point.x + "px";
 
-			if (currentGemeinde === properties.name) return;
+			const daten = data.current[properties.KN];
 
-			currentGemeinde = properties.name;
+			if (currentGemeinde === properties.GN) return;
 
-			let name = properties.name;
+			currentGemeinde = properties.GN;
 
-			if (properties.verband_name) name = name + " (" + properties.verband_name + ")";
+			let name = properties.GN;
 
-			const parteien_results = parteien
-				.map((x) => {
+			const gültig = daten?.zweitstimmen?.gültig || 0;
+
+			const parteien_results = Object.entries(daten?.zweitstimmen?.parteien || {})
+				.map(([key, value]) => {
 					return {
-						name: x,
-						value: properties[x],
+						name: key,
+						value: (value / gültig!) * 100,
 					};
 				})
 				.filter((x) => x.value !== undefined);
@@ -339,11 +331,12 @@ export function ElectionMap() {
 					</div>`;
 				});
 
-			const description = parteien_results.length === 0 ? `<span class="text-xs">Gemeindefreies Gebiet</span>` : result.join("");
+			const description = parteien_results.length === 0 ? "" : `${result.join("")}`;
 
 			ref.current.style.visibility = "visible";
 			ref.current.innerHTML = `<div class="flex flex-col gap-2">
 					<div class="text-center font-bold">${name}</div>
+					${daten ? `<span class="text-xs">${daten.ausgezählt}/${daten.stimmbezirke} ausgezählt</span>` : `<span class="text-xs">Keine Daten</span>`}
 					<div>
 						${description}
 					</div>
@@ -368,11 +361,7 @@ export function ElectionMap() {
 			features.current = map.querySourceFeatures("map", {
 				sourceLayer: "gemeinde",
 			});
-
-			map.getLayersOrder().forEach((x) => {
-				const layer = map.getLayer(x);
-				if (!layer) return;
-			});
+			applyLeadingPartyStates(map, data.current);
 		});
 
 		return () => {
@@ -381,100 +370,13 @@ export function ElectionMap() {
 	}, []);
 
 	console.log("suggestions", suggestions);
-	const renderSuggestions = new Set();
 
 	return (
 		<div className="">
 			<div className="absolute top-0 left-0 p-4 gap-2 flex flex-col">
-				<div className="bg-background rounded-xl p-2 relative">
-					<div
-						ref={searchRef}
-						// @ts-ignore
-						placeholder="Suche Gemeinde"
-						contentEditable="plaintext-only"
-						className="min-w-0 bg-accent rounded text-xs p-2"
-						onInput={(e) => {
-							const map = mapRef.current;
-							const search = searchRef.current;
-							if (!search) return;
-							if (!map) return;
-
-							const value = (e.target as HTMLDivElement).innerText.trim();
-
-							if (value.includes("\n")) {
-								(e.target as HTMLDivElement).innerText = value.replace("\n", "");
-							}
-
-							if (value.length === 0) search.innerHTML = "";
-							if (value.length < 2) {
-								setSuggestions([]);
-								return;
-							}
-
-							// const suggestions = features.current.filter((x) => {
-							// 	if (!x.properties) return false;
-							// 	const name = x.properties.name;
-							// 	if (!name) return false;
-
-							// 	if (!x.properties.lowercase_name) x.properties.lowercase_name = name.toLowerCase();
-
-							// 	return x.properties.lowercase_name.includes(value.toLowerCase());
-							// });
-							const lowercaseValue = value.toLowerCase();
-
-							const features = map.querySourceFeatures("map", {
-								sourceLayer: "gemeinde",
-								filter: [">", ["index-of", lowercaseValue, ["downcase", ["get", "name"]]], -1],
-							});
-
-							console.log(features);
-
-							setSuggestions(features);
-						}}
-					/>
-
-					<div className="drop-shadow-lg rounded-b max-sm:[mask-image:none] max-h-[35vh] md:max-h-[55vh] overflow-y-scroll no-scrollbar flex flex-col gap-1 absolute z-10 bg-background w-full left-0">
-						{suggestions.map((x) => {
-							if (!x.properties) return null;
-							const name = x.properties.name;
-							if (!name) return null;
-
-							const id = x.tile.z + "/" + x.tile.x + "/" + x.tile.y + name;
-
-							if (renderSuggestions.has(id)) return null;
-
-							renderSuggestions.add(id);
-
-							return (
-								<div
-									key={id}
-									className="px-2 py-1 text-xs rounded hover:bg-gray-100 cursor-pointer"
-									onClick={() => {
-										const map = mapRef.current;
-										if (!map) return;
-
-										const bounds = bbox(x.geometry);
-										console.log(x, bounds, [(bounds[1] + bounds[3]) / 2, (bounds[0] + bounds[2]) / 2]);
-
-										map.flyTo({
-											center: [(bounds[0] + bounds[2]) / 2, (bounds[1] + bounds[3]) / 2],
-											zoom: 11,
-										});
-
-										if (searchRef.current) searchRef.current.innerText = "";
-
-										setSuggestions([]);
-									}}
-								>
-									{name}
-								</div>
-							);
-						})}
-					</div>
-				</div>
 				<div className="bg-background rounded-xl p-2 ">
 					<div className="max-sm:hidden text-sm font-bold px-2 pb-2 text-center w-full">Parteien</div>
-					<ScrollShadow className="max-sm:[mask-image:none] sm:max-h-[30vh] md:max-h-[50vh] max-h-[10vh] overflow-y-scroll no-scrollbar flex flex-col gap-1">
+					<ScrollShadow className="max-sm:[mask-image:none] sm:max-h-[30vh] md:max-h-[50vh] max-h-[20vh] overflow-y-scroll no-scrollbar flex flex-col gap-1">
 						<PartySelection
 							value="Alle"
 							defaultChecked
@@ -485,7 +387,7 @@ export function ElectionMap() {
 								parteiSelected.current = null;
 
 								if (map.getLayer("gemeinde:fill")) map.removeLayer("gemeinde:fill");
-								map.addLayer(alleParteien(), "bundesland:line");
+								map.addLayer(alleParteien(), "gemeinde:outline");
 							}}
 						/>
 						{parteienSelection.map((x) => (
@@ -499,7 +401,7 @@ export function ElectionMap() {
 									parteiSelected.current = x;
 
 									if (map.getLayer("gemeinde:fill")) map.removeLayer("gemeinde:fill");
-									map.addLayer(getParteiLayer(x), "bundesland:line");
+									map.addLayer(getParteiLayer(x), "gemeinde:outline");
 								}}
 							/>
 						))}
@@ -551,8 +453,6 @@ function PartySelection({
 function getParteiLayer(partei: string, overrideSaturation?: number) {
 	const colors = [] as (string | number)[];
 
-	const isUnion = partei === "Union";
-
 	let parteiColor = (parteienFarben as any)[partei] || "#000000";
 
 	function interpolate(input: number, min: number, max: number, minOut: number, maxOut: number) {
@@ -562,17 +462,17 @@ function getParteiLayer(partei: string, overrideSaturation?: number) {
 	const steps = max / 50;
 	const saturation = overrideSaturation || parteienFarbenSaturation[partei] || 100;
 
+	console.log(partei, max, steps, saturation);
+
 	for (let i = 0; i < max; i += steps) {
 		const out = 100 - interpolate(i, 0, max, 0, 80);
 
 		let lightness = out;
-		console.log(lightness, i, out, max);
 		colors.push(generateColorVariant(parteiColor, lightness, saturation));
 		colors.push(i);
 	}
 
-	let get: any = ["coalesce", ["get", partei], 0];
-	if (isUnion) get = ["coalesce", ["get", "CDU"], ["coalesce", ["get", "CSU"], 0]];
+	let get: any = ["coalesce", ["feature-state", partei], 0];
 
 	return {
 		id: "gemeinde:fill",

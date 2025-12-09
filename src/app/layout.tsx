@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "Bundestagswahl 2025",
-	description: "Visualisierung der Bundestagswahl 2025",
+	title: "NRW 2025",
+	description: "Visualisierung der NRW Kommunalwahl 2025",
 };
 
 export default function RootLayout({
@@ -24,7 +24,10 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen min-h-screen`}>{children}</body>
+			<body className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen min-h-screen`}>
+				{children}
+				<script defer data-domain="nrw25.samuelscheit.com" src="https://p.samuelscheit.com/js/script.js"></script>
+			</body>
 		</html>
 	);
 }

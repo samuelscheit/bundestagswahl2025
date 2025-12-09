@@ -1,5 +1,6 @@
 import parse from "csv-parser";
 import type { Options } from "csv-parser";
+import { krznWahlkreis } from "../wahlkreise/scrape";
 
 export async function csvParse({ data, ...opts }: Options & { data: string }) {
 	const stream = parse({

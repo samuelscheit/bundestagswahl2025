@@ -1,0 +1,2722 @@
+[
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 876,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Gem.-Grundschule Amern",
+    "wahlbezirk_id": "6010",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 880,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Gaststätte Wassenberg",
+    "wahlbezirk_id": "6020",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 876,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Pfarrheim Dilkrath",
+    "wahlbezirk_id": "6030",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 781,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Pfarrheim \"Die Brücke\"",
+    "wahlbezirk_id": "6040",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 808,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Förderzentrum West",
+    "wahlbezirk_id": "6050",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1035,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Förderzentrum West",
+    "wahlbezirk_id": "6060",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 995,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bauhof Verwaltungsgebäude",
+    "wahlbezirk_id": "6070",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1013,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Feuerwehrgerätehaus Waldniel",
+    "wahlbezirk_id": "6080",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 887,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bethanien Kinder-u.Jugenddorf",
+    "wahlbezirk_id": "6090",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 964,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bibliothek am Markt",
+    "wahlbezirk_id": "6100",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1027,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Grundschule Waldniel",
+    "wahlbezirk_id": "6110",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 890,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Schießstand Eicken",
+    "wahlbezirk_id": "6120",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 873,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Kindergarten Waldnieler Heide",
+    "wahlbezirk_id": "6130",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 816,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Lohnunternehmen Gebr. Rosendahl",
+    "wahlbezirk_id": "6140",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 885,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Pfadfinderheim Hehler",
+    "wahlbezirk_id": "6150",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 773,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "\"Die Lü\" Lüttelforster Mühle",
+    "wahlbezirk_id": "6160",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1007,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bethanien Kinder- u.Jugenddorf",
+    "wahlbezirk_id": "6170",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Bürgermeisterwahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 876,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Gem.-Grundschule Amern",
+    "wahlbezirk_id": "6010",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 880,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Gaststätte Wassenberg",
+    "wahlbezirk_id": "6020",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 876,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Pfarrheim Dilkrath",
+    "wahlbezirk_id": "6030",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 781,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Pfarrheim \"Die Brücke\"",
+    "wahlbezirk_id": "6040",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 808,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Förderzentrum West",
+    "wahlbezirk_id": "6050",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1035,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Förderzentrum West",
+    "wahlbezirk_id": "6060",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 995,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bauhof Verwaltungsgebäude",
+    "wahlbezirk_id": "6070",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1013,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Feuerwehrgerätehaus Waldniel",
+    "wahlbezirk_id": "6080",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 887,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bethanien Kinder-u.Jugenddorf",
+    "wahlbezirk_id": "6090",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 964,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bibliothek am Markt",
+    "wahlbezirk_id": "6100",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1027,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Grundschule Waldniel",
+    "wahlbezirk_id": "6110",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 890,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Schießstand Eicken",
+    "wahlbezirk_id": "6120",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 873,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Kindergarten Waldnieler Heide",
+    "wahlbezirk_id": "6130",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 816,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Lohnunternehmen Gebr. Rosendahl",
+    "wahlbezirk_id": "6140",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 885,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Pfadfinderheim Hehler",
+    "wahlbezirk_id": "6150",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 773,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "\"Die Lü\" Lüttelforster Mühle",
+    "wahlbezirk_id": "6160",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1007,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bethanien Kinder- u.Jugenddorf",
+    "wahlbezirk_id": "6170",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Gemeinderatswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "Die PARTEI": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 878,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Gem.-Grundschule Amern",
+    "wahlbezirk_id": "6010",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 552,
+      "ungültig": 18,
+      "parteien": {
+        "CDU": 324,
+        "GRÜNE": 88,
+        "SPD": 69,
+        "FDP": 50,
+        "Die PARTEI": 21
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 570,
+    "anzahl_berechtigte": 881,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Gaststätte Wassenberg",
+    "wahlbezirk_id": "6020",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 559,
+      "ungültig": 18,
+      "parteien": {
+        "CDU": 342,
+        "GRÜNE": 77,
+        "SPD": 64,
+        "FDP": 52,
+        "Die PARTEI": 24
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 577,
+    "anzahl_berechtigte": 876,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Pfarrheim Dilkrath",
+    "wahlbezirk_id": "6030",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "Die PARTEI": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 781,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Pfarrheim \"Die Brücke\"",
+    "wahlbezirk_id": "6040",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "Die PARTEI": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 808,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Förderzentrum West",
+    "wahlbezirk_id": "6050",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "Die PARTEI": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1037,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Förderzentrum West",
+    "wahlbezirk_id": "6060",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "Die PARTEI": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 995,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bauhof Verwaltungsgebäude",
+    "wahlbezirk_id": "6070",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "Die PARTEI": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1013,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Feuerwehrgerätehaus Waldniel",
+    "wahlbezirk_id": "6080",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "Die PARTEI": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 887,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bethanien Kinder-u.Jugenddorf",
+    "wahlbezirk_id": "6090",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "Die PARTEI": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 964,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bibliothek am Markt",
+    "wahlbezirk_id": "6100",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "Die PARTEI": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1028,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Grundschule Waldniel",
+    "wahlbezirk_id": "6110",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "Die PARTEI": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 893,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Schießstand Eicken",
+    "wahlbezirk_id": "6120",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "Die PARTEI": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 874,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Kindergarten Waldnieler Heide",
+    "wahlbezirk_id": "6130",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "Die PARTEI": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 819,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Lohnunternehmen Gebr. Rosendahl",
+    "wahlbezirk_id": "6140",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "Die PARTEI": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 885,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Pfadfinderheim Hehler",
+    "wahlbezirk_id": "6150",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "Die PARTEI": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 773,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "\"Die Lü\" Lüttelforster Mühle",
+    "wahlbezirk_id": "6160",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "Die PARTEI": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1007,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bethanien Kinder- u.Jugenddorf",
+    "wahlbezirk_id": "6170",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Landratswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 878,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Gem.-Grundschule Amern",
+    "wahlbezirk_id": "6010",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 881,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Gaststätte Wassenberg",
+    "wahlbezirk_id": "6020",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 876,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Pfarrheim Dilkrath",
+    "wahlbezirk_id": "6030",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 781,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Pfarrheim \"Die Brücke\"",
+    "wahlbezirk_id": "6040",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 808,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Förderzentrum West",
+    "wahlbezirk_id": "6050",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1037,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Förderzentrum West",
+    "wahlbezirk_id": "6060",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 995,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bauhof Verwaltungsgebäude",
+    "wahlbezirk_id": "6070",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1013,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Feuerwehrgerätehaus Waldniel",
+    "wahlbezirk_id": "6080",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 887,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bethanien Kinder-u.Jugenddorf",
+    "wahlbezirk_id": "6090",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 964,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bibliothek am Markt",
+    "wahlbezirk_id": "6100",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1028,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Grundschule Waldniel",
+    "wahlbezirk_id": "6110",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 893,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Schießstand Eicken",
+    "wahlbezirk_id": "6120",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 874,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Kindergarten Waldnieler Heide",
+    "wahlbezirk_id": "6130",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 819,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Lohnunternehmen Gebr. Rosendahl",
+    "wahlbezirk_id": "6140",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 885,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Pfadfinderheim Hehler",
+    "wahlbezirk_id": "6150",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 773,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "\"Die Lü\" Lüttelforster Mühle",
+    "wahlbezirk_id": "6160",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  },
+  {
+    "erststimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {
+        "CDU": 0,
+        "GRÜNE": 0,
+        "SPD": 0,
+        "FDP": 0,
+        "AfD": 0,
+        "Die Linke": 0,
+        "Die PARTEI": 0,
+        "FW-KV": 0
+      }
+    },
+    "zweitstimmen": {
+      "gültig": 0,
+      "ungültig": 0,
+      "parteien": {}
+    },
+    "anzahl_wähler": 0,
+    "anzahl_berechtigte": 1007,
+    "bundesland_id": "6",
+    "bundesland_name": "Hessen",
+    "wahlkreis_id": "173",
+    "wahlkreis_name": "Fulda",
+    "region_id": "5",
+    "region_name": "Reg.-Bez. Gießen",
+    "kreis_id": "35",
+    "kreis_name": "Vogelsbergkreis",
+    "gemeinde_name": "Schwalmtal",
+    "gemeinde_id": "17",
+    "verband_name": null,
+    "verband_id": "0",
+    "ortsteil_id": null,
+    "ortsteil_name": null,
+    "wahlbezirk_name": "Bethanien Kinder- u.Jugenddorf",
+    "wahlbezirk_id": "6170",
+    "wahlbezirk_adresse": null,
+    "wahlbezirk_raum": null,
+    "briefwahl": null,
+    "wahlart": "Kreistagswahl"
+  }
+]
