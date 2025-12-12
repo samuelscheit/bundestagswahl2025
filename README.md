@@ -1,5 +1,10 @@
 # Germany Bundestag Election 2025 vote analysis
 
+## [Map](https://bundestagswahl.samuelscheit.com/)
+
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/153cc2b4-7da7-4e87-a1fd-54d90ca1e1f1" />
+
+
 ## [Blog Post](https://samuelscheit.com/blog/2025/bundestagswahl)
 
 <a href="https://samuelscheit.com/blog/2025/bundestagswahl">
