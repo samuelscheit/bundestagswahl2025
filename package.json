@@ -3,7 +3,7 @@
 	"module": "index.ts",
 	"type": "module",
 	"devDependencies": {
-		"@tailwindcss/postcss": "^4.1.17",
+		"@tailwindcss/postcss": "^4.1.18",
 		"@turf/turf": "^7.3.1",
 		"@types/bun": "latest",
 		"@types/node": "^20.19.26",
@@ -19,7 +19,7 @@
 		"puppeteer-extra-plugin-stealth": "^2.11.2",
 		"rebrowser-puppeteer-core": "^23.10.3",
 		"tab": "^1.0.0",
-		"tailwindcss": "^4.1.17",
+		"tailwindcss": "^4.1.18",
 		"tileserver-gl-light": "^5.4.0",
 		"typescript": "^5.9.3"
 	},
@@ -45,8 +45,8 @@
 		"next": "15.4.8",
 		"node-html-parser": "^7.0.1",
 		"p-queue": "^8.1.1",
-		"react": "^19.2.1",
-		"react-dom": "^19.2.1",
+		"react": "^19.2.3",
+		"react-dom": "^19.2.3",
 		"shpjs": "^6.2.0",
 		"tailwind-merge": "^3.4.0",
 		"tailwind-variants": "^1.0.0",
