@@ -37,4 +37,4 @@ EXPOSE 8080
 WORKDIR /app/map
 
 ENTRYPOINT []
-CMD ["/usr/local/bin/tileserver-gl-light", "--config", "config.json", "--port", "8080"]
+CMD ["/app/node_modules/.bin/tileserver-gl-light", "--config", "/app/map/config.json", "--port", "8080"]
