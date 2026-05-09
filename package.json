@@ -20,7 +20,6 @@
 		"rebrowser-puppeteer-core": "^23.10.3",
 		"tab": "^1.0.0",
 		"tailwindcss": "^4.2.4",
-		"tileserver-gl-light": "^5.6.0",
 		"typescript": "^5.9.3"
 	},
 	"dependencies": {
@@ -50,6 +49,7 @@
 		"shpjs": "^6.2.0",
 		"tailwind-merge": "^3.5.0",
 		"tailwind-variants": "^1.0.0",
+		"tileserver-gl-light": "^5.6.0",
 		"topojson-server": "^3.0.1",
 		"tough-cookie": "^5.1.2",
 		"tough-cookie-file-store": "^2.0.3",
@@ -61,6 +61,6 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"map": "cd map && tileserver-gl-light --config config.json"
+		"map": "cd map && tileserver-gl --config config.json"
 	}
 }
