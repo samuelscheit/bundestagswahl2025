@@ -96,6 +96,7 @@ export function isFinalError(error: Error, url = "", name = "") {
 		msg.includes("404") ||
 		msg.includes("Keine BTW25") ||
 		msg.includes("Not votemanager") ||
+		(url.includes("wahlen.kdvz.nrw") && (msg.includes("503") || msg.includes("Myracloud"))) ||
 		url.includes("wahlen.rhoen-grabfeld.de") ||
 		name === "Salzgitter" ||
 		name === "Verwaltungsgemeinschaft Kirchehrenbach" ||
@@ -194,7 +195,12 @@ export async function axiosWithRedirect<T = any, D = any>(
 	opts.tries = (opts.tries || 0) + 1;
 
 	try {
-		if (url.includes("wahlen-muenchen.de") || url.includes("wahlen-sh.de") || url.includes("wahlen-berlin.de")) {
+		if (
+			url.includes("wahlen-muenchen.de") ||
+			url.includes("wahlen-sh.de") ||
+			url.includes("wahlen-berlin.de") ||
+			url.includes("wahlen.kdvz.nrw")
+		) {
 			return await cycleFetch(url, opts);
 		}
 		if (url.includes("saarland.de")) {
