@@ -206,7 +206,7 @@ export async function axiosWithRedirect<T = any, D = any>(
 		const msg = (error as Error).message;
 		console.error("Request failed, retrying ...", url, msg);
 
-		if (isFinalError(error as Error)) {
+		if (isFinalError(error as Error, url)) {
 			throw error;
 		} else if (msg.includes("JSON Parse error")) {
 			fs.unlinkSync(__dirname + "/cache/" + generateKey({ ...opts, url }));
