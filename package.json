@@ -41,7 +41,7 @@
 		"lodash": "^4.18.1",
 		"lucide-react": "^0.485.0",
 		"maplibre-gl": "~5.2.0",
-		"next": "16.2.6",
+		"next": "16.2.11",
 		"node-html-parser": "^7.1.0",
 		"p-queue": "^8.1.1",
 		"react": "^19.2.5",
